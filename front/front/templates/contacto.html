@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block titulo %}{{ titulo }}{% endblock %}
+
+{% block body %}
+<h1>Contacto</h1>
+    <p>Nos encotramos totalmente abiertos a recibir sugerencias y posibles mejoras para facilitar y agilizar el servicio que ofrecemos.</p>
+    <form action="{{ url_for('contacto') }}" method="post">
+        <label for="nombre">Nombre</label><br>
+        <input type="text" id="nombre" name="nombre_usuario" placeholder="Nombre"><br>
+        <label for="apellido">Apellido</label><br>
+        <input type="text" id="apellido" name="apellido_usuario" placeholder="Apellido"><br>
+        <label for="e-mail">E-Mail</label><br>
+        <input type="email" id="e-mail" name="email_usuario" placeholder="E-Mail"><br>
+        <label for="telefono">Teléfono</label><br>
+        <input type="tel" id="telefono" name="telefono_usuario" placeholder="Teléfono"><br>
+        <label for="mensaje">Mensaje</label><br>
+        <textarea id="mensaje" name="mensaje_usuario" placeholder="Mensaje" rows="4" cols="50"></textarea><br>
+        <button type="submit" id="envio">Enviar</button>
+    </form>
+{% endblock %}
