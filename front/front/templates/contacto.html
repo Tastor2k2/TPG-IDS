@@ -7,15 +7,32 @@
     <p>Nos encotramos totalmente abiertos a recibir sugerencias y posibles mejoras para facilitar y agilizar el servicio que ofrecemos.</p>
     <form action="{{ url_for('contacto') }}" method="post">
         <label for="nombre">Nombre</label><br>
-        <input type="text" id="nombre" name="nombre_usuario" placeholder="Nombre"><br>
+        <input type="text" id="nombre" name="nombre_usuario" class="form-control" placeholder="Nombre"><br>
         <label for="apellido">Apellido</label><br>
-        <input type="text" id="apellido" name="apellido_usuario" placeholder="Apellido"><br>
+        <input type="text" id="apellido" name="apellido_usuario" class="form-control" placeholder="Apellido"><br>
         <label for="e-mail">E-Mail</label><br>
-        <input type="email" id="e-mail" name="email_usuario" placeholder="E-Mail"><br>
+        <input type="email" id="e-mail" name="email_usuario" class="form-control" placeholder="E-Mail"><br>
         <label for="telefono">Teléfono</label><br>
-        <input type="tel" id="telefono" name="telefono_usuario" placeholder="Teléfono"><br>
+        <input type="tel" id="telefono" name="telefono_usuario" class="form-control" placeholder="Teléfono"><br>
         <label for="mensaje">Mensaje</label><br>
-        <textarea id="mensaje" name="mensaje_usuario" placeholder="Mensaje" rows="4" cols="50"></textarea><br>
-        <button type="submit" id="envio">Enviar</button>
+        <textarea id="mensaje" name="mensaje_usuario" placeholder="Mensaje" class="form-control" rows="4" cols="50"></textarea><br>
+        <button type="submit" id="envio" class="btn-formulario">Enviar</button>
     </form>
+    <p>También podés encontrarnos en la biblioteca de la Facultad de Ingeniería de la Universidad de Buenos Aires en los siguientes horarios.</p>
+    <table>
+        <tr>
+            <td><b>Día</b></td>
+            <td><b>Horarios</b></td>
+        </tr>
+        {% for dia in horarios %}
+        <tr>
+            <td>{{ dia }}</td>
+            <td>{{ horarios[dia] }}</td>
+        </tr>
+        {% endfor %}
+    </table><br>
+    <p><b>Dirección:</b> Av. Paseo Colón 850 - C1063ACV - Buenos Aires - Argentina.</p>
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3283.463761523322!2d-58.37046492425906!3d-34.61771897294926!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95a335cd58be5d9d%3A0x83a181d7e23938ab!2sBiblioteca%20%22Enrique%20Butty%22%20-%20FIUBA!5e0!3m2!1ses!2sar!4v1762089260582!5m2!1ses!2sar" style="margin-bottom: 10px;" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <p><b>Correo Electrónico:</b> <a href="mailto:libroxlibro@gmail.com">libroxlibro@gmail.com</a></p>
+    <p><b>Número de Teléfono:</b> <a href="tel:+54 9 2323-336578">+54 9 2323-336578</a></p>
 {% endblock %}

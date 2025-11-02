@@ -260,37 +260,18 @@ h6{
 /*--------------------------------------------------------------
 /** 2.3 Buttons
 --------------------------------------------------------------*/
-.btn {
-  font-weight: 500;
+.btn-formulario {
+  font-weight: 400;
   text-transform: capitalize;
   letter-spacing: 0.09em;
-  color: var(--white-color);
-  background-color: var(--primary-color);
-  border: none;
-  padding: 1.125rem 2.625rem;
+  color: black;
+  background-color: white;
+  border: 1px solid gray;
+  padding: 0.125rem 1.325rem;
   font-size: 1rem;
   border-radius: 200px;
   cursor: pointer;
-}
-.btn:hover,
-.btn:focus-visible,
-.btn-check:checked+.btn, .btn.active, .btn.show, .btn:first-child:active, :not(.btn-check)+.btn:active {
-  color: var(--white-color);
-  background-color: var(--black-color);
-}
-.btn-dark {
-  background-color: var(--black-color);
-}
-.btn-dark:hover {
-  background-color: var(--primary-color);
-}
-
-.btn-light {
-  background-color: var(--light-color);
-}
-.btn-light:hover {
-  color: #fff;
-  background-color: var(--primary-color);
+  margin-bottom: 10px;
 }
 
 /*--------------------------------------------------------------
@@ -345,7 +326,12 @@ textarea.form-control::placeholder {
 /*--------------------------------------------------------------
 /** 3.3 Table
 --------------------------------------------------------------*/
-th{
+table {
+  border:1px #717171 solid;
+  text-align: center;
+  margin-bottom: 10px;
+}
+th {
   font-weight: 300;
   letter-spacing: 0.06rem;
 }
