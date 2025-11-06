@@ -3,6 +3,24 @@
 {% block titulo %}{{ titulo }}{% endblock %}
 
 {% block body %}
-<h1>Bienvenidos a (nombre a definir)</h1>
-<!-- LibroxLibro sería un nombre copado -->
+<section>
+    <h1>Bienvenidos a (nombre a definir)</h1>
+    <!-- LibroxLibro sería un nombre copado -->
+     <p>
+        Encontrá el libro que necesitás o ayudá a otro estudiante compartiendo el tuyo.
+    </p>
+        <p>
+        Iniciá sesión o creá tu cuenta para empezar a intercambiar libros y apuntes.
+    </p>
+
+    <div>
+        <h2>¿Querés saber más?</h2>
+        <p>
+            <a href="{{ url_for('sobre_nosotros') }}">Conocé quiénes somos</a> o  
+            <a href="{{ url_for('funcionamiento') }}">descubrí cómo funciona el sistema</a>.
+        </p>
+    </div>
+</section>
+
+
 {% endblock %}
