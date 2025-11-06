@@ -14,6 +14,6 @@ def get_connection():
             database=os.getenv("DB_NAME")
         )
         return connection
-    except Error as e:
+    except Error as e:  
         print ("No se puedo conectar a MySql", e)
         return None
