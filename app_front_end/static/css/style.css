@@ -1337,3 +1337,57 @@ select#input-sort {
     margin-bottom: 10px;
   }
 }
+
+/* flechas del slider de libros*/
+.product-slider-button-prev,
+.product-slider-button-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* flecha izquierda */
+.product-slider-button-prev {
+  left: 10px;
+}
+/* flecha derecha */
+.product-slider-button-next {
+  right: 10px;
+}
+
+/* hover */
+.product-slider-button-prev:hover,
+.product-slider-button-next:hover {
+  background: #F86D72;
+  color: #fff;
+  transform: translateY(-50%) scale(1.1);
+}
+
+
+/* ajuste para pantalla de celular */
+@media (max-width: 768px) {
+  .product-slider-button-prev,
+  .product-slider-button-next {
+    width: 45px;
+    height: 45px;
+  }
+
+  .product-slider-button-prev {
+    left: 5px;
+  }
+
+  .product-slider-button-next {
+    right: 5px;
+  }
+}
