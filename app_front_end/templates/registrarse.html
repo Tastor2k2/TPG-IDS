@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block titulo %}{{ titulo }}{% endblock %}
+
+{% block body %}
+<h1>¡Registrate!</h1>
+    <form action="{{ url_for('registrarse') }}" method="post">
+        <label for="usuario">Nombre de Usuario</label><br>
+        <input type="text" id="usuario" name="nombre_usuario" class="form-control" placeholder="👤 Nombre de Usuario"><br>
+        <label for="mail">E-Mail</label><br>
+        <input type="email" id="mail" name="email_registro" class="form-control" placeholder="📧 E-Mail"><br>
+        <label for="password_user">Contraseña</label><br>
+        <input type="password" id="password_user" name="contrasena_registro" class="form-control" placeholder="🔒 Contraseña"><br>
+        <button type="submit" id="envio" class="btn-formulario">Registrarse</button>
+    </form>
+<p>¿Ya tenés una cuenta? Iniciá sesión <a href="{{ url_for('iniciar_sesion') }}">acá!</a></p>
+
+{% endblock %}
