@@ -1,6 +1,17 @@
 from flask import Flask,render_template,redirect,url_for,request
+from flask_mail import Mail, Message
 
 app = Flask(__name__)
+
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+app.config['MAIL_USERNAME'] = 'amigosporeldeporte123@gmail.com'
+app.config['MAIL_PASSWORD'] = 'btdu souy tqbh ljeb'
+app.config['MAIL_DEFAULT_SENDER'] = 'amigosporeldeporte123@gmail.com'
+
+mail = Mail(app)
 
 @app.route('/')
 def index():
@@ -115,6 +126,36 @@ def formulario_enviado():
     mensaje = request.args.get('mensj')
     data = (nombre,apellido,mail,telefono,mensaje)
     return render_template('formulario_enviado.html',titulo=title,informacion_usuario=data)
+
+@app.route('/solicitud_intercambio', methods = ['GET', 'POST'])
+def formulario_intercambio():
+    if request.method == 'POST':
+        nombre_solicitante = request.form.get('nombre-solicitante')
+        apellido_solicitante = request.form.get('apellido-solicitante')
+        mail_solicitante = request.form.get('mail-solicitante')
+        libro_solicitar = request.form.get('libro-solicitar')
+        libro_intercambiar = request.form.get('libro-intercambiar')
+        msg = Message(
+            subject = "Nueva solicitud",
+            recipients = [mail_solicitante] 
+        )
+
+        msg.html = render_template("mail_intercambio.html", 
+                                   nombre_solicitante = nombre_solicitante, 
+                                   apellido_solicitante = apellido_solicitante, 
+                                   mail_solicitante = mail_solicitante, 
+                                   libro_solicitar = libro_solicitar,
+                                   libro_intercambiar = libro_intercambiar
+                                   )
+        
+        mail.send(msg) 
+        return redirect(url_for('biblioteca'))
+    else:
+        libro_solicitar = request.args.get('libro', '').replace('%20', ' ')
+        return render_template("formulario_intercambio.html",
+                                materias = [],
+                                libro_seleccionado=libro_solicitar)
+
 
 if __name__ == "__main__":
     app.run("localhost", port="5000",debug=True)

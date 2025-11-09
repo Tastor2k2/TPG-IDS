@@ -38,10 +38,12 @@
 
             <!-- wishlist y carrito -->
             <div class="card-concern position-absolute start-0 end-0 d-flex gap-2">
-              <button type="button" class="btn btn-dark" data-bs-toggle="tooltip" data-bs-placement="top" title="Agregar al carrito">
+              <a href="{{ url_for('formulario_intercambio', libro=libro.titulo|urlencode) }}" class="btn btn-dark" 
+              data-bs-toggle="tooltip" data-bs-placement="top" title="Solicitar intercambio">
                 <svg class="cart"><use xlink:href="#cart"></use></svg>
-              </button>
-              <a href="#" class="btn btn-dark">
+              </a>
+
+              <a href="{{ url_for('index') }}" class="btn btn-dark">
                 <svg class="wishlist"><use xlink:href="#heart"></use></svg>
               </a>
             </div>

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block titulo %}{{ titulo }}{% endblock %}
+
+{% block body %}
+<h2 id="titulo-form">Solicitar un intercambio de libros</h2>
+
+
+<form id="form-intercambio" action="{{ url_for('formulario_intercambio') }}" method="post">
+
+  <div class="Fintercambio">
+    <label for="fnombre"><strong>Nombre:</strong></label>
+    <input type="text" id="nombre-solicitante" name="nombre-solicitante" placeholder="Nombre" required>
+  </div>
+
+  <div class="Fintercambio">
+    <label for="fapellido"><strong>Apellido:</strong></label>
+    <input type="text" id="apellido-solicitante" name="apellido-solicitante" placeholder="Apellido" required>
+  </div>
+
+  <div class="Fintercambio">
+    <label for="fmail"><strong>Mail académico:</strong></label>
+    <input type="email" id="mail-solicitante" name="mail-solicitante" placeholder="Mail académico" required>
+  </div>
+  
+  <input type="hidden" name="libro-solicitar" value="{{ libro_seleccionado }}">
+
+
+  <div class="Fintercambio">
+    <label for="flibro"><strong>Libro a intercambiar:</strong></label>
+    <input type="text" id="libro-intercambiar" name="libro-intercambiar" placeholder="Libro a intercambiar" required>
+  </div>
+
+  <button id="send-bt" type="submit">Enviar</button>
+
+</form>
+{% endblock %}
