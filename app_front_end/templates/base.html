@@ -19,7 +19,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
   </head>
-  <body>
+  <body class="d-flex flex-column min-vh-100">
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
       <symbol id="search" xmlns="http://www.w3.org/2000/symbolsvg" viewBox="0 0 24 24">
         <path fill="currentColor" fill-rule="evenodd"
@@ -203,65 +203,12 @@
                     </a>
                   </li>
                   <li class="pe-3">
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                      <svg class="user">
-                        <use xlink:href="#user"></use>
-                      </svg>
-                    </a>
-                    <!-- Modal -->
-                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                      aria-hidden="true">
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header border-bottom-0">
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                          </div>
-                          <div class="modal-body">
-                            <div class="tabs-listing">
-                              <nav>
-                                <div class="nav nav-tabs d-flex justify-content-center" id="nav-tab" role="tablist">
-                                  <button class="nav-link text-capitalize active" id="nav-sign-in-tab" data-bs-toggle="tab"
-                                    data-bs-target="#nav-sign-in" type="button" role="tab" aria-controls="nav-sign-in"
-                                    aria-selected="true">Iniciar Sesión</button>
-                                  <button class="nav-link text-capitalize" id="nav-register-tab" data-bs-toggle="tab"
-                                    data-bs-target="#nav-register" type="button" role="tab" aria-controls="nav-register"
-                                    aria-selected="false">Registrate</button>
-                                </div>
-                              </nav>
-                              <div class="tab-content" id="nav-tabContent">
-                                <div class="tab-pane fade active show" id="nav-sign-in" role="tabpanel"
-                                  aria-labelledby="nav-sign-in-tab">
-                                  <div class="form-group py-3">
-                                    <label class="mb-2" for="sign-in">Correo Electrónico *</label>
-                                    <input type="text" minlength="2" name="username" placeholder="Tu Correo Electrónico"
-                                      class="form-control w-100 rounded-3 p-3" required>
-                                  </div>
-                                  <div class="form-group pb-3">
-                                    <label class="mb-2" for="sign-in">Contraseña *</label>
-                                    <input type="password" minlength="2" name="password" placeholder="Tu Contraseña"
-                                      class="form-control w-100 rounded-3 p-3" required>
-                                  </div>
-                                  <button type="submit" name="submit" class="btn btn-dark w-100 my-3">Iniciar Sesión</button>
-                                </div>
-                                <div class="tab-pane fade" id="nav-register" role="tabpanel"
-                                  aria-labelledby="nav-register-tab">
-                                  <div class="form-group py-3">
-                                    <label class="mb-2" for="register">Tu Correo Electrónico *</label>
-                                    <input type="text" minlength="2" name="username" placeholder="Tu Correo Electrónico"
-                                      class="form-control w-100 rounded-3 p-3" required>
-                                  </div>
-                                  <div class="form-group pb-3">
-                                    <label class="mb-2" for="sign-in">Contraseña *</label>
-                                    <input type="password" minlength="2" name="password" placeholder="Tu Contraseña"
-                                      class="form-control w-100 rounded-3 p-3" required>
-                                  </div>
-                                  <button type="submit" name="submit" class="btn btn-dark w-100 my-3">Registrase</button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                    <a class="user-link d-inline-flex align-items-center" href="{{ url_for('iniciar_sesion') }}">
+                        <svg class="user" width="24" height="24" aria-hidden="true" focusable="false">
+                          <use xlink:href="#user"></use>
+                        </svg>
+                        <span class="visually-hidden">Iniciar sesión</span>
+                      </a>
                     </div>
                   </li>
                 </ul>
@@ -271,7 +218,7 @@
         </div>
       </nav>
     </header>
-<main>
+<main class="flex-grow-1">
     <div class="container">
         <div class="row">
             <div class="row d-flex flex-wrap justify-content-between">
@@ -282,14 +229,14 @@
     </div>
 </main>
 <hr>
- <footer id="footer" class="padding-small">
+ <footer id="footer" class="mt-auto py-3 bg-light border-top">
       <div class="container">
         <div class="row">
           <div class="footer-top-area">
             <div class="row d-flex flex-wrap justify-content-between">
               <div class="col-lg-3 col-sm-6 pb-3">
                 <div class="footer-menu">
-                  <img src="images/main-logo.png" alt="logo" class="img-fluid mb-2"> <!-- Aca iria el logo -->
+                  <img src="{{ url_for('static',filename='images/logo.webp',_external=True) }}" alt="logo" class="img-fluid mb-2" width="121px">
                   <p>¿Te quedó un libro sin uso? Publicalo y conseguí el que necesitás para la próxima cursada. Intercambios simples entre estudiantes, sin comisiones.</p>
                 </div>
               </div>
