@@ -155,6 +155,25 @@ def formulario_intercambio():
         return render_template("formulario_intercambio.html",
                                 materias = [],
                                 libro_seleccionado=libro_solicitar)
+    
+@app.route('/aceptado')
+def aceptado():
+    return render_template('aceptado.html', materias=[])
+
+    
+@app.route("/codigo", methods=['GET', 'POST'])
+def codigo():
+    codigo = "" #se va una vez validado
+    if request.method == 'POST':
+        codigo = request.form.get("codigo")
+        #codigo para verficar en la base de datos
+        return redirect(url_for('aceptado'))
+    return render_template('codigo_intercambio.html', codigo=codigo, materias=[])
+
+
+
+
+
 
 
 if __name__ == "__main__":

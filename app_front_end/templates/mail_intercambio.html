@@ -6,7 +6,7 @@
 <p><strong>Mail del solicitante: </strong>{{ mail_solicitante }}</p>
 <p><strong>Libro a solicitar: </strong>{{ libro_solicitar }}</p>
 <p><strong>Libro a intercambiar: </strong>{{ libro_intercambiar }}</p>
-<p>Ingresa el codigo del intercambio haciendo </p>
+<p>Ingresa el codigo del intercambio haciendo <a href="{{ url_for('codigo', _external=True) }}">click aqui</a></p>
 
 <p>Recorda que tenes 48hs a partir de la llegada de este mail
     para poder enviar el codigo que te dara el acceso al libro
