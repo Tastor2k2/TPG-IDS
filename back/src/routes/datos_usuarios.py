@@ -39,40 +39,40 @@ def registrar_usuario():
     cursor.close()
     conn.close()
     
-    @datos_usuarios_bp.route('/login', methods=['POST']) #nose como esta puesto en el front el form, sino habria que cambiar registrar y el metodo
-    def login_usuario():
-        data = request.get_json()
-        email_usuario = data.get('email')
-        contraseña_usuario = data.get('contraseña')
+@datos_usuarios_bp.route('/login', methods=['POST']) #nose como esta puesto en el front el form, sino habria que cambiar login y el metodo
+def login_usuario():
+    data = request.get_json()
+    email_usuario = data.get('email')
+    contraseña_usuario = data.get('contraseña')
 
-        conn = get_connection()
-        cursor = conn.cursor(dictionary=True)
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
 
-        #chequeamos si el usuario completo todos los campos:
-        if not email_usuario or not contraseña_usuario:
-            return jsonify({"error": "Faltan campos obligatorios"}), 400
+    #chequeamos si el usuario completo todos los campos:
+    if not email_usuario or not contraseña_usuario:
+        return jsonify({"error": "Faltan campos obligatorios"}), 400
 
 
-        #chequeamos si existe el usuario:
-        cursor.execute("SELECT * FROM datos WHERE email_usuario = %s AND contraseña_usuario = %s", (email_usuario, contraseña_usuario,))
-        usuario = cursor.fetchone()
+    #chequeamos si existe el usuario:
+    cursor.execute("SELECT * FROM datos WHERE email_usuario = %s AND contraseña_usuario = %s", (email_usuario, contraseña_usuario,))
+    usuario = cursor.fetchone()
 
-        cursor.close()
-        conn.close()
+    cursor.close()
+    conn.close()
 
-        #si el usuario existe:
-        if usuario:
-                 return jsonify({
-            "mensaje": "Login exitoso",
-            "usuario": {
-                "nombre": usuario["nombre_usuario"],
-                "email": usuario["email_usuario"]
-            }
-        }), 200
-           
+    #si el usuario existe:
+    if usuario:
+                return jsonify({
+        "mensaje": "Login exitoso",
+        "usuario": {
+            "nombre": usuario["nombre_usuario"],
+            "email": usuario["email_usuario"]
+        }
+    }), 200
         
-        else:
-             
-        
-            return jsonify({"error": "EMAIL O CONTRASELA INCORRECTOS"}), 401
+    
+    else:
+            
+    
+        return jsonify({"error": "EMAIL O CONTRASELA INCORRECTOS"}), 401
 

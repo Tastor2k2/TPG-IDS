@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
 import mysql.connector
+load_dotenv()
 
 with open("init_db.sql") as f:
     sql = f.read()
