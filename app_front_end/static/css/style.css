@@ -1365,6 +1365,7 @@ select#input-sort {
     font-size: 1.05rem;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     margin-bottom: 20px;
+    margin-top: 30px;
 }
 
 
@@ -1394,6 +1395,7 @@ html, body {
     color: white;
     overflow: hidden;
     z-index: 0;
+    margin-bottom: 60px;
 }
 
 .bienvenida::before {
