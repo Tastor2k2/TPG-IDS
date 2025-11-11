@@ -4,35 +4,26 @@
 
 {% block body %}
 <body>
-    <div class="search-popup">
-    <div class="search-popup-container">
-
-        <h5 class="cat-list-title">Materias disponibles</h5>
-
-        <ul class="cat-list">
-        {% for materia in materias %}
-        <li class="cat-list-item">
-            <a>{{ materia.nombre}}</a>
-        </li>
-        {% endfor %}
-        </ul>
-
-    </div>
-    </div>
 
     </header>
     <section>
-        <h1>¡Bienvenido!</h1>
+        <div class="bienvenida">
+            <h1 class="inicio">¡Bienvenido!</h1>
+            <div>
+                <p>
+                    Encontrá el libro que necesitás o ayudá a otro estudiante compartiendo el tuyo.
+                </p>
+                <p>
+                    Iniciá sesión o creá tu cuenta para empezar a intercambiar libros y apuntes.
+                </p>
+            </div>
 
-        <p>
-            Encontrá el libro que necesitás o ayudá a otro estudiante compartiendo el tuyo.
-        </p>
-        <p>
-            Iniciá sesión o creá tu cuenta para empezar a intercambiar libros y apuntes.
-        </p>
+        </div>
+    </section>
 
-        <div>
-            <h2>¿Querés saber más?</h2>
+    <section>
+        <div class="pag">
+            <h2 class="titulo-pag">¿Querés saber más?</h2>
             <p>
                 <a href="{{ url_for('sobre_nosotros') }}">Conocé quiénes somos</a> o  
                 <a href="{{ url_for('funcionamiento') }}">descubrí cómo funciona el sistema</a>.
@@ -40,59 +31,120 @@
         </div>
     </section>
 
-    <section id="categories" class="padding-large pt-0">
+    <section id="items-listing" class="padding-large">
+    <h2 class="titulo-pag">Por qué usar este sistema?</h2>
     <div class="container">
-        <div class="section-title overflow-hidden mb-4">
-        <h3 class="d-flex align-items-center">Categorias</h3>
-        </div>
         <div class="row">
-        <div class="col-md-4">
-            <div class="card mb-4 border-0 rounded-3 position-relative">
-            <a href="index.html">
-                <img src="images/category1.jpg" class="img-fluid rounded-3" alt="cart item">
-                <h6 class=" position-absolute bottom-0 bg-primary m-4 py-2 px-3 rounded-3"><a href="index.html"
-                    class="text-white">Romance</a></h6>
-            </a>
+        <div class="col-md-6 mb-4 mb-lg-0 col-lg-3">
+            <div class="featured border rounded-3 p-4">
+            <div class="section-title overflow-hidden mb-5 mt-2">
+                <h3 class="d-flex flex-column mb-0"> 💰 Ahorro</h3>
             </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card text-center mb-4 border-0 rounded-3">
-            <a href="index.html">
-                <img src="images/category2.jpg" class="img-fluid rounded-3" alt="cart item">
-                <h6 class=" position-absolute bottom-0 bg-primary m-4 py-2 px-3 rounded-3"><a href="index.html"
-                    class="text-white">Lifestyle</a></h6>
-            </a>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card text-center mb-4 border-0 rounded-3">
-            <a href="index.html">
-                <img src="images/category3.jpg" class="img-fluid rounded-3" alt="cart item">
-                <h6 class=" position-absolute bottom-0 bg-primary m-4 py-2 px-3 rounded-3"><a href="index.html"
-                    class="text-white">Recipe</a></h6>
-            </a>
-            </div>
-        </div>
-        </div>
-    </div>
-    </section>
+            <div class="items-lists">
+                <div class="item d-flex">
+                <img src="" class="img-fluid shadow-sm" >
+                <div>
+                    <p>Intercambiá libros sin gastar más.</p>
+                    <div class="review-content d-flex">
+                    <div class="rating text-warning d-flex align-items-center">
+                    </div>
+                    </div>
+                </div>
+                </div>
 
+                <div class="item d-flex">
+                <div class="item-content ms-3">
+                    <div class="review-content d-flex">
+                    <div class="rating text-warning d-flex align-items-center">
+                    </div>
+                    </div>
+                </div>
+                </div>
 
-    <section id="latest-posts" class="padding-large">
-    <div class="container">
-        <div class="section-title d-md-flex justify-content-between align-items-center mb-4">
-        <h3 class="d-flex align-items-center">Ultimos libros</h3>
+                <div class="item d-flex">
+                <div class="item-content ms-3">
+                    <div class="review-content d-flex">
+                    <div class="rating text-warning d-flex align-items-center">
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
         </div>
-        <div class="row">
-        {% for libro in ultimos_libros %}
-        <div class="col-md-3 posts mb-4">
-            <a href="blog.html" class="fs-6 text-primary">Books</a>
-            <h4 class="card-title mb-2 text-capitalize text-dark"><a href="index.html">10 Must-Read Books of the Year: Our Top Picks!</a></h4>
-            <p class="mb-2">Dive into the world of cutting-edge technology with our latest blog post, where we highlight
-            five essential gadge. <span><a class="text-decoration-underline text-black-50" href="index.html">Read More</a></span>
-            </p>
+        <div class="col-md-6 mb-4 mb-lg-0 col-lg-3">
+            <div class="latest-items border rounded-3 p-4">
+            <div class="section-title overflow-hidden mb-5 mt-2">
+                <h3 class="d-flex flex-column mb-0">🤝 Comunidad</h3>
+            </div>
+            <div class="items-lists">
+                <div class="item d-flex">
+                <div class="item-content ms-3">
+                    <p>Conectá con otros estudiantes.</p>
+                    <div class="review-content d-flex">
+                    <div class="rating text-warning d-flex align-items-center">
+                    </div>
+                    </div>
+
+                </div>
+                </div>
+                <div class="item d-flex">
+                <div class="item-content ms-3">
+                    <div class="review-content d-flex">
+                    <div class="rating text-warning d-flex align-items-center">
+                    </div>
+                    </div>
+                </div>
+                </div>
+
+                <div class="item d-flex">
+                <div class="item-content ms-3">
+                    <div class="review-content d-flex">
+                    <div class="rating text-warning d-flex align-items-center">
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
         </div>
-        {% endfor %}
+        <div class="col-md-6 mb-4 mb-lg-0 col-lg-3">
+            <div class="best-reviewed border rounded-3 p-4">
+            <div class="section-title overflow-hidden mb-5 mt-2">
+                <h3 class="d-flex flex-column mb-0">🌱Ecológico</h3>
+            </div>
+            <div class="items-lists">
+                <div class="item d-flex">
+                <div class="item-content ms-3">
+                    <p>Dale una segunda vida a tus libros.</p>
+                    <div class="review-content d-flex">
+                    <div class="rating text-warning d-flex align-items-center">
+                    </div>
+                    </div>
+                </div>
+                </div>
+                <div class="item d-flex">
+                <div class="item-content ms-3">
+                    <div class="review-content d-flex">
+                    <div class="rating text-warning d-flex align-items-center">
+                    </div>
+                    </div>
+                </div>
+                </div>
+                <div class="item d-flex">
+                <div class="item-content ms-3">
+                    <div class="review-content d-flex">
+                    <div class="rating text-warning d-flex align-items-center">
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+            </div>
+            </div>
+        </div>
         </div>
     </div>
     </section>
