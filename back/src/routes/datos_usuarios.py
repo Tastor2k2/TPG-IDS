@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 from src.db import get_connection
 
-datos_usuarios_bp  = Blueprint("datos", __name__)
+datos_usuarios_bp  = Blueprint("datos_usuarios", __name__)
 
 #cargamos lo resibido en el formulario a la tabla datos_usuario
 @datos_usuarios_bp.route('/registrar', methods=['POST']) #nose como esta puesto en el front el form, sino habria que cambiar registrar y el metodo
@@ -12,7 +12,7 @@ def registrar_usuario():
     contraseña_usuario = data.get('contraseña')
 
     conn = get_connection()
-    cursor = conn.cursor(dictionary=True)
+    cursor = conn.cursor(dictionary=True)   
 
     #chequeamos si el usuario completo todos los campos:
     if not nombre_usuario or not email_usuario or not contraseña_usuario:
