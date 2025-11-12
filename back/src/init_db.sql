@@ -28,22 +28,22 @@ CREATE TABLE IF NOT EXISTS libros (
 );
 
 CREATE TABLE IF NOT EXISTS intercambio_libro(
-    codigo_intercambio INT PRIMARY KEY,
+    codigo_intercambio INT AUTO_INCREMENT PRIMARY KEY,
 
-    id_libro_publicado INT,
+    id_libro_solicitado INT,
     id_libro_ofrecido INT,
 
-    id_usuario_publicado INT,
+    id_usuario_solicitado INT,
     id_usuario_ofrecido INT,
     
     fecha_inicio DATETIME DEFAULT CURRENT_TIMESTAMP,
-    fecha_final DATETIME DEFAULT CURRENT_TIMESTAMP,
+    fecha_final DATETIME,
 
-    estado_del_intercambio ENUM('espera', 'completado', 'cancelado') DEFAULT 'espera'
+    estado_del_intercambio ENUM('espera', 'completado', 'cancelado') DEFAULT 'espera',
 
-    FOREIGN KEY (id_libro_publicado) REFERENCES libros(id),
+    FOREIGN KEY (id_libro_solicitado) REFERENCES libros(id),
     FOREIGN KEY (id_libro_ofecido) REFERENCES libros(id),
-    FOREIGN KEY (id_usuario_publicado) REFERENCES datos_usuario(id),
+    FOREIGN KEY (id_usuario_solicitado) REFERENCES datos_usuario(id),
     FOREIGN KEY (id_usuario_ofrecido) REFERENCES datos_usuario(id)
 );
 

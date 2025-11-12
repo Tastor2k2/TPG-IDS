@@ -48,4 +48,6 @@ def cargar_libro():
 
     return jsonify({"message": "Libro cargado correctamente", "libro_id": libro_id}), 201
     
-    
+    # solicitante debe ser propietario del libro ofrecido (validar en cargar libros)
+        # if libro_ofrecido["usuario_id"] != solicitante_id:
+        #     return jsonify({"error": "El usuario solicitante no es propietario del libro ofrecido"}), 403
