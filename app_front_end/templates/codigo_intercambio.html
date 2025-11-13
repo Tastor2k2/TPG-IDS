@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block titulo %}{{ titulo }}{% endblock %}
+
+{% block body %}
+
+<form id="form-codigo" action="{{ url_for('codigo') }}" method="post">
+
+    <div id="Fcodigo">
+        <label for="fnombre"><strong>Ingresa el codigo de intercambio:</strong></label>
+        <input type="text" id="codigo" name="codigo" required>
+    </div>
+    <button id="bt-codigo" type="submit">Enviar</button>
+</form>
+
+{% endblock %}
