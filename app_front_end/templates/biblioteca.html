@@ -4,48 +4,50 @@
 
 {% block body %}
 
-{% for materia in materias %}
+{% for tematica in tematicas %}
 <section class="position-relative padding-small">
   <div class="container">
     <div class="section-title d-md-flex justify-content-between align-items-center mb-4">
-      <h3 class="d-flex align-items-center">{{ materia.titulo | upper }}</h3>
+      <h3 class="d-flex align-items-center">{{ tematica.titulo | upper }}</h3>
     </div>
 
-    <!-- flechas -->
-    <div class="product-slider-button-prev {{ materia.id }}-prev">
+    <!-- Flechas de navegación -->
+    <div class="product-slider-button-prev {{ tematica.id }}-prev">
       <svg width="60" height="60">
         <use xlink:href="#alt-arrow-left-outline"></use>
       </svg>
     </div>
-    <div class="product-slider-button-next {{ materia.id }}-next">
+    <div class="product-slider-button-next {{ tematica.id }}-next">
       <svg width="60" height="60">
         <use xlink:href="#alt-arrow-right-outline"></use>
       </svg>
     </div>
 
-    <!-- carrousel -->
-    <div class="swiper product-swiper {{ materia.id }}-swiper">
+    <!-- Carrusel Swiper -->
+    <div class="swiper product-swiper {{ tematica.id }}-swiper">
       <div class="swiper-wrapper">
-        {% for libro in materia.libros %}
+        {% for publicacion in tematica.publicaciones %}
         <div class="swiper-slide">
-          <div class="card position-relative p-4 border rounded-3">
-            <img src="{{ url_for('static', filename=libro.imagen) }}"
-                 class="img-fluid shadow-sm" alt="{{ libro.titulo }}">
-            <h6 class="mt-4 mb-0 fw-bold">{{ libro.titulo }}</h6>
-            <div class="review-content d-flex">
-              <p class="my-2 me-2 fs-6 text-black-50">{{ libro.autor }}</p>
+          <div class="card position-relative p-4 border rounded-3 shadow-sm">
+            <img src="{{ url_for('static', filename=publicacion.imagen) }}"
+                 class="img-fluid shadow-sm" alt="{{ publicacion.titulo }}">
+            <h6 class="mt-4 mb-0 fw-bold">{{ publicacion.titulo }}</h6>
+            <div class="review-content d-flex flex-column">
+              <p class="my-2 fs-6 text-black-50">{{ publicacion.autor }}</p>
+              <p class="text-muted small mb-0">
+                Publicado por <strong>{{ publicacion.usuario }}</strong> ({{ publicacion.facultad }})
+              </p>
             </div>
 
-            <!-- wishlist y carrito -->
-            <div class="card-concern position-absolute start-0 end-0 d-flex gap-2">
-              <a href="{{ url_for('formulario_intercambio', libro=libro.titulo|urlencode) }}" class="btn btn-dark" 
-              data-bs-toggle="tooltip" data-bs-placement="top" title="Solicitar intercambio">
+            <!-- Botones: intercambio + favoritos -->
+            <div class="card-concern position-absolute start-0 end-0 d-flex gap-2 justify-content-center">
+              <a href="{{ url_for('formulario_intercambio', 
+                    libro=publicacion.titulo, 
+                    propietario=publicacion.usuario) }}"
+                    class="btn btn-dark" title="Solicitar intercambio">
                 <svg class="cart"><use xlink:href="#cart"></use></svg>
               </a>
 
-              <a href="{{ url_for('index') }}" class="btn btn-dark">
-                <svg class="wishlist"><use xlink:href="#heart"></use></svg>
-              </a>
             </div>
           </div>
         </div>
