@@ -67,9 +67,9 @@ def registrar_usuario():
 
     #si no existe ni el nombre ni el mail ni el dni ni el legajo y completo todos los campos:
     cursor.execute("""
-        INSTERT INTO datos_usuario (nombre_usuario, email_usuario, contraseña_usuario, telefono_usuario, direccion_usuario)
-        VALUES (%s, %s, %s, %i, %s)
-    """), (nombre_usuario, email_usuario, contraseña_usuario, telefono_usuario, direccion_usuario)
+        INSTERT INTO datos_usuario (nombre_usuario, email_usuario, contraseña_usuario, telefono_usuario, direccion_usuario, dni_usuario, legajo_usuario)
+        VALUES (%s, %s, %s, %i, %s, %i, %i)
+    """), (nombre_usuario, email_usuario, contraseña_usuario, telefono_usuario, direccion_usuario, dni_usuario, legajo_usuario)
 
     conn.commit()
     cursor.close()
@@ -102,5 +102,5 @@ def login_usuario():
             "mensaje": "Login exitoso",
             "usuario": {"nombre": usuario["nombre_usuario"],"email": usuario["email_usuario"]}}), 200
     else:
-        return jsonify({"error": "EMAIL O CONTRASELA INCORRECTOS"}), 401
+        return jsonify({"error": "EMAIL O CONTRASEÑA INCORRECTOS"}), 401
     
