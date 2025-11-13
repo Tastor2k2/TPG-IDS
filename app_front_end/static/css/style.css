@@ -1433,3 +1433,9 @@ html, body {
     margin: 0.5rem 1rem;
 }
 
+.featured,
+.latest-items,
+.best-reviewed,
+.on-sale {
+  background-color: #141f6328;
+}
