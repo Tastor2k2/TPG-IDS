@@ -20,10 +20,12 @@ CREATE TABLE IF NOT EXISTS libros (
     codigo_isbn INT (100),
     tematica VARCHAR (100),
     
-    fecha_publicacion DATETIME DEFAULT CURRENT_TIMESTAMP,
+    fecha_carga DATETIME DEFAULT CURRENT_TIMESTAMP,
 
     estado_del_libro ENUM('disponible', 'intercambiado', 'pausa') DEFAULT 'disponible',
 
+    es_favorito BOOLEAN DEFAULT FALSE,
+    
     FOREIGN KEY (usuario_id) REFERENCES datos_usuario(id)
 );
 
