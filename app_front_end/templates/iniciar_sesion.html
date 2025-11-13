@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block titulo %}{{ titulo }}{% endblock %}
+
+{% block body %}
+<h1>Iniciar Sesión</h1>
+    <form action="{{ url_for('iniciar_sesion') }}" method="post">
+        <label for="mail">E-Mail</label><br>
+        <input type="email" id="mail" name="email_usuario" class="form-control" placeholder="📧 E-Mail"><br>
+        <label for="password">Contraseña</label><br>
+        <input type="password" id="password" name="contrasena_usuario" class="form-control" placeholder="🔒 Contraseña"><br>
+        <button type="submit" id="envio" class="btn-formulario">Iniciar Sesión</button>
+    </form>
+<p>¿Aún no tenés un cuenta? ¡Create una haciendo click <a href="{{ url_for('registrarse') }}">acá!</a></p>
+{% endblock %}
