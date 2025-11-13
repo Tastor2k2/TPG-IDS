@@ -46,6 +46,3 @@ CREATE TABLE IF NOT EXISTS intercambio_libro(
     FOREIGN KEY (id_usuario_solicitado) REFERENCES datos_usuario(id),
     FOREIGN KEY (id_usuario_ofrecido) REFERENCES datos_usuario(id)
 );
-
-
-

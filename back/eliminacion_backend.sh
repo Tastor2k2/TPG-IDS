@@ -157,20 +157,14 @@ if existeSrc; then
 fi
 
 desinstalarPythonDotenv
-
 desinstalarMysqlConnector
-
 desinstalarFlaskCors
-
 desinstalarFlaskMail
-
 desinstalarFlask
 
 desactivarEntorno
 
 eliminarVenv
-
 eliminarCache
-
 eliminarCarpetas
 

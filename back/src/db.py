@@ -17,3 +17,4 @@ def get_connection():
     except Error as e:  
         print ("No se puedo conectar a MySql", e)
         return None
+    

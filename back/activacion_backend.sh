@@ -163,21 +163,14 @@ crearEnv
 cd src
 
 instalarPython3
-
 instalarPip3
-
 instalarPython312Venv
 
 crearVenv
-
 ActivacionEntornoVirtual
 
 instalarFlask
-
 instalarFlaskMail
-
 instalarFlaskCors
-
 instalarMysqlConnector
-
 instalarDotenv
