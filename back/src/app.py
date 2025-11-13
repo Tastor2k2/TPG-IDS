@@ -11,3 +11,4 @@ app.register_blueprint(datos_usuarios_bp, url_prefix="/datos")
 
 if __name__ == "__main__":
     app.run(port=6000, debug=True)
+    
