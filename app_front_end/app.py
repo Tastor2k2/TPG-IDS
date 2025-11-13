@@ -15,8 +15,8 @@ mail = Mail(app)
 
 @app.route('/')
 def index():
-    title="¡Bienvenido!"
-    return render_template('index.html',titulo=title)
+    
+    return render_template("index.html")
 
 @app.route('/sobre_nosotros')
 def sobre_nosotros():

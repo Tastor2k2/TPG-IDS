@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block titulo %}Usuarios con este libro{% endblock %}
+{% block body %}
+<div class="container my-4">
+    <h2>Usuarios que tienen "{{ titulo_libro }}"</h2>
+
+    <ul>
+        {% for u in usuarios %}
+        <li>{{ u.nombre }} – {{ u.facultad }}</li>
+        {% endfor %}
+    </ul>
+
+</div>
+{% endblock %}

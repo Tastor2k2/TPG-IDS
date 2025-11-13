@@ -11,7 +11,7 @@
       <h3 class="d-flex align-items-center">{{ tematica.titulo | upper }}</h3>
     </div>
 
-    <!-- Flechas de navegación -->
+
     <div class="product-slider-button-prev {{ tematica.id }}-prev">
       <svg width="60" height="60">
         <use xlink:href="#alt-arrow-left-outline"></use>
@@ -23,7 +23,7 @@
       </svg>
     </div>
 
-    <!-- Carrusel Swiper -->
+   
     <div class="swiper product-swiper {{ tematica.id }}-swiper">
       <div class="swiper-wrapper">
         {% for publicacion in tematica.publicaciones %}
@@ -39,13 +39,18 @@
               </p>
             </div>
 
-            <!-- Botones: intercambio + favoritos -->
+            <!-- Botones: intercambio + favoritos (redireccion temporal) -->
             <div class="card-concern position-absolute start-0 end-0 d-flex gap-2 justify-content-center">
               <a href="{{ url_for('formulario_intercambio', 
                     libro=publicacion.titulo, 
                     propietario=publicacion.usuario) }}"
                     class="btn btn-dark" title="Solicitar intercambio">
                 <svg class="cart"><use xlink:href="#cart"></use></svg>
+              </a>
+              <a href="{{ url_for('index') }}" 
+                class="btn btn-dark" 
+                title="Agregar a favoritos">
+                <svg class="wishlist"><use xlink:href="#heart"></use></svg>
               </a>
 
             </div>

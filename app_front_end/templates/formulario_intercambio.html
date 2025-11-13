@@ -1,40 +1,39 @@
 {% extends "base.html" %}
 
-{% block titulo %}{{ titulo }}{% endblock %}
+{% block titulo %}Intercambiar libro{% endblock %}
 
 {% block body %}
-<h2 id="titulo-form">Solicitar un intercambio de libros</h2>
-
+<h2 id="titulo-form">SOLICITAR UN INTERCAMBIO</h2>
 
 <form id="form-intercambio" action="{{ url_for('formulario_intercambio') }}" method="post">
 
   <div class="Fintercambio">
-    <label for="fnombre"><strong>Nombre:</strong></label>
-    <input type="text" id="nombre-solicitante" name="nombre-solicitante" placeholder="Nombre" required>
+    <label><strong>Nombre:</strong></label>
+    <input id="nombre-solicitante" type="text" name="nombre-solicitante" required>
   </div>
 
   <div class="Fintercambio">
-    <label for="fapellido"><strong>Apellido:</strong></label>
-    <input type="text" id="apellido-solicitante" name="apellido-solicitante" placeholder="Apellido" required>
+    <label><strong>Apellido:</strong></label>
+    <input id="apellido-solicitante" type="text" name="apellido-solicitante" required>
   </div>
 
   <div class="Fintercambio">
-    <label for="fmail"><strong>Mail académico:</strong></label>
-    <input type="email" id="mail-solicitante" name="mail-solicitante" placeholder="Mail académico" required>
+    <label><strong>Mail académico:</strong></label>
+    <input id="mail-solicitante" type="email" name="mail-solicitante" required>
   </div>
-  
-  <input type="hidden" name="libro-solicitar" value="{{ libro_seleccionado }}">
-  
-  <input type="hidden" name="mail-propietario" value="{{ propietario }}">
 
+  <!-- Libro que quiero pedir -->
+  <input type="hidden" id="libro-solicitar" name="libro-solicitar" value="{{ libro_seleccionado }}">
 
+  <!-- Propietario del libro -->
+  <input type="hidden" name="propietario" value="{{ propietario }}">
 
   <div class="Fintercambio">
-    <label for="flibro"><strong>Libro a intercambiar:</strong></label>
-    <input type="text" id="libro-intercambiar" name="libro-intercambiar" placeholder="Libro a intercambiar" required>
+    <label><strong>Libro que ofrezco:</strong></label>
+    <input id="libro-intercambiar" type="text" name="libro-intercambiar" required>
   </div>
 
-  <button id="send-bt" type="submit">Enviar</button>
+  <button id="send-bt" type="submit">ENVIAR</button>
 
 </form>
 {% endblock %}
