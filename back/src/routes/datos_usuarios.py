@@ -64,8 +64,17 @@ def registrar_usuario():
         conn.close()
         return jsonify({"error": "EL LEGAJO YA EXISTE"}), 400
     
+    #chequeamos si el telefono existe:
+    cursor.execute ("SELECT * FROM datos_usuario WHERE telefono_usuario = %i", (telefono_usuario))
+    existe_telefono = cursor.fetchone()
 
-    #si no existe ni el nombre ni el mail ni el dni ni el legajo y completo todos los campos:
+    #si existe:
+    if existe_telefono:
+        cursor.close()
+        conn.close()
+        return jsonify({"error": "EL NUMERO DE TELEFONO YA EXISTE"})
+
+    #si no existe ni el nombre ni el mail ni el dni ni el legajo ni el numero de telefono y completo todos los campos:
     cursor.execute("""
         INSTERT INTO datos_usuario (nombre_usuario, email_usuario, contraseña_usuario, telefono_usuario, direccion_usuario, dni_usuario, legajo_usuario)
         VALUES (%s, %s, %s, %i, %s, %i, %i)
@@ -78,19 +87,20 @@ def registrar_usuario():
 @datos_usuarios_bp.route('/login', methods=['POST']) #nose como esta puesto en el front el form, sino habria que cambiar login y el metodo
 def login_usuario():
     data = request.get_json()
-    email_usuario = data.get('email')
+    email_nombre_usuario = data.get('email_nombre_usuario')
     contraseña_usuario = data.get('contraseña')
+
 
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
 
     #chequeamos si el usuario completo todos los campos:
-    if not email_usuario or not contraseña_usuario:
+    if not email_nombre_usuario or not contraseña_usuario:
         return jsonify({"error": "Faltan campos obligatorios"}), 400
 
 
     #chequeamos si existe el usuario:
-    cursor.execute("SELECT * FROM datos_usuario WHERE email_usuario = %s AND contraseña_usuario = %s", (email_usuario, contraseña_usuario,))
+    cursor.execute("SELECT * FROM datos_usuario WHERE (email_usuario = %s OR nombre_usuario = %s) AND contraseña_usuario = %s", (email_nombre_usuario, email_nombre_usuario, contraseña_usuario,))
     usuario = cursor.fetchone()
 
     cursor.close()
