@@ -24,6 +24,8 @@ CREATE TABLE IF NOT EXISTS libros (
 
     estado_del_libro ENUM('disponible', 'intercambiado', 'pausa') DEFAULT 'disponible',
 
+    es_favorito BOOLEAN DEFAULT FALSE,
+    
     FOREIGN KEY (usuario_id) REFERENCES datos_usuario(id)
 );
 
