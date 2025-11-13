@@ -6,7 +6,6 @@
 # source eliminacion_backend.sh
 
 eliminarCache() {
-    cd src
     if [[ -d "__pycache__" ]]; then
         echo ""
         echo "---------------------------Eliminando __pycache__---------------------------"
@@ -17,11 +16,9 @@ eliminarCache() {
         echo "---------------------------No existe __pycache__---------------------------"
         echo ""
     fi
-    cd ..
 }
 
 desactivarEntorno() {
-    cd src
     if [[ -z "$VIRTUAL_ENV" ]]; then # True si da cero, queriendo decir que no hay entorno virtual activo.
         echo ""
         echo "---------------------------No hay entorno activo---------------------------"
@@ -32,7 +29,6 @@ desactivarEntorno() {
         echo ""
         deactivate
     fi
-    cd ..
 }
 
 desinstalarFlaskMail() {
@@ -75,7 +71,7 @@ desinstalarPythonDotenv() {
 }
 
 desinstalarFlaskCors() {
-    if pip list | grep Flask-Cors > /dev/null 2>&1 ; then
+    if pip list | grep flask-cors > /dev/null 2>&1 ; then
         echo ""
         echo "---------------------------Desinstalando Flask-Cors---------------------------"
         echo ""
@@ -114,7 +110,6 @@ eliminarEnv() {
 }
 
 eliminarVenv() {
-    cd src
     if [[ -d ".venv" ]]; then
         echo ""
         echo "---------------------------Eliminando .venv---------------------------"
@@ -125,12 +120,41 @@ eliminarVenv() {
         echo "---------------------------Carpeta .venv no estaba creada---------------------------"
         echo ""
     fi
-    cd ..
+}
+
+existeSrc() {
+    if [[ -d "src" ]]; then
+        return 0
+    fi
+    return 1
+}
+
+mensajeSrc() {
+    echo ""
+    echo "---------------------------No existe el directorio src---------------------------"
+    echo ""
 }
 
 eliminarCarpetas() {
-    rm -r src
+    if [[ "$(basename "$PWD")" = "src" ]]; then
+        cd ..
+    fi
+    if existeSrc; then
+        echo ""
+        echo "---------------------------Eliminando src y sub-carpetas---------------------------"
+        echo ""
+        
+        rm -r src
+    else
+        mensajeSrc
+    fi
 }
+
+eliminarEnv
+
+if existeSrc; then
+    cd src
+fi
 
 desinstalarPythonDotenv
 
@@ -143,8 +167,6 @@ desinstalarFlaskMail
 desinstalarFlask
 
 desactivarEntorno
-
-eliminarEnv
 
 eliminarVenv
 

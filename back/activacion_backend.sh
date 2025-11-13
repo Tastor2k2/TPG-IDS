@@ -12,7 +12,7 @@ instalarPython3() {
         echo ""
     else
         echo ""
-        echo "---------------------------Python3 se instalará---------------------------"
+        echo "---------------------------Instalando Python3---------------------------"
         echo ""
         sudo apt install python3
     fi
@@ -25,7 +25,7 @@ instalarPip3() {
         echo ""
     else
         echo ""
-        echo "---------------------------Pip3 se instalará---------------------------"
+        echo "---------------------------Instalando Pip3---------------------------"
         echo ""
         sudo apt install python3-pip
     fi
@@ -38,7 +38,7 @@ instalarFlaskMail() {
         echo ""
     else
         echo ""
-        echo "---------------------------Flask-Mail se instalará---------------------------"
+        echo "---------------------------Instalando Flask-Mail---------------------------"
         echo ""
         pip install Flask-Mail
     fi
@@ -53,14 +53,11 @@ crearVenv() {
         echo ""
         echo "---------------------------Creando .venv---------------------------"
         echo ""
-        cd src
         python3 -m venv .venv
-        cd ..
     fi
 }
 
 ActivacionEntornoVirtual() {
-    cd src
     if [[ -z "$VIRTUAL_ENV" ]]; then # True si da cero, queriendo decir que no hay entorno virtual activo.
         echo ""
         echo "---------------------------Se activará el entorno virtual---------------------------"
@@ -71,7 +68,6 @@ ActivacionEntornoVirtual() {
         echo "----------------Entorno virtual activado previamente en: $VIRTUAL_ENV----------------"
         echo ""
     fi
-    cd ..
 }
 
 crearEnv() {
@@ -104,7 +100,7 @@ instalarDotenv() {
         echo ""
     else
         echo ""
-        echo "---------------------------python-dotenv se instalará---------------------------"
+        echo "---------------------------Instalando python-dotenv---------------------------"
         echo ""
         pip install python-dotenv
     fi
@@ -137,7 +133,7 @@ instalarPython312Venv() {
 }
 
 instalarFlaskCors() {
-    if pip list | grep Flask-Cors > /dev/null 2>&1 ; then
+    if pip list | grep flask-cors > /dev/null 2>&1 ; then
         echo ""
         echo "---------------------------Flask-Cors ya estaba instalado---------------------------"
         echo ""
@@ -162,6 +158,10 @@ instalarMysqlConnector() {
     fi
 }
 
+crearEnv
+
+cd src
+
 instalarPython3
 
 instalarPip3
@@ -169,8 +169,6 @@ instalarPip3
 instalarPython312Venv
 
 crearVenv
-
-crearEnv
 
 ActivacionEntornoVirtual
 

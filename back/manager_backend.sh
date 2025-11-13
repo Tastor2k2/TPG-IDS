@@ -15,6 +15,7 @@ crearCarpetas() {
     cd routes
     touch carga_libros.py
     touch carga_usuarios.py
+    touch intercambio_libros.py
     cd ..
     cd ..
     echo "---------------------------Carpetas Creadas---------------------------"
