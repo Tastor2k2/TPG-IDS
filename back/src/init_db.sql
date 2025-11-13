@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS datos_usuarios;
-USE datos_usuarios;
+CREATE DATABASE IF NOT EXISTS libroxlibro_db;
+USE libroxlibro_db;
 
 CREATE TABLE IF NOT EXISTS datos_usuario (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -7,7 +7,9 @@ CREATE TABLE IF NOT EXISTS datos_usuario (
     email_usuario VARCHAR(100),
     contaseña_usuario VARCHAR(100),
     telefono_usuario INT(100),
-    direccion_usuario VARCHAR(100)
+    direccion_usuario VARCHAR(100),
+    dni_usuario INT (8),
+    legajo_usuario INT (6)
 );
 
 CREATE TABLE IF NOT EXISTS libros (
