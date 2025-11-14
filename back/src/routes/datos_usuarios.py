@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, session
 from src.db import get_connection
 
 datos_usuarios_bp  = Blueprint("datos_usuarios", __name__)
@@ -35,7 +35,7 @@ def registrar_usuario():
         return jsonify({"error": "EL EMAIL YA EXISTE"}), 400
     
     #chequeamos si existe el nombre de usuario:
-    cursor.execute("SELECT * FROM datos_usuario WHERE nomrbe_usuarrio = %s", (nombre_usuario,))
+    cursor.execute("SELECT * FROM datos_usuario WHERE nombre_usuario = %s", (nombre_usuario,))
     existe_nombre = cursor.fetchone()
 
     #si existe el nombre de usuario:
@@ -45,7 +45,7 @@ def registrar_usuario():
          return jsonify({"error": "EL NOMBRE DE USUARIO YA EXISTE"}), 400
     
     #chequeamos si el dni existe:
-    cursor.execute ("SELECT * FROM datos_usuario WHERE dni_usuario = %i", (dni_usuario,))
+    cursor.execute ("SELECT * FROM datos_usuario WHERE dni_usuario = %s", (dni_usuario,))
     existe_dni = cursor.fetchone()
 
     #si existe el dni:
@@ -55,7 +55,7 @@ def registrar_usuario():
         return jsonify({"error": "EL DNI YA EXISTE"}), 400
     
     #chequeamos si el legajo existe:
-    cursor.execute ("SELECT * FROM datos_usuario WHERE legajo_usuario = %i", (legajo_usuario,))
+    cursor.execute ("SELECT * FROM datos_usuario WHERE legajo_usuario = %s", (legajo_usuario,))
     existe_legajo = cursor.fetchone()
 
     #si existe:
@@ -65,7 +65,7 @@ def registrar_usuario():
         return jsonify({"error": "EL LEGAJO YA EXISTE"}), 400
     
     #chequeamos si el telefono existe:
-    cursor.execute ("SELECT * FROM datos_usuario WHERE telefono_usuario = %i", (telefono_usuario))
+    cursor.execute ("SELECT * FROM datos_usuario WHERE telefono_usuario = %s", (telefono_usuario,))
     existe_telefono = cursor.fetchone()
 
     #si existe:
@@ -76,9 +76,9 @@ def registrar_usuario():
 
     #si no existe ni el nombre ni el mail ni el dni ni el legajo ni el numero de telefono y completo todos los campos:
     cursor.execute("""
-        INSTERT INTO datos_usuario (nombre_usuario, email_usuario, contraseña_usuario, telefono_usuario, direccion_usuario, dni_usuario, legajo_usuario)
-        VALUES (%s, %s, %s, %i, %s, %i, %i)
-    """), (nombre_usuario, email_usuario, contraseña_usuario, telefono_usuario, direccion_usuario, dni_usuario, legajo_usuario)
+        INSERT INTO datos_usuario (nombre_usuario, email_usuario, contraseña_usuario, telefono_usuario, direccion_usuario, dni_usuario, legajo_usuario)
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
+    """, (nombre_usuario, email_usuario, contraseña_usuario, telefono_usuario, direccion_usuario, dni_usuario, legajo_usuario))
 
     conn.commit()
     cursor.close()
@@ -108,9 +108,19 @@ def login_usuario():
 
     #si el usuario existe:
     if usuario:
+        #guardamos sesion:
+        session["user_id"]=usuario["id"]
+        session["nombre"]=usuario["nombre_usuario"]
+        session["email"]=usuario["email_usuario"]
         return jsonify({
             "mensaje": "Login exitoso",
             "usuario": {"nombre": usuario["nombre_usuario"],"email": usuario["email_usuario"]}}), 200
     else:
         return jsonify({"error": "EMAIL O CONTRASEÑA INCORRECTOS"}), 401
+
+@datos_usuarios_bp.route('/logout', mothods=['POST'])
+def logout():
+    session.clear()
+    return jsonify({"mensaje": "Sesion cerrada"}), 200
+
     
