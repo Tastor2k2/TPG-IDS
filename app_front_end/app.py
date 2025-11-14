@@ -69,8 +69,9 @@ def registrarse():
     if request.method == 'POST':
         usuario = request.form.get('nombre_usuario')
         mail = request.form.get('email_registro')
+        mail_confirmacion = request.form.get('email_confirmacion')
         contrasena = request.form.get('contrasena_registro')
-        return redirect(url_for('index',user=usuario,email=mail,password=contrasena))
+        return redirect(url_for('index',user=usuario,email=mail,mail_conf=mail_confirmacion,password=contrasena))
     return render_template('registrarse.html',titulo=title)
 
 @app.route('/perfil')
