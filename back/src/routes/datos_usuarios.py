@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request, session
-from src.db import get_connection
+from db import get_connection
 
 datos_usuarios_bp  = Blueprint("datos_usuarios", __name__)
 
@@ -118,7 +118,7 @@ def login_usuario():
     else:
         return jsonify({"error": "EMAIL O CONTRASEÑA INCORRECTOS"}), 401
 
-@datos_usuarios_bp.route('/logout', mothods=['POST'])
+@datos_usuarios_bp.route('/logout', methods=['POST'])
 def logout():
     session.clear()
     return jsonify({"mensaje": "Sesion cerrada"}), 200

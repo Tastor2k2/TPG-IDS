@@ -1,13 +1,13 @@
 from flask import Blueprint, jsonify, request
-from src.db import get_connection
+from db import get_connection
 
-libros_bp = Blueprint("listar_libros", __name__)
+listar_libros_bp = Blueprint("listar_libros", __name__)
 
 """
 Devuelve todos los libros disponibles para intercambio (de todos los usuarios)
 Excluye los libros del propio usuario solicitante
 """
-@libros_bp.route('/libros', methods=['GET'])
+@listar_libros_bp.route('/libros', methods=['GET'])
 def listar_libros():
     """
     JSON de entrada: Query params opcionales
@@ -72,7 +72,7 @@ def listar_libros():
 """
 Devuelve detalles de un libro específico
 """
-@libros_bp.route('/libros/<int:libro_id>', methods=['GET'])
+@listar_libros_bp.route('/libros/<int:libro_id>', methods=['GET'])
 def obtener_libro(libro_id):
     """
     JSON de entrada: No requiere body (usa parámetro de URL)
