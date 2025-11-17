@@ -142,6 +142,24 @@ instalarPython312Venv() {
     fi
 }
 
+instalarMysqlConnector() {
+    if pip list | grep mysql > /dev/null 2>&1 ; then
+        echo ""
+        echo "---------------------------Mysql-Connector ya estaba instalado---------------------------"
+        echo ""
+    else
+        echo ""
+        echo "---------------------------Instalando Mysql-Connector---------------------------"
+        echo ""
+        pip install mysql-connector-python
+    fi
+}
+
+ejecutar() {
+    cd ..
+    python3 -m app_front_end.app
+}
+
 instalarPython3
 
 instalarPip3
@@ -159,3 +177,7 @@ instalarFlask
 instalarFlaskMail
 
 instalarDotenv
+
+instalarMysqlConnector
+
+ejecutar

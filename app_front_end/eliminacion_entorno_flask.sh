@@ -100,12 +100,27 @@ eliminarVenv() {
     fi
 }
 
+desinstalarMysqlConnector() {
+    if pip list | grep mysql > /dev/null 2>&1 ; then
+        echo ""
+        echo "---------------------------Desinstalando Mysql-Connector---------------------------"
+        echo ""
+        pip uninstall -y mysql-connector-python
+    else
+        echo ""
+        echo "---------------------------Mysql-Connector no estaba instalado---------------------------"
+        echo ""
+    fi
+}
+
 eliminarSubCarpetas() {
     rm -r "static"
     rm -r "templates"
     rm -r "app.py"
     # Seguir añadiendo carpetas a eliminar en caso de ser deseado...
 }
+
+desinstalarMysqlConnector
 
 desinstalarPythonDotenv
 
