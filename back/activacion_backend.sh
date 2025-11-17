@@ -161,11 +161,11 @@ instalarMysqlConnector() {
 instalarFlaskSession() {
     if pip list | grep flask_session > /dev/null 2>&1 ; then
         echo ""
-        echo "---------------------------Mysql-Connector ya estaba instalado---------------------------"
+        echo "---------------------------Flask-session ya estaba instalado---------------------------"
         echo ""
     else
         echo ""
-        echo "---------------------------Instalando Mysql-Connector---------------------------"
+        echo "---------------------------Instalando Flask-session---------------------------"
         echo ""
         pip install flask_session
     fi

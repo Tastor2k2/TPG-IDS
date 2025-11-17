@@ -122,6 +122,19 @@ eliminarVenv() {
     fi
 }
 
+desinstalarFlaskSession() {
+    if pip list | grep flask_session > /dev/null 2>&1 ; then
+        echo ""
+        echo "---------------------------Desinstalando Flask-Session---------------------------"
+        echo ""
+        pip uninstall -y flask_session
+    else
+        echo ""
+        echo "---------------------------Flask-Session no estaba instalado---------------------------"
+        echo ""
+    fi
+}
+
 existeSrc() {
     if [[ -d "src" ]]; then
         return 0
@@ -158,6 +171,7 @@ fi
 
 desinstalarPythonDotenv
 desinstalarMysqlConnector
+# desinstalarFlaskSession
 desinstalarFlaskCors
 desinstalarFlaskMail
 desinstalarFlask
