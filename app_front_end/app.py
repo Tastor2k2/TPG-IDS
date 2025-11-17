@@ -1,7 +1,10 @@
-from flask import Flask,render_template,redirect,url_for,request
+from flask import Flask,render_template,redirect,url_for,request,jsonify
 from flask_mail import Mail, Message
+from back.src.routes.registrarse import insertar_usuario
 
 app = Flask(__name__)
+
+API_URL = 'localhost:6000/'
 
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
@@ -71,6 +74,7 @@ def registrarse():
         mail = request.form.get('email_registro')
         mail_confirmacion = request.form.get('email_confirmacion')
         contrasena = request.form.get('contrasena_registro')
+        insertar_usuario(usuario,mail,contrasena)
         return redirect(url_for('index',user=usuario,email=mail,mail_conf=mail_confirmacion,password=contrasena))
     return render_template('registrarse.html',titulo=title)
 

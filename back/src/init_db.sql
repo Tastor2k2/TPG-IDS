@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS datos_usuario (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre_usuario VARCHAR(50),
     email_usuario VARCHAR(100),
-    contaseña_usuario VARCHAR(100),
+    contraseña_usuario VARCHAR(100),
     telefono_usuario INT(100),
     direccion_usuario VARCHAR(100),
     dni_usuario INT (8),
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS intercambio_libro(
     estado_del_intercambio ENUM('espera', 'completado', 'cancelado') DEFAULT 'espera',
 
     FOREIGN KEY (id_libro_solicitado) REFERENCES libros(id),
-    FOREIGN KEY (id_libro_ofecido) REFERENCES libros(id),
+    FOREIGN KEY (id_libro_ofrecido) REFERENCES libros(id),
     FOREIGN KEY (id_usuario_solicitado) REFERENCES datos_usuario(id),
     FOREIGN KEY (id_usuario_ofrecido) REFERENCES datos_usuario(id)
 );
