@@ -1,20 +1,11 @@
-from flask import Flask,render_template,redirect,url_for,request,jsonify
-from flask_mail import Mail, Message
+from flask import Flask,render_template,redirect,url_for,request,jsonify, session
 from back.src.routes.registrarse import insertar_usuario
-
+import requests
 app = Flask(__name__)
+BACK_URL = "http://127.0.0.1:6000"
 
 API_URL = 'localhost:6000/'
-
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USE_SSL'] = False
-app.config['MAIL_USERNAME'] = 'amigosporeldeporte123@gmail.com'
-app.config['MAIL_PASSWORD'] = 'btdu souy tqbh ljeb'
-app.config['MAIL_DEFAULT_SENDER'] = 'amigosporeldeporte123@gmail.com'
-
-mail = Mail(app)
+app.secret_key = "super_secret" 
 
 @app.route('/')
 def index():
@@ -97,90 +88,116 @@ def formulario_enviado():
 
 
 
-
-#traigo los libros del usuario desde la db
 @app.route('/biblioteca')
 def biblioteca():
-    tematicas = [
-        {
-            "id": "algebra",
-            "titulo": "Álgebra",
-            "publicaciones": [
-                {"titulo": "Álgebra de Baldor", "autor": "A. Baldor", "imagen": "images/algebra1.png",
-                 "usuario": "Ana López", "facultad": "UNSa"},
-                {"titulo": "Álgebra de Baldor", "autor": "A. Baldor", "imagen": "images/algebra1.png",
-                 "usuario": "Carlos Díaz", "facultad": "UBA"},
-                 {"titulo": "Álgebra de Baldor", "autor": "A. Baldor", "imagen": "images/algebra1.png",
-                 "usuario": "Ana Lópes", "facultad": "UNSa"},
-                 {"titulo": "Álgebra de Baldor", "autor": "A. Baldor", "imagen": "images/algebra1.png",
-                 "usuario": "Ana Lópen", "facultad": "UNSa"},
-                 {"titulo": "Álgebra de Baldor", "autor": "A. Baldor", "imagen": "images/algebra1.png",
-                 "usuario": "Ana Lópe", "facultad": "UNSa"},
-                 {"titulo": "Álgebra de Baldor", "autor": "A. Baldor", "imagen": "images/algebra1.png",
-                 "usuario": "Ana Ló", "facultad": "UNSa"},
-                 {"titulo": "Álgebra de Baldor", "autor": "A. Baldor", "imagen": "images/algebra1.png",
-                 "usuario": "Ana L", "facultad": "UNSa"},
-                 {"titulo": "Álgebra de Baldor", "autor": "A. Baldor", "imagen": "images/algebra1.png",
-                 "usuario": "Ana López", "facultad": "UNSa"},
-
-            ],
-        },
-        {
-            "id": "analisis",
-            "titulo": "Análisis Matemático",
-            "publicaciones": [
-                {"titulo": "Cálculo I", "autor": "James Stewart", "imagen": "images/analisis1.png",
-                 "usuario": "Lucía Torres", "facultad": "UTN"}
-            ],
-        },
-        {
-            "id": "ids",
-            "titulo": "Introducción al desarrollo de software",
-            "publicaciones": [
-                {"titulo": "HTML & CSS", "autor": "Thomas A. Powell", "imagen": "images/ids6.png",
-                 "usuario": "Nacho Gómez", "facultad": "UBA"}
-            ],
-        },
-    ]
+    try:
+        response = requests.get(f"{BACK_URL}/libros")
+        tematicas = response.json().get("tematicas", [])
+    except Exception:
+        tematicas = {}
     return render_template("biblioteca.html", tematicas=tematicas)
 
 
+@app.route("/mis_libros")
+def mis_libros():
+    usuario_id = session.get("user_id")
+    if not usuario_id:
+        return redirect(url_for("iniciar_sesion"))
+    response = requests.get(f"{BACK_URL}/mis-libros/{usuario_id}")
+    libros = response.json().get("libros", [])
+    return render_template("mis_libros.html", libros=libros)
 
-#mail para solicitar el intercambio (sujeto a cambio con la integracion de la db)
 
-@app.route('/solicitud_intercambio', methods=['GET', 'POST'])
-def formulario_intercambio():
-    #aca buscamos el libro en la db
-    if request.method == 'POST':
-        nombre_solicitante = request.form.get('nombre-solicitante')
-        apellido_solicitante = request.form.get('apellido-solicitante')
-        mail_solicitante = request.form.get('mail-solicitante')
-        libro_solicitar = request.form.get('libro-solicitar')
-        libro_intercambiar = request.form.get('libro-intercambiar')
-        propietario = request.form.get('propietario')
 
-        msg = Message(
-            subject="Nueva solicitud de intercambio",
-            recipients=[mail_solicitante, "provisorio@gmail.com"]  #uso los del propietario y solicitante (db)
-        )
 
-        msg.html = render_template("mail_intercambio.html",
-                                   nombre_solicitante=nombre_solicitante,
-                                   apellido_solicitante=apellido_solicitante,
-                                   mail_solicitante=mail_solicitante,
-                                   libro_solicitar=libro_solicitar,
-                                   libro_intercambiar=libro_intercambiar,
-                                   propietario=propietario)
-        mail.send(msg)
-        return redirect(url_for('biblioteca'))
+@app.route("/formulario_intercambio/<int:id_libro_solicitado>/<int:id_usuario_solicitado>")
+def formulario_intercambio(id_libro_solicitado, id_usuario_solicitado):
+    usuario_id = session.get("user_id")
+    if not usuario_id:
+        return redirect(url_for("iniciar_sesion"))
+    response = requests.get(f"{BACK_URL}/mis-libros/{usuario_id}")
+    mis_libros = response.json().get("libros", [])
+    return render_template(
+        "formulario_intercambio.html",
+        id_libro_solicitado=id_libro_solicitado,
+        id_usuario_solicitado=id_usuario_solicitado,
+        mis_libros=mis_libros
+    )
 
+
+@app.route("/enviar_intercambio", methods=["POST"])
+def enviar_intercambio():
+    usuario_id = session.get("user_id")
+    data = {
+        "id_libro_solicitado": request.form["id_libro_solicitado"],
+        "id_libro_ofrecido": request.form["id_libro_ofrecido"],
+        "id_usuario_ofrecido": usuario_id,
+        "id_usuario_solicitado": request.form["id_usuario_solicitado"],
+    }
+    response = requests.post(f"{BACK_URL}/solicitar_intercambio", json=data)
+    if response.status_code == 201:
+        return render_template("formulario_enviado.html")
     else:
-        libro_solicitar = request.args.get('libro', '')
-        propietario = request.args.get('propietario', '')
-        return render_template('formulario_intercambio.html',
-                               tematicas=[],
-                               libro_seleccionado=libro_solicitar,
-                               propietario=propietario)
+        return f"Error al enviar solicitud: {response.text}", 400
+    
+
+@app.route("/cargar_libro")
+def cargar_libro():
+    if "user_id" not in session:
+        return redirect(url_for("iniciar_sesion"))
+    return render_template("cargar_libro.html")
+
+
+@app.route("/enviar_carga_libro", methods=["POST"])
+def enviar_carga_libro():
+    usuario_id = session.get("user_id")
+    if not usuario_id:
+        return redirect(url_for("iniciar_sesion"))
+    data = {
+        "titulo": request.form["titulo"],
+        "autor": request.form["autor"],
+        "codigo_isbn": request.form["codigo_isbn"],
+        "editorial": request.form["editorial"],
+        "tematica": request.form["tematica"],
+        "usuario_id": usuario_id,
+        "es_favorito": False
+    }
+    response = requests.post(f"{BACK_URL}/cargar", json=data)
+    if response.status_code == 201:
+        return redirect(url_for("mis_libros"))
+    return f"Error al cargar libro: {response.text}", 400
+
+
+@app.route("/favorito/<int:libro_id>", methods=["POST"])
+def añadir_favorito(libro_id):
+    usuario_id = session.get("user_id")
+    if not usuario_id:
+        return redirect(url_for("iniciar_sesion"))
+    libro = requests.get(f"{BACK_URL}/mis-libros/{usuario_id}").json()
+    libro_actual = None
+    for l in libro["libros"]:
+        if l["id"] == libro_id:
+            libro_actual = l
+        break
+    if not libro_actual:
+        return "Libro no encontrado", 404
+    nuevo_estado = not libro_actual["es_favorito"]
+    data = {
+        "usuario_id": usuario_id,
+        "es_favorito": nuevo_estado
+    }
+    requests.put(f"{BACK_URL}/marcar-favorito/{libro_id}", json=data)
+    return redirect(url_for("mis_libros"))
+
+
+@app.route("/eliminar_libro/<int:libro_id>", methods=["POST"])
+def eliminar_libro(libro_id):
+    usuario_id = session.get("user_id")
+    if not usuario_id:
+        return redirect(url_for("iniciar_sesion"))
+    data = {"usuario_id": usuario_id}
+    requests.delete(f"{BACK_URL}/eliminar/{libro_id}", json=data)
+    return redirect(url_for("mis_libros"))
 
 if __name__ == "__main__":
     app.run("localhost", port="5000",debug=True)

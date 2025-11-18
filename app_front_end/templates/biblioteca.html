@@ -4,6 +4,7 @@
 
 {% block body %}
 
+
 {% for tematica in tematicas %}
 <section class="position-relative padding-small">
   <div class="container">
@@ -29,22 +30,21 @@
         {% for publicacion in tematica.publicaciones %}
         <div class="swiper-slide">
           <div class="card position-relative p-4 border rounded-3 shadow-sm">
-            <img src="{{ url_for('static', filename=publicacion.imagen) }}"
-                 class="img-fluid shadow-sm" alt="{{ publicacion.titulo }}">
+            <img src="{{ publicacion.imagen }}" class="img-fluid shadow-sm" alt="{{ publicacion.titulo }}">
             <h6 class="mt-4 mb-0 fw-bold">{{ publicacion.titulo }}</h6>
             <div class="review-content d-flex flex-column">
               <p class="my-2 fs-6 text-black-50">{{ publicacion.autor }}</p>
               <p class="text-muted small mb-0">
-                Publicado por <strong>{{ publicacion.usuario }}</strong> ({{ publicacion.facultad }})
+                Publicado por <strong>{{ publicacion.usuario_nombre }}</strong>
               </p>
             </div>
 
             <!-- Botones: intercambio + favoritos (redireccion temporal) -->
             <div class="card-concern position-absolute start-0 end-0 d-flex gap-2 justify-content-center">
               <a href="{{ url_for('formulario_intercambio', 
-                    libro=publicacion.titulo, 
-                    propietario=publicacion.usuario) }}"
-                    class="btn btn-dark" title="Solicitar intercambio">
+                    id_libro_solicitado=publicacion.id,
+                    id_usuario_solicitado=publicacion.usuario_id) }}"
+                 class="btn btn-dark" title="Solicitar intercambio">
                 <svg class="cart"><use xlink:href="#cart"></use></svg>
               </a>
               <a href="{{ url_for('index') }}" 
