@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request
 from db import get_connection
+from funciones_utils import validar_sesion
 
 carga_libros_bp = Blueprint("carga_libros", __name__)
 
@@ -8,6 +9,8 @@ carga un libro en la db del usuario
 """
 @carga_libros_bp.route('/cargar', methods=['POST'])
 def cargar_libro():
+    check = validar_sesion()
+    if check: return check
     """
     JSON de entrada esperado:
     {
@@ -44,6 +47,8 @@ def cargar_libro():
     editorial = data.get('editorial')
     tematica = data.get('tematica')
     es_favorito = data.get('es_favorito', False)
+
+    
 
     if not titulo or not autor or not codigo_isbn or not usuario_id or not editorial or not tematica or es_favorito is None:
         return jsonify({

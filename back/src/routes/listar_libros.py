@@ -1,5 +1,7 @@
 from flask import Blueprint, jsonify, request
 from db import get_connection
+from funciones_utils import validar_sesion
+
 
 listar_libros_bp = Blueprint("listar_libros", __name__)
 
@@ -9,6 +11,8 @@ Excluye los libros del propio usuario solicitante
 """
 @listar_libros_bp.route('/libros', methods=['GET'])
 def listar_libros():
+    check = validar_sesion()
+    if check: return check
     """
     JSON de entrada: Query params opcionales
     URL: /libros?usuario_id=1 (opcional, para excluir libros propios)
@@ -74,6 +78,8 @@ Devuelve detalles de un libro específico
 """
 @listar_libros_bp.route('/libros/<int:libro_id>', methods=['GET'])
 def obtener_libro(libro_id):
+    check = validar_sesion()
+    if check: return check
     """
     JSON de entrada: No requiere body (usa parámetro de URL)
     URL: /libros/5

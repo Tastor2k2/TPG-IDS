@@ -83,7 +83,8 @@ def registrar_usuario():
     conn.commit()
     cursor.close()
     conn.close()
-    
+
+
 @datos_usuarios_bp.route('/login', methods=['POST']) #nose como esta puesto en el front el form, sino habria que cambiar login y el metodo
 def login_usuario():
     data = request.get_json()

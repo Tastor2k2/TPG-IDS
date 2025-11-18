@@ -3,12 +3,8 @@
 
 .env
 **/.env
-<<<<<<< HEAD
 
 __pycache__/
 **/__pycache__/
 
 *.pyc
-=======
-*.pyc.DS_Store
->>>>>>> integración-del-front
