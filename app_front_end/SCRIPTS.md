@@ -1,4 +1,4 @@
-# 🎩 Scripts de bash 🎩
+# 🎩 Scripts de bash del front end 🎩
 
 Se desarrollaron 3 scripts encargados de manejar la creacion, activación y eliminacion de las carpetas requeridas para el entorno virtual del lado del front.
 
@@ -39,6 +39,16 @@ Si no hay nada preparado para activar el entorno, se realizan estos pasos en el 
 - Instala `Flask-Mail`
 
 - Instala `python-dotenv` (Para manejar el archivo .env)
+
+- Instala `mysql-connector-python` (Para conectarse con la base de datos)
+
+Adicionalmente el script también __ejecutará el entorno virtual mediante el comando:__
+
+```shell
+python3 -m app_front_end.app
+```
+
+Y lo ejecuta desde la carpeta `tpg`.
 
 ## ⚠️ eliminacion_entorno_flask.sh ⚠️
 

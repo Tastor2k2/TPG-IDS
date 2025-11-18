@@ -2,12 +2,8 @@
 
 # TODOS LOS CHEQUEOS DE INSTALACION SE OCULTAN DE LA SALIDA DE LA TERMINAL, PARA QUE NO MUEVA LOS MENSAJES DE CONFIRMACION.
 
-# Ejecutar Para eliminar todo lo relacionado al entorno de flask:
-# source eliminacion_entorno_flask.sh nombre_carpeta
-
-# PROJECT_FOLDER_NAME=$1
-
-# cd $PROJECT_FOLDER_NAME
+# Ejecutar Para eliminar todo lo relacionado al backend:
+# source eliminacion_backend.sh
 
 eliminarCache() {
     if [[ -d "__pycache__" ]]; then
@@ -69,7 +65,33 @@ desinstalarPythonDotenv() {
         pip uninstall -y python-dotenv
     else
         echo ""
-        echo "---------------------------Python-dotenv ya estaba instalado---------------------------"
+        echo "---------------------------Python-dotenv no estaba instalado---------------------------"
+        echo ""
+    fi
+}
+
+desinstalarFlaskCors() {
+    if pip list | grep flask-cors > /dev/null 2>&1 ; then
+        echo ""
+        echo "---------------------------Desinstalando Flask-Cors---------------------------"
+        echo ""
+        pip uninstall -y flask-cors
+    else
+        echo ""
+        echo "---------------------------Flask-Cors no estaba instalado---------------------------"
+        echo ""
+    fi
+}
+
+desinstalarMysqlConnector() {
+    if pip list | grep mysql > /dev/null 2>&1 ; then
+        echo ""
+        echo "---------------------------Desinstalando Mysql-Connector---------------------------"
+        echo ""
+        pip uninstall -y mysql-connector-python
+    else
+        echo ""
+        echo "---------------------------Mysql-Connector no estaba instalado---------------------------"
         echo ""
     fi
 }
@@ -100,42 +122,63 @@ eliminarVenv() {
     fi
 }
 
-desinstalarMysqlConnector() {
-    if pip list | grep mysql > /dev/null 2>&1 ; then
+desinstalarFlaskSession() {
+    if pip list | grep flask_session > /dev/null 2>&1 ; then
         echo ""
-        echo "---------------------------Desinstalando Mysql-Connector---------------------------"
+        echo "---------------------------Desinstalando Flask-Session---------------------------"
         echo ""
-        pip uninstall -y mysql-connector-python
+        pip uninstall -y flask_session
     else
         echo ""
-        echo "---------------------------Mysql-Connector no estaba instalado---------------------------"
+        echo "---------------------------Flask-Session no estaba instalado---------------------------"
         echo ""
     fi
 }
 
-eliminarSubCarpetas() {
-    rm -r "static"
-    rm -r "templates"
-    rm -r "app.py"
-    # Seguir añadiendo carpetas a eliminar en caso de ser deseado...
+existeSrc() {
+    if [[ -d "src" ]]; then
+        return 0
+    fi
+    return 1
 }
 
-desinstalarMysqlConnector
+mensajeSrc() {
+    echo ""
+    echo "---------------------------No existe el directorio src---------------------------"
+    echo ""
+}
+
+eliminarCarpetas() {
+    if [[ "$(basename "$PWD")" = "src" ]]; then
+        cd ..
+    fi
+    if existeSrc; then
+        echo ""
+        echo "---------------------------Eliminando src y sub-carpetas---------------------------"
+        echo ""
+        
+        rm -r src
+    else
+        mensajeSrc
+    fi
+}
+
+eliminarEnv
+
+if existeSrc; then
+    cd src
+fi
 
 desinstalarPythonDotenv
-
+desinstalarMysqlConnector
+# desinstalarFlaskSession
+desinstalarFlaskCors
 desinstalarFlaskMail
-
 desinstalarFlask
 
 desactivarEntorno
 
-eliminarEnv
-
 eliminarVenv
-
 eliminarCache
+eliminarCarpetas
 
-eliminarSubCarpetas
-
-# cd ..

@@ -4,19 +4,82 @@
 
 {% block body %}
 <section>
-    <h1>Funcionamiento</h1>
-    <p>
-        El sistema se basa en un modelo de intercambio presencial administrado a través de la biblioteca de la facultad. Para participar, el usuario debe registrarse en la plataforma y contar con una cuenta activa.
-    </p>
-    <p>
-        Una vez registrado, el estudiante puede dejar un libro o material bibliográfico que ya no necesite en la biblioteca. Luego, debe informar en la plataforma que realizó la entrega, lo que habilita su cuenta para retirar otro libro disponible.
-    </p>
-    <p>
-        A partir de ese momento, el usuario dispone de un plazo de 48 horas para acercarse nuevamente a la biblioteca y retirar un material de su interés. 
-    </p>
-    <h2>¿Para qué sirve?</h2>
-    <p>
-        Este sistema promueve el intercambio responsable y solidario de materiales, buscando que todos los estudiantes puedan acceder a los recursos que necesitan sin costo y de manera equitativa.
-    </p>
+    <div class="pag">
+        <h1 class="titulo-pag">Funcionamiento</h1>
+        <p>
+            Nuestra plataforma permite a los usuarios intercambiar libros de manera simple y justa. 
+            Para utilizarla, primero es necesario registrarse y crear una cuenta. Sin iniciar sesión, 
+            no se puede acceder a ninguna función del sitio.
+        </p>
+        <p>
+            Una vez que el usuario inicia sesión, puede acceder a la biblioteca virtual, donde se muestran 
+            todos los libros disponibles para intercambio. Para poder pedir uno, primero debe publicar un libro propio. 
+            Al hacerlo, completa un formulario con los datos del ejemplar: título, autor, descripción e imagen de portada.
+        </p>
+        <p>
+            Después de subir su libro, el usuario puede explorar los títulos disponibles y elegir aquel que le interese. 
+            Al presionar la opción <strong>“Intercambiar”</strong>, se le mostrará la lista de libros que él mismo publicó, 
+            y podrá seleccionar cuál quiere ofrecer a cambio.
+        </p>
+    </div>
+
+    <div class="pag">
+        <h2 class="titulo-pag">¿Qué pasa después?</h2>
+        <p>
+            Una vez enviada la solicitud de intercambio, la publicación queda en pausa durante 48 horas. 
+            En ese tiempo, el otro usuario puede aceptar o rechazar la propuesta. 
+            Si la rechaza, ambos libros vuelven a estar disponibles. Si la acepta, se envía un correo a ambas partes 
+            con un código o QR que deberán presentar en la biblioteca de la facultad para concretar el intercambio.
+        </p>
+        <p>
+            Cuando los usuarios entregan y retiran los libros en la biblioteca, el QR es escaneado para confirmar 
+            la operación y los ejemplares se eliminan de la página. Si el plazo vence y alguno no cumple con la entrega, 
+            el intercambio se cancela y las publicaciones vuelven a estar activas.
+        </p>
+    </div>
+
+    <div class="pag">
+        <h2 class="titulo-pag">¿Para qué sirve?</h2>
+        <p>
+            Este sistema promueve el intercambio responsable y solidario de materiales, buscando que todos los estudiantes puedan acceder a los recursos que necesitan sin costo y de manera equitativa.
+        </p>
+    </div>
+
+<section id="items">
+    <h2 class="titulo-pag">Pasos a seguir:</h2>
+
+    <div class="pasos">
+
+        <div class="paso-box">
+            <h3>📗 Paso 1:</h3>
+            <p>Registrate e iniciá sesión para acceder a tu perfil y comenzar a usar la plataforma.</p>
+        </div>
+
+        <div class="paso-box">
+            <h3>🏷️ Paso 2:</h3>
+            <p>Publicá tu libro desde el formulario correspondiente. Así quedará disponible para futuros intercambios.</p>
+        </div>
+
+        <div class="paso-box">
+            <h3>🔍 Paso 3:</h3>
+            <p>Buscá el libro que querés y enviá la solicitud de intercambio eligiendo cuál de los tuyos ofrecer.</p>
+        </div>
+
+        <div class="paso-box">
+            <h3>📬 Paso 4:</h3>
+            <p>Si el intercambio es aceptado, usá el código o QR para finalizar la entrega en la biblioteca.</p>
+        </div>
+
+    </div>
+</section>
+
+
+    <div class="pag">
+        <p>
+            Cuando termines una materia, podés volver a publicar tus libros y seguir intercambiando.¡Dale nueva vida a tus apuntes y ayudá a otros a estudiar!
+        </p>
+    </div>
 </section>
 {% endblock %}
+
+

@@ -1,27 +1,18 @@
 #!/bin/bash
 
-# SE ASUME QUE EL DIRECTORIO EXISTE, ESTE SCRIPT CREA LO NECESARIO PARA FUNCIONAR CON FLASK.
 # TODOS LOS CHEQUEOS DE INSTALACION SE OCULTAN DE LA SALIDA DE LA TERMINAL, PARA QUE NO MUEVA LOS MENSAJES DE CONFIRMACION.
 
-# Ejecutar Para Crear (y quedar dentro del directorio):
-# source activacion_entorno_flask.sh nombre_carpeta
-
-# Ejecutar Para Crear (y quedar fuera del directorio):
-# bash activacion_entorno_flask.sh nombre_carpeta
-# si se ejecuta este comando, habrá que entrar manualmente y activar el entorno.
-
-# PROJECT_FOLDER_NAME=$1
-
-# cd $PROJECT_FOLDER_NAME
+# Ejecutar Para Crear y activar el backend:
+# source activacion_backend.sh
 
 instalarPython3() {
     if python3 --version > /dev/null 2>&1 ; then
-    echo ""
-    echo "---------------------------Python3 ya esta instalado---------------------------"
-    echo ""
+        echo ""
+        echo "---------------------------Python3 ya esta instalado---------------------------"
+        echo ""
     else
         echo ""
-        echo "---------------------------Python3 se instalará---------------------------"
+        echo "---------------------------Instalando Python3---------------------------"
         echo ""
         sudo apt install python3
     fi
@@ -29,12 +20,12 @@ instalarPython3() {
 
 instalarPip3() {
     if pip3 --version > /dev/null 2>&1 ; then
-    echo ""
-    echo "---------------------------Pip3 ya esta instalado---------------------------"
-    echo ""
+        echo ""
+        echo "---------------------------Pip3 ya esta instalado---------------------------"
+        echo ""
     else
         echo ""
-        echo "---------------------------Pip3 se instalará---------------------------"
+        echo "---------------------------Instalando Pip3---------------------------"
         echo ""
         sudo apt install python3-pip
     fi
@@ -42,12 +33,12 @@ instalarPip3() {
 
 instalarFlaskMail() {
     if pip list | grep Flask-Mail > /dev/null 2>&1 ; then
-    echo ""
-    echo "---------------------------Flask-Mail ya está instalado---------------------------"
-    echo ""
+        echo ""
+        echo "---------------------------Flask-Mail ya está instalado---------------------------"
+        echo ""
     else
         echo ""
-        echo "---------------------------Flask-Mail se instalará---------------------------"
+        echo "---------------------------Instalando Flask-Mail---------------------------"
         echo ""
         pip install Flask-Mail
     fi
@@ -88,18 +79,17 @@ crearEnv() {
         echo ""
         echo "---------------------------Creando .env---------------------------"
         echo ""
+
         touch .env
+
         echo ""
         echo "---------------------------Llenando .env---------------------------"
         echo ""
-        echo "SECRET_KEY=una-clave-secreta-muy-larga-y-unica" >> .env
-        echo "MAIL_SERVER=smtp.gmail.com" >> .env
-        echo "MAIL_PORT=587" >> .env
-        echo "MAIL_USE_TLS=True" >> .env
-        echo "MAIL_USE_SSL=False" >> .env
-        echo "MAIL_USERNAME=tu-email@gmail.com" >> .env
-        echo "MAIL_PASSWORD=tu-app-password" >> .env
-        echo "MAIL_DEFAULT_SENDER=tu-email@gmail.com" >> .env
+
+        echo "DB_HOST=localhost" >> .env
+        echo "DB_USER=root" >> .env
+        echo "DB_PASSWORD=password" >> .env # completar manualmente en .env
+        echo "DB_NAME=datos_usuario" >> .env
     fi
 }
 
@@ -110,7 +100,7 @@ instalarDotenv() {
         echo ""
     else
         echo ""
-        echo "---------------------------python-dotenv se instalará---------------------------"
+        echo "---------------------------Instalando python-dotenv---------------------------"
         echo ""
         pip install python-dotenv
     fi
@@ -142,6 +132,19 @@ instalarPython312Venv() {
     fi
 }
 
+instalarFlaskCors() {
+    if pip list | grep flask-cors > /dev/null 2>&1 ; then
+        echo ""
+        echo "---------------------------Flask-Cors ya estaba instalado---------------------------"
+        echo ""
+    else
+        echo ""
+        echo "---------------------------Instalando Flask-Cors---------------------------"
+        echo ""
+        pip install flask-cors
+    fi
+}
+
 instalarMysqlConnector() {
     if pip list | grep mysql > /dev/null 2>&1 ; then
         echo ""
@@ -155,29 +158,33 @@ instalarMysqlConnector() {
     fi
 }
 
-ejecutar() {
-    cd ..
-    python3 -m app_front_end.app
+instalarFlaskSession() {
+    if pip list | grep flask_session > /dev/null 2>&1 ; then
+        echo ""
+        echo "---------------------------Flask-session ya estaba instalado---------------------------"
+        echo ""
+    else
+        echo ""
+        echo "---------------------------Instalando Flask-session---------------------------"
+        echo ""
+        pip install flask_session
+    fi
 }
-
-instalarPython3
-
-instalarPip3
-
-instalarPython312Venv
-
-crearVenv
 
 crearEnv
 
+cd src
+
+instalarPython3
+instalarPip3
+instalarPython312Venv
+
+crearVenv
 ActivacionEntornoVirtual
 
 instalarFlask
-
 instalarFlaskMail
-
-instalarDotenv
-
+instalarFlaskCors
+instalarFlaskSession
 instalarMysqlConnector
-
-ejecutar
+instalarDotenv
