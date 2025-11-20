@@ -156,11 +156,11 @@ eliminarCarpetas() {
         echo ""
         echo "---------------------------Eliminando src y sub-carpetas---------------------------"
         echo ""
-        
         rm -r src
     else
         mensajeSrc
     fi
+    rm -r "__init__.py"
 }
 
 eliminarEnv
@@ -171,7 +171,7 @@ fi
 
 desinstalarPythonDotenv
 desinstalarMysqlConnector
-# desinstalarFlaskSession
+desinstalarFlaskSession
 desinstalarFlaskCors
 desinstalarFlaskMail
 desinstalarFlask
