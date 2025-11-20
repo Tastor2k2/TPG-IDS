@@ -23,7 +23,7 @@ source .venv/bin/activate
 
 Si no hay nada preparado para activar el entorno, se realizan estos pasos en el siguiente orden, de arriba hacia abajo:
 
-- Crea el archivo `.env` (Para la utilización segura de los datos de usuario)
+- Crea el archivo `.env`
 
 - Accede al directorio `src`
 
