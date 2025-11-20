@@ -155,6 +155,19 @@ instalarMysqlConnector() {
     fi
 }
 
+instalarRequests() {
+    if pip list | grep requests > /dev/null 2>&1 ; then
+        echo ""
+        echo "---------------------------Requests ya estaba instalado---------------------------"
+        echo ""
+    else
+        echo ""
+        echo "---------------------------Instalando Requests---------------------------"
+        echo ""
+        pip install requests
+    fi
+}
+
 ejecutar() {
     cd ..
     python3 -m app_front_end.app
@@ -179,5 +192,7 @@ instalarFlaskMail
 instalarDotenv
 
 instalarMysqlConnector
+
+instalarRequests
 
 ejecutar

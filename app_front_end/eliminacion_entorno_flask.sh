@@ -113,12 +113,28 @@ desinstalarMysqlConnector() {
     fi
 }
 
+desinstalarRequests() {
+    if pip list | grep requests > /dev/null 2>&1 ; then
+        echo ""
+        echo "---------------------------Desinstalando Requests---------------------------"
+        echo ""
+        pip uninstall -y requests
+    else
+        echo ""
+        echo "---------------------------Requests no estaba instalado---------------------------"
+        echo ""
+    fi
+}
+
 eliminarSubCarpetas() {
     rm -r "static"
     rm -r "templates"
     rm -r "app.py"
+    rm -r "__init__.py"
     # Seguir añadiendo carpetas a eliminar en caso de ser deseado...
 }
+
+desinstalarRequests
 
 desinstalarMysqlConnector
 
@@ -137,5 +153,3 @@ eliminarVenv
 eliminarCache
 
 eliminarSubCarpetas
-
-# cd ..

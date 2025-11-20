@@ -38,9 +38,11 @@ Si no hay nada preparado para activar el entorno, se realizan estos pasos en el 
 
 - Instala `Flask-Mail`
 
-- Instala `python-dotenv` (Para manejar el archivo .env)
+- Instala `python-dotenv`
 
-- Instala `mysql-connector-python` (Para conectarse con la base de datos)
+- Instala `mysql-connector-python`
+
+- Instala `requests`
 
 Adicionalmente el script también __ejecutará el entorno virtual mediante el comando:__
 
