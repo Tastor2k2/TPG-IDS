@@ -83,6 +83,8 @@ def registrar_usuario():
     conn.commit()
     cursor.close()
     conn.close()
+    
+    return {"message": "Usuario registrado con éxito"}, 201
 
 
 @datos_usuarios_bp.route('/login', methods=['POST']) #nose como esta puesto en el front el form, sino habria que cambiar login y el metodo

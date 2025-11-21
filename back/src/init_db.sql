@@ -6,10 +6,10 @@ CREATE TABLE IF NOT EXISTS datos_usuario (
     nombre_usuario VARCHAR(50),
     email_usuario VARCHAR(100),
     contraseña_usuario VARCHAR(100),
-    telefono_usuario INT(100),
+    telefono_usuario VARCHAR(100),
     direccion_usuario VARCHAR(100),
-    dni_usuario INT (8),
-    legajo_usuario INT (6)
+    dni_usuario VARCHAR (8),
+    legajo_usuario VARCHAR (6)
 );
 
 CREATE TABLE IF NOT EXISTS libros (
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS libros (
     titulo VARCHAR(100),
     autor VARCHAR(100),
     editorial VARCHAR(255),
-    codigo_isbn INT (100),
+    codigo_isbn VARCHAR (100),
     tematica VARCHAR (100),
     
     fecha_carga DATETIME DEFAULT CURRENT_TIMESTAMP,

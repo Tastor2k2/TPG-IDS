@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, session
 from db import get_connection
 from funciones_utils import validar_sesion
 
@@ -43,7 +43,7 @@ def cargar_libro():
     titulo = data.get('titulo')
     autor = data.get('autor')
     codigo_isbn = data.get('codigo_isbn') or data.get('isbn')
-    usuario_id = data.get('usuario_id') or data.get('id_usuario')
+    usuario_id = session.get("usuario_id")
     editorial = data.get('editorial')
     tematica = data.get('tematica')
     es_favorito = data.get('es_favorito', False)
