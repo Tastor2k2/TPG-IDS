@@ -1,15 +1,22 @@
 from flask import Flask,render_template,redirect,url_for,request,jsonify, session
-from back.src.routes.registrarse import insertar_usuario
+from blueprints.formulario_enviado.formulario_enviado import formulario_enviado_bp
+from blueprints.contacto.contacto import contacto_bp
+from blueprints.iniciar_sesion.iniciar_sesion import iniciar_sesion_bp
+from blueprints.perfil.perfil import perfil_bp
+from blueprints.registrarse.registrarse import registrarse_bp
 import requests
 app = Flask(__name__)
 BACK_URL = "http://127.0.0.1:6000"
-
-API_URL = 'localhost:6000/'
 app.secret_key = "super_secret" 
+
+app.register_blueprint(formulario_enviado_bp, url_prefix="/formulario_enviado")
+app.register_blueprint(contacto_bp, url_prefix="/contacto")
+app.register_blueprint(iniciar_sesion_bp, url_prefix="/iniciar_sesion")
+app.register_blueprint(perfil_bp, url_prefix="/perfil")
+app.register_blueprint(registrarse_bp, url_prefix="/registrarse")
 
 @app.route('/')
 def index():
-    
     return render_template("index.html")
 
 @app.route('/sobre_nosotros')
@@ -21,72 +28,6 @@ def sobre_nosotros():
 def funcionamiento():
     title="¿Cómo Funcionamos?"
     return render_template('funcionamiento.html',titulo=title)
-
-@app.route('/contacto',methods=['GET','POST'])
-def contacto():
-    title="¡Contactate con Nosotros!"
-    diccionario_horarios = {
-        "Lunes":"08:30 - 22:00",
-        "Martes":"08:30 - 22:00",
-        "Miercoles":"08:30 - 22:00",
-        "Jueves":"08:30 - 22:00",
-        "Viernes":"08:30 - 22:00",
-        "Sábado":"Cerrado",
-        "Domingo":"Cerrado"
-    }
-    if request.method == 'POST':
-        nombre = request.form.get('nombre_usuario')
-        apellido = request.form.get('apellido_usuario')
-        mail = request.form.get('email_usuario')
-        telefono = request.form.get('telefono_usuario')
-        mensaje = request.form.get('mensaje_usuario')
-        return redirect(url_for('formulario_enviado',
-                                name=nombre,
-                                surname=apellido,
-                                email=mail,
-                                tel=telefono,
-                                mensj=mensaje))
-    return render_template('contacto.html',titulo=title,horarios=diccionario_horarios)
-
-@app.route('/iniciar_sesion',methods=['GET','POST'])
-def iniciar_sesion():
-    title="Iniciar sesión"
-    if request.method == 'POST':
-        mail = request.form.get('email_usuario')
-        contrasena = request.form.get('contrasena_usuario')
-        return redirect(url_for('index',email=mail,password=contrasena))
-    return render_template('iniciar_sesion.html',titulo=title)
-
-@app.route('/registrarse',methods=['GET','POST'])
-def registrarse():
-    title="Registrarse"
-    if request.method == 'POST':
-        usuario = request.form.get('nombre_usuario')
-        mail = request.form.get('email_registro')
-        mail_confirmacion = request.form.get('email_confirmacion')
-        contrasena = request.form.get('contrasena_registro')
-        insertar_usuario(usuario,mail,contrasena)
-        return redirect(url_for('index',user=usuario,email=mail,mail_conf=mail_confirmacion,password=contrasena))
-    return render_template('registrarse.html',titulo=title)
-
-@app.route('/perfil')
-def perfil():
-    title="Mi Perfil"
-    return render_template('perfil.html',titulo=title)
-
-
-@app.route('/formulario_enviado')
-def formulario_enviado():
-    title = "Gracias Por Tu Mensaje"
-    nombre = request.args.get('name')
-    apellido = request.args.get('surname')
-    mail = request.args.get('email')
-    telefono = request.args.get('tel')
-    mensaje = request.args.get('mensj')
-    data = (nombre,apellido,mail,telefono,mensaje)
-    return render_template('formulario_enviado.html',titulo=title,informacion_usuario=data)
-
-
 
 @app.route('/biblioteca')
 def biblioteca():
@@ -135,10 +76,10 @@ def enviar_intercambio():
         "id_usuario_solicitado": request.form["id_usuario_solicitado"],
     }
     response = requests.post(f"{BACK_URL}/solicitar_intercambio", json=data)
-    if response.status_code == 201:
-        return render_template("formulario_enviado.html")
-    else:
-        return f"Error al enviar solicitud: {response.text}", 400
+    #if response.status_code == 201:
+    #    return render_template("formulario_enviado.html")
+    #else:
+    #    return f"Error al enviar solicitud: {response.text}", 400
     
 
 @app.route("/cargar_libro")
