@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request, session
+from flask import Blueprint, jsonify, request
 from db import get_connection
 from funciones_utils import validar_sesion
 
@@ -9,7 +9,6 @@ carga un libro en la db del usuario
 """
 @carga_libros_bp.route('/cargar', methods=['POST'])
 def cargar_libro():
-    check = validar_sesion()
     if check: return check
     """
     JSON de entrada esperado:

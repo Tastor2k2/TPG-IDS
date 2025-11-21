@@ -6,7 +6,6 @@ intercambio_libros_bp  = Blueprint("intercambio_libros", __name__)
 
 @intercambio_libros_bp.route('/solicitar_intercambio', methods=['POST'])
 def solicitar_intercambio():
-    check = validar_sesion()
     if check: return check
     """
     Crea una solicitud de intercambio:
@@ -72,7 +71,6 @@ def solicitar_intercambio():
 
 @intercambio_libros_bp.route('/aceptar_intercambio', methods=['POST'])
 def aceptar_intercambio():
-    check = validar_sesion()
     if check: return check
     """
     Acepta una solicitud de intercambio. El propietario del libro solicitado debe aceptar.
@@ -109,7 +107,6 @@ def aceptar_intercambio():
 
 @intercambio_libros_bp.route('/cancelar_intercambio', methods=['POST'])
 def cancelar_intercambio():
-    check = validar_sesion()
     if check: return check
     # estado peticion -> cancelado, libro_ofrecido -> disponible
     """
@@ -155,7 +152,6 @@ def cancelar_intercambio():
 
 @intercambio_libros_bp.route('/realizar_intercambio', methods=['POST'])
 def realizar_intercambio():
-    check = validar_sesion()
     if check: return check
     # estado -> finalizado, libros -> intercambiados
     """
