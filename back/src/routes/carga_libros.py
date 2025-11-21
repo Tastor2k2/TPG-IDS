@@ -1,6 +1,5 @@
 from flask import Blueprint, jsonify, request
 from db import get_connection
-from funciones_utils import validar_sesion
 
 carga_libros_bp = Blueprint("carga_libros", __name__)
 

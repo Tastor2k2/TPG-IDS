@@ -101,13 +101,14 @@ def login_usuario():
 
     #si el usuario existe:
     if usuario:
-        #guardamos sesion:
-        "user_id"=usuario["id"]
-        "nombre"=usuario["nombre_usuario"]
-        "email"=usuario["email_usuario"]
         return jsonify({
             "mensaje": "Login exitoso",
-            "usuario": {"nombre": usuario["nombre_usuario"],"email": usuario["email_usuario"], "user_id": usuario["id"]}}), 200
+            "usuario": {
+                "id": usuario["id"],
+                "nombre": usuario["nombre_usuario"],
+                "email": usuario["email_usuario"]
+            }
+        }), 200
     else:
         return jsonify({"error": "EMAIL O CONTRASEÑA INCORRECTOS"}), 401
 

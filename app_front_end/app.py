@@ -4,6 +4,7 @@ from blueprints.contacto.contacto import contacto_bp
 from blueprints.iniciar_sesion.iniciar_sesion import iniciar_sesion_bp
 from blueprints.perfil.perfil import perfil_bp
 from blueprints.registrarse.registrarse import registrarse_bp
+from blueprints.cerrar_sesion.cerrar_sesion import logout_bp
 import requests
 app = Flask(__name__)
 BACK_URL = "http://127.0.0.1:5002"
@@ -13,8 +14,9 @@ app.secret_key = "super_secret"
 app.register_blueprint(formulario_enviado_bp, url_prefix="/formulario_enviado")
 app.register_blueprint(contacto_bp, url_prefix="/contacto")
 app.register_blueprint(iniciar_sesion_bp, url_prefix="/iniciar_sesion")
-app.register_blueprint(perfil_bp, url_prefix="/perfil")
+app.register_blueprint(perfil_bp)
 app.register_blueprint(registrarse_bp, url_prefix="/registrarse")
+app.register_blueprint(logout_bp)
 
 @app.context_processor
 def inject_globals():
