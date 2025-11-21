@@ -18,7 +18,7 @@ def index():
     return {"message": "API funcionando"}, 200
 
 if __name__ == "__main__":
-    app.run(port=6000, debug=True)
+    app.run(port=5002, debug=True)
 
 
     

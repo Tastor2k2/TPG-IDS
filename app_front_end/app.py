@@ -6,7 +6,8 @@ from blueprints.perfil.perfil import perfil_bp
 from blueprints.registrarse.registrarse import registrarse_bp
 import requests
 app = Flask(__name__)
-BACK_URL = "http://127.0.0.1:6000"
+BACK_URL = "http://127.0.0.1:5002"
+app.config['BACK_URL'] = BACK_URL
 app.secret_key = "super_secret" 
 
 app.register_blueprint(formulario_enviado_bp, url_prefix="/formulario_enviado")
@@ -14,6 +15,12 @@ app.register_blueprint(contacto_bp, url_prefix="/contacto")
 app.register_blueprint(iniciar_sesion_bp, url_prefix="/iniciar_sesion")
 app.register_blueprint(perfil_bp, url_prefix="/perfil")
 app.register_blueprint(registrarse_bp, url_prefix="/registrarse")
+
+@app.context_processor
+def inject_globals():
+    return {
+        'BACK_URL': app.config['BACK_URL']
+    }
 
 @app.route('/')
 def index():
