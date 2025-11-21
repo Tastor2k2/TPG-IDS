@@ -5,7 +5,7 @@
 {% block body %}
 <h2 id="titulo-form">SOLICITAR UN INTERCAMBIO</h2>
 
-<form id="form-intercambio" action="{{ url_for('formulario_intercambio') }}" method="post">
+<form id="form-intercambio" action="{{ url_for('enviar_intercambio') }}" method="post">
 
   <div class="Fintercambio">
     <label><strong>Nombre:</strong></label>
@@ -23,14 +23,23 @@
   </div>
 
   <!-- Libro que quiero pedir -->
-  <input type="hidden" id="libro-solicitar" name="libro-solicitar" value="{{ libro_seleccionado }}">
+  <input type="hidden" id="libro-solicitar" name="id_libro_solicitado" value="{{ id_libro_solicitado }}">
 
   <!-- Propietario del libro -->
-  <input type="hidden" name="propietario" value="{{ propietario }}">
+  <input type="hidden" name="id_usuario_solicitado" value="{{ id_usuario_solicitado }}">
 
   <div class="Fintercambio">
     <label><strong>Libro que ofrezco:</strong></label>
-    <input id="libro-intercambiar" type="text" name="libro-intercambiar" required>
+    <select name="id_libro_ofrecido" required>
+      <option value="">Seleccionar libro...</option>
+      {% for libro in mis_libros %}
+        {% if libro.estado_del_libro == "disponible" %}
+        <option value="{{ libro.id }}">
+          {{ libro.titulo }} - {{ libro.autor }}
+        </option>
+        {% endif %}
+      {% endfor %}  
+    </select>
   </div>
 
   <button id="send-bt" type="submit">ENVIAR</button>

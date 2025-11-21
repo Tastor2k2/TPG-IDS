@@ -84,14 +84,13 @@
                   <a class="nav-link me-4" href="{{ url_for('funcionamiento') }}">Funcionamiento</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link me-4" href="{{ url_for('contacto') }}">Contacto</a>
+                  <a class="nav-link me-4" href="{{ url_for('contacto_bp.contacto') }}">Contacto</a>
                 </li>
-
               </ul>
               <div class="user-items d-flex">
                 <ul class="d-flex justify-content-end list-unstyled mb-0">
                   <li class="pe-3">
-                    <a class="user-link d-inline-flex align-items-center" href="{{ url_for('iniciar_sesion') }}">
+                    <a class="user-link d-inline-flex align-items-center" href="{{ url_for('iniciar_sesion_bp.iniciar_sesion') }}">
                         <svg class="user" width="24" height="24" aria-hidden="true" focusable="false">
                           <use xlink:href="#user"></use>
                         </svg>
@@ -111,6 +110,13 @@
     <div class="container">
         <div class="row">
             <div class="row d-flex flex-wrap justify-content-between">
+              <!-- Barra de Busqueda (modificar url_for y al apretar buscar debe redigirir a busqueda/<texto_buscado>) -->
+              <form action="{{ url_for('index') }}" class="form-inline my-2 my-lg-0" method="post">
+                <input class="form-control mr-sm-2" type="search" placeholder="Buscá un Libro" aria-label="Search"><br>
+                <div class="d-grid gap-2 col-6 mx-auto">
+                  <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button><br>
+                </div>
+              </form>
               {% block body %}
               {% endblock %}
             </div>
@@ -147,7 +153,7 @@
                       <a href="{{ url_for('funcionamiento') }}">¿Cómo funciona el serivicio?</a>
                     </li>
                     <li class="menu-item mb-1">
-                      <a href="{{ url_for('contacto') }}">Contacto</a>
+                      <a href="{{ url_for('contacto_bp.contacto') }}">Contacto</a>
                     </li>
                   </ul>
                 </div>
