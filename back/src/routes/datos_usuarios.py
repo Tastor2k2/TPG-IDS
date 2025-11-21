@@ -13,14 +13,13 @@ def registrar_usuario():
     telefono_usuario = data.get('telefono_usuario')
     direccion_usuario = data.get('direccion_usuario')
     dni_usuario = data.get('dni_usuario')
-    legajo_usuario = data.get('legajo_usuario')
 
 
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)   
 
     #chequeamos si el usuario completo todos los campos:
-    if not nombre_usuario or not email_usuario or not contraseña_usuario or not telefono_usuario or not direccion_usuario or not dni_usuario or not legajo_usuario:
+    if not nombre_usuario or not email_usuario or not contraseña_usuario or not telefono_usuario or not direccion_usuario or not dni_usuario:
         return jsonify({"error": "Faltan campos obligatorios"}), 400
 
 
@@ -54,15 +53,6 @@ def registrar_usuario():
         conn.close()
         return jsonify({"error": "EL DNI YA EXISTE"}), 400
     
-    #chequeamos si el legajo existe:
-    cursor.execute ("SELECT * FROM datos_usuario WHERE legajo_usuario = %s", (legajo_usuario,))
-    existe_legajo = cursor.fetchone()
-
-    #si existe:
-    if existe_legajo:
-        cursor.close()
-        conn.close()
-        return jsonify({"error": "EL LEGAJO YA EXISTE"}), 400
     
     #chequeamos si el telefono existe:
     cursor.execute ("SELECT * FROM datos_usuario WHERE telefono_usuario = %s", (telefono_usuario,))
@@ -74,11 +64,11 @@ def registrar_usuario():
         conn.close()
         return jsonify({"error": "EL NUMERO DE TELEFONO YA EXISTE"})
 
-    #si no existe ni el nombre ni el mail ni el dni ni el legajo ni el numero de telefono y completo todos los campos:
+    #si no existe ni el nombre ni el mail ni el dni ni el numero de telefono y completo todos los campos:
     cursor.execute("""
-        INSERT INTO datos_usuario (nombre_usuario, email_usuario, contraseña_usuario, telefono_usuario, direccion_usuario, dni_usuario, legajo_usuario)
-        VALUES (%s, %s, %s, %s, %s, %s, %s)
-    """, (nombre_usuario, email_usuario, contraseña_usuario, telefono_usuario, direccion_usuario, dni_usuario, legajo_usuario))
+        INSERT INTO datos_usuario (nombre_usuario, email_usuario, contraseña_usuario, telefono_usuario, direccion_usuario, dni_usuario)
+        VALUES (%s, %s, %s, %s, %s, %s)
+    """, (nombre_usuario, email_usuario, contraseña_usuario, telefono_usuario, direccion_usuario, dni_usuario))
 
     conn.commit()
     cursor.close()

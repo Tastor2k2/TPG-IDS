@@ -8,8 +8,7 @@ CREATE TABLE IF NOT EXISTS datos_usuario (
     contraseña_usuario VARCHAR(100),
     telefono_usuario VARCHAR(100),
     direccion_usuario VARCHAR(100),
-    dni_usuario VARCHAR (8),
-    legajo_usuario VARCHAR (6)
+    dni_usuario VARCHAR (8)
 );
 
 CREATE TABLE IF NOT EXISTS libros (

@@ -4,7 +4,7 @@
 
 {% block body %}
 <h1>¡Registrate!</h1>
-    <form action="{{ url_for('registrarse_bp.registrarse') }}" method="post">
+    <form action="{{ url_for('registrarse_bp.registrarse') }}" method="POST">
         <label for="usuario">Nombre de Usuario</label><br>
         <input type="text" id="usuario" name="nombre_usuario" class="form-control" placeholder="👤 Nombre de Usuario" required><br>
         <label for="mail">E-Mail</label><br>
