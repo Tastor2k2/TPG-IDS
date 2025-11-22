@@ -10,7 +10,7 @@ Excluye los libros del propio usuario solicitante
 """
 @listar_libros_bp.route('/libros', methods=['GET'])
 def listar_libros():
-    # Obtener usuario_id opcional para excluir sus propios libros
+    #Obtener usuario_id opcional para excluir sus propios libros
     usuario_id = request.args.get('usuario_id', type=int)
 
     conn = get_connection()
@@ -18,13 +18,18 @@ def listar_libros():
 
     try:
         if usuario_id:
-            # Excluir libros del propio usuario
+            #Excluir libros del propio usuario
             cursor.execute("SELECT * FROM libros WHERE estado_del_libro = 'disponible' AND usuario_id != %s", (usuario_id,))
         else:
-            # Mostrar todos los disponibles
+            #Mostrar todos los disponibles
             cursor.execute("SELECT * FROM libros WHERE estado_del_libro = 'disponible'")
 
         libros = cursor.fetchall()
+
+        #muestra todas las imagenes del los libros
+        for libro in libros:
+            libro["imagen_url"] = f"/static/images/{libro['imagen']}"
+
         return jsonify({
             "total_libros": len(libros),
             "libros": libros
@@ -52,6 +57,8 @@ def obtener_libro(libro_id):
         if not libro:
             return jsonify({"error": "Libro no encontrado"}), 404
         
+        libro["imagen_url"] = f"/static/images/{libro['imagen']}"
+
         return jsonify(libro), 200
     
     except Exception as e:

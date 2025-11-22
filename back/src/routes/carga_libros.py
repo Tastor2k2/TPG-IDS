@@ -19,16 +19,26 @@ carga un libro en la db del usuario
 def cargar_libro():
 
     
-    data = request.get_json()
-    titulo = data.get('titulo')
-    autor = data.get('autor')
-    codigo_isbn = data.get('codigo_isbn') or data.get('isbn')
-    usuario_id = data.get("usuario_id")
-    editorial = data.get('editorial')
-    tematica = data.get('tematica')
+   
+    titulo = request.form.get('titulo')
+    autor = request.form.get('autor')
+    codigo_isbn = request.form.get('codigo_isbn') or request.form.get('isbn')
+    usuario_id = request.form.get("usuario_id")
+    editorial = request.form.get('editorial')
+    tematica = request.form.get('tematica')
     imagen = request.files.get("imagen")
 
-    # Nombre seguro
+   
+    if not titulo or not autor or not codigo_isbn or not usuario_id or not editorial or not tematica or not imagen:
+        return jsonify({
+            "error": "Faltan campos obligatorios: titulo, autor, codigo_isbn, usuario_id, editorial, tematica, imagen"
+        }), 400
+    
+    # Validar imagen
+    if not allowed_file(imagen.filename):
+        return jsonify({"error": "Formato de imagen no permitido"}), 400
+    
+     # Nombre seguro
     filename = secure_filename(imagen.filename)
 
     # Asegura la carpeta
@@ -40,19 +50,6 @@ def cargar_libro():
     # Guardar el archivo
     imagen.save(ruta)
 
-    if not titulo or not autor or not codigo_isbn or not usuario_id or not editorial or not tematica or not imagen:
-        return jsonify({
-            "error": "Faltan campos obligatorios: titulo, autor, codigo_isbn, usuario_id, editorial, tematica, imagen"
-        }), 400
-    
-    # Validar imagen
-    if not allowed_file(imagen.filename):
-        return jsonify({"error": "Formato de imagen no permitido"}), 400
-
-    filename = secure_filename(imagen.filename)
-    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-    ruta = os.path.join(UPLOAD_FOLDER, filename)
-    imagen.save(ruta)
     
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
@@ -83,7 +80,7 @@ def cargar_libro():
         libro_id = cursor.lastrowid
 
         return jsonify({
-            "me ssage": "Libro cargado correctamente",
+            "message": "Libro cargado correctamente",
             "libro_id": libro_id,
             "libro": {
                 "id": libro_id,
@@ -93,6 +90,7 @@ def cargar_libro():
                 "editorial": editorial,
                 "tematica": tematica,
                 "estado": "disponible",
+                "imagen": f"/{UPLOAD_FOLDER}/{filename}"
             }
         }), 201
 
