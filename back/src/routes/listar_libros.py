@@ -66,4 +66,4 @@ def obtener_libro(libro_id):
     
     finally:
         cursor.close()
-        conn.close()
+        conn.close()    

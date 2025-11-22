@@ -1,16 +1,8 @@
 from flask import Blueprint, jsonify, request
 from db import get_connection
-from werkzeug.utils import secure_filename
-import os
 
 
 carga_libros_bp = Blueprint("carga_libros", __name__)
-
-UPLOAD_FOLDER = "static/images"
-ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg"}
-
-def allowed_file(filename):
-    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 """
 carga un libro en la db del usuario
@@ -19,37 +11,20 @@ carga un libro en la db del usuario
 def cargar_libro():
 
     
-   
-    titulo = request.form.get('titulo')
-    autor = request.form.get('autor')
-    codigo_isbn = request.form.get('codigo_isbn') or request.form.get('isbn')
-    usuario_id = request.form.get("usuario_id")
-    editorial = request.form.get('editorial')
-    tematica = request.form.get('tematica')
-    imagen = request.files.get("imagen")
+    data = request.get_json()
+    titulo = data.get('titulo')
+    autor = data.get('autor')
+    codigo_isbn = data.get('codigo_isbn') or data.get('isbn')
+    usuario_id = data.get("usuario_id")
+    editorial = data.get('editorial')
+    tematica = data.get('tematica')
+
 
    
-    if not titulo or not autor or not codigo_isbn or not usuario_id or not editorial or not tematica or not imagen:
+    if not titulo or not autor or not codigo_isbn or not usuario_id or not editorial or not tematica:
         return jsonify({
-            "error": "Faltan campos obligatorios: titulo, autor, codigo_isbn, usuario_id, editorial, tematica, imagen"
+            "error": "Faltan campos obligatorios: titulo, autor, codigo_isbn, usuario_id, editorial, tematica"
         }), 400
-    
-    # Validar imagen
-    if not allowed_file(imagen.filename):
-        return jsonify({"error": "Formato de imagen no permitido"}), 400
-    
-     # Nombre seguro
-    filename = secure_filename(imagen.filename)
-
-    # Asegura la carpeta
-    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
-    # Ruta final
-    ruta = os.path.join(UPLOAD_FOLDER, filename)
-
-    # Guardar el archivo
-    imagen.save(ruta)
-
     
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
@@ -90,7 +65,6 @@ def cargar_libro():
                 "editorial": editorial,
                 "tematica": tematica,
                 "estado": "disponible",
-                "imagen": f"/{UPLOAD_FOLDER}/{filename}"
             }
         }), 201
 
@@ -101,6 +75,8 @@ def cargar_libro():
     finally:
         cursor.close()
         conn.close()
+
+
 
 """
 Obtiene todos los libros de un usuario específico
