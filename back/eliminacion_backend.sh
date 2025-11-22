@@ -135,6 +135,19 @@ desinstalarFlaskSession() {
     fi
 }
 
+desinstalarWerkzeug() {
+    if pip list | grep Werkzeug > /dev/null 2>&1 ; then
+        echo ""
+        echo "---------------------------Desinstalando Werkzeug---------------------------"
+        echo ""
+        pip uninstall -y Werkzeug
+    else
+        echo ""
+        echo "---------------------------Werkzeug no estaba instalado---------------------------"
+        echo ""
+    fi
+}
+
 existeSrc() {
     if [[ -d "src" ]]; then
         return 0
@@ -169,9 +182,10 @@ if existeSrc; then
     cd src
 fi
 
+desinstalarWerkzeug
 desinstalarPythonDotenv
 desinstalarMysqlConnector
-# desinstalarFlaskSession
+desinstalarFlaskSession
 desinstalarFlaskCors
 desinstalarFlaskMail
 desinstalarFlask

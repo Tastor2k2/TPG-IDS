@@ -18,6 +18,13 @@ Este script se encarga de verificar que esté todo creado e instalado, para desp
 
 ```shell
 source .venv/bin/activate
+
+```
+
+Y luego lo ejecuta desde la carpeta `tpg` con:
+
+```shell
+python3 -m app_front_end.app
 ```
 
 Si no hay nada preparado para activar el entorno, se realizan estos pasos en el siguiente orden, de arriba hacia abajo:
@@ -38,17 +45,11 @@ Si no hay nada preparado para activar el entorno, se realizan estos pasos en el 
 
 - Instala `Flask-Mail`
 
-- Instala `python-dotenv` (Para manejar el archivo .env)
+- Instala `python-dotenv`
 
-- Instala `mysql-connector-python` (Para conectarse con la base de datos)
+- Instala `mysql-connector-python`
 
-Adicionalmente el script también __ejecutará el entorno virtual mediante el comando:__
-
-```shell
-python3 -m app_front_end.app
-```
-
-Y lo ejecuta desde la carpeta `tpg`.
+- Instala `requests`
 
 ## ⚠️ eliminacion_entorno_flask.sh ⚠️
 

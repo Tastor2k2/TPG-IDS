@@ -1,14 +1,5 @@
 #!/bin/bash
 
-# TODOS LOS CHEQUEOS DE INSTALACION SE OCULTAN DE LA SALIDA DE LA TERMINAL, PARA QUE NO MUEVA LOS MENSAJES DE CONFIRMACION.
-
-# Ejecutar Para eliminar todo lo relacionado al entorno de flask:
-# source eliminacion_entorno_flask.sh nombre_carpeta
-
-# PROJECT_FOLDER_NAME=$1
-
-# cd $PROJECT_FOLDER_NAME
-
 eliminarCache() {
     if [[ -d "__pycache__" ]]; then
         echo ""
@@ -113,12 +104,28 @@ desinstalarMysqlConnector() {
     fi
 }
 
+desinstalarRequests() {
+    if pip list | grep requests > /dev/null 2>&1 ; then
+        echo ""
+        echo "---------------------------Desinstalando Requests---------------------------"
+        echo ""
+        pip uninstall -y requests
+    else
+        echo ""
+        echo "---------------------------Requests no estaba instalado---------------------------"
+        echo ""
+    fi
+}
+
 eliminarSubCarpetas() {
     rm -r "static"
     rm -r "templates"
     rm -r "app.py"
+    rm -r "__init__.py"
     # Seguir añadiendo carpetas a eliminar en caso de ser deseado...
 }
+
+desinstalarRequests
 
 desinstalarMysqlConnector
 
@@ -137,5 +144,3 @@ eliminarVenv
 eliminarCache
 
 eliminarSubCarpetas
-
-# cd ..

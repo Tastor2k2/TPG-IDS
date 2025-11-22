@@ -171,6 +171,19 @@ instalarFlaskSession() {
     fi
 }
 
+instalarWerkzeug() {
+    if pip list | grep Werkzeug > /dev/null 2>&1 ; then
+        echo ""
+        echo "---------------------------Werkzeug ya estaba instalado---------------------------"
+        echo ""
+    else
+        echo ""
+        echo "---------------------------Instalando Werkzeug---------------------------"
+        echo ""
+        pip install Werkzeug
+    fi
+}
+
 crearEnv
 
 cd src
@@ -188,3 +201,4 @@ instalarFlaskCors
 instalarFlaskSession
 instalarMysqlConnector
 instalarDotenv
+instalarWerkzeug
