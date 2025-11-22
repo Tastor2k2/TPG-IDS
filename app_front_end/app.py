@@ -6,6 +6,8 @@ from blueprints.perfil.perfil import perfil_bp
 from blueprints.registrarse.registrarse import registrarse_bp
 from blueprints.cerrar_sesion.cerrar_sesion import logout_bp
 from blueprints.cargar_libro.cargar_libro import cargar_libro_bp
+from blueprints.biblioteca.biblioteca import biblioteca_bp
+from blueprints.intercambio.intercambio import intercambio_bp
 
 import requests
 app = Flask(__name__)
@@ -20,6 +22,8 @@ app.register_blueprint(perfil_bp)
 app.register_blueprint(registrarse_bp, url_prefix="/registrarse")
 app.register_blueprint(logout_bp)
 app.register_blueprint(cargar_libro_bp, url_prefix="/cargar_libro")
+app.register_blueprint(biblioteca_bp, url_prefix="/biblioteca")
+app.register_blueprint(intercambio_bp, prefix="/intercambio")
 
 @app.context_processor
 def inject_globals():
@@ -41,16 +45,6 @@ def funcionamiento():
     title="¿Cómo Funcionamos?"
     return render_template('funcionamiento.html',titulo=title)
 
-@app.route('/biblioteca')
-def biblioteca():
-    try:
-        response = requests.get(f"{BACK_URL}/libros")
-        tematicas = response.json().get("tematicas", [])
-    except Exception:
-        tematicas = {}
-    return render_template("biblioteca.html", tematicas=tematicas)
-
-
 @app.route("/mis_libros")
 def mis_libros():
     usuario_id = session.get("user_id")
@@ -59,23 +53,6 @@ def mis_libros():
     response = requests.get(f"{BACK_URL}/mis-libros/{usuario_id}")
     libros = response.json().get("libros", [])
     return render_template("mis_libros.html", libros=libros)
-
-
-
-
-@app.route("/formulario_intercambio/<int:id_libro_solicitado>/<int:id_usuario_solicitado>")
-def formulario_intercambio(id_libro_solicitado, id_usuario_solicitado):
-    usuario_id = session.get("user_id")
-    if not usuario_id:
-        return redirect(url_for("iniciar_sesion"))
-    response = requests.get(f"{BACK_URL}/mis-libros/{usuario_id}")
-    mis_libros = response.json().get("libros", [])
-    return render_template(
-        "formulario_intercambio.html",
-        id_libro_solicitado=id_libro_solicitado,
-        id_usuario_solicitado=id_usuario_solicitado,
-        mis_libros=mis_libros
-    )
 
 
 @app.route("/enviar_intercambio", methods=["POST"])

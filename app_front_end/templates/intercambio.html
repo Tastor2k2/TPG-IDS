@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block titulo %}Intercambiar libro{% endblock %}
+
+{% block body %}
+<h1>SOLICITAR UN INTERCAMBIO</h1>
+
+<form id="form-intercambio" action="{{ url_for('enviar_intercambio') }}" method="post">
+
+  <h2>Libro que ofrezco:</h2>
+{% for libro in libros %}
+  {% if libro.estado_del_libro == "disponible" %}
+    <div class="form-check mb-2">
+      <input class="form-check-input" 
+             type="checkbox" 
+             name="libros_seleccionados" 
+             value="{{ libro.id }}" 
+             id="libro_{{ libro.id }}">
+
+      <label class="form-check-label" for="libro_{{ libro.id }}">
+        {{ libro.titulo }} - {{ libro.autor }}
+      </label>
+    </div>
+  {% endif %}
+{% endfor %}
+
+  <button type="submit" class="btn btn-success">Intercambiar</button>
+
+</form>
+{% endblock %}
