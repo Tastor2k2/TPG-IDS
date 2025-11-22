@@ -211,3 +211,70 @@ def cancelar_intercambio():
 
         cursor.close()
         conn.close()
+
+@intercambio_libros_bp.route('/intercambios/historial/<int:usuario_id>', methods=['POST'])
+def mostrar_intercambio(usuario_id):
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    try:
+        query = """
+              SELECT 
+                intercambio_libro.codigo_intercambio,
+
+                datos_usuario_ofrecido.nombre_usuario AS solicitante_nombre,
+                datos_usuario_solicitado.nombre_usuario AS solicitado_nombre,
+
+                libro_solicitado.titulo AS libro_solicitado,
+                libro_ofrecido.titulo AS libro_ofrecido,
+
+                intercambio_libro.fecha_inicio,
+                intercambio_libro.estado_del_intercambio
+
+            FROM intercambio_libro
+
+            JOIN datos_usuario AS datos_usuario_ofrecido
+                ON intercambio_libro.id_usuario_ofrecido = datos_usuario_ofrecido.id
+
+            JOIN datos_usuario AS datos_usuario_solicitado
+                ON intercambio_libro.id_usuario_solicitado = datos_usuario_solicitado.id
+
+            JOIN libros AS libro_solicitado
+                ON intercambio_libro.id_libro_solicitado = libro_solicitado.id
+
+            JOIN libros AS libro_ofrecido
+                ON intercambio_libro.id_libro_ofrecido = libro_ofrecido.id
+
+            WHERE intercambio_libro.id_usuario_ofrecido = %s
+               OR intercambio_libro.id_usuario_solicitado = %s
+
+            ORDER BY intercambio_libro.fecha_inicio DESC;
+        """
+
+        cursor.execute(query, (usuario_id, usuario_id))
+        intercambios = cursor.fetchall()
+
+        historial = {
+            "pendientes": [],
+            "completados": [],
+            "cancelados": []
+        }
+
+        for item in intercambios:
+            estado = item["estado_del_intercambio"]
+            if estado == "espera":
+                historial["pendientes"].append(item)
+            elif estado == "completado":
+                historial["completados"].append(item)
+            elif estado == "cancelado":
+                historial["cancelados"].append(item)
+
+        return jsonify(historial), 200
+
+    except Exception as e:
+        conn.rollback()
+        return jsonify({"error": str(e)}), 500
+
+    finally:
+        cursor.close()
+        conn.close()

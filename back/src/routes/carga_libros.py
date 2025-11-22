@@ -35,6 +35,7 @@ def cargar_libro():
 
         if not usuario:
             return jsonify({"error": "Usuario no encontrado"}), 404
+    
 
         cursor.execute(
             """INSERT INTO libros 
