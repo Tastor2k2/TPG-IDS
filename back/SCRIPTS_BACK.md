@@ -49,6 +49,8 @@ Si no hay nada preparado para activar el entorno, se realizan estos pasos en el 
 
 - Instala `python-dotenv`
 
+- Instala `Werkzeuf`
+
 ## ⚠️ eliminacion_backend.sh ⚠️
 
 Este script se ejecuta desde el principal pasandole el parámetro `-d` de esta forma:
