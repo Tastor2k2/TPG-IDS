@@ -3,6 +3,27 @@ from db import get_connection
 
 intercambio_libros_bp  = Blueprint("intercambio_libros", __name__)
 
+@intercambio_libros_bp.route("/usuarios/<int:usuario_id>/tiene_libros", methods=["GET"])
+def tiene_libros(usuario_id):
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    try:
+        cursor.execute(
+            "SELECT COUNT(*) AS total FROM libros WHERE usuario_id = %s",
+            (usuario_id,)
+        )
+        total = cursor.fetchone()["total"]
+        return jsonify({"usuario_id": usuario_id, "total": total, "tiene_libros": total > 0}), 200
+    
+    except Exception as e:
+        conn.rollback()
+        return jsonify({"error": str(e)}), 500  
+
+    finally:
+        cursor.close()
+        conn.close() 
+
 @intercambio_libros_bp.route('/solicitar_intercambio', methods=['POST'])
 def solicitar_intercambio():
     """
@@ -25,6 +46,8 @@ def solicitar_intercambio():
     # dejarlo por ahora, pero podria no estar si los datos se envian correctamente desde el front
     if not id_libro_solicitado or not id_libro_ofrecido or not solicitante_id or not solicitado_id:
         return jsonify({"error": "Faltan campos obligatorios"}), 400
+    
+    
 
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
@@ -34,6 +57,7 @@ def solicitar_intercambio():
         libro_solicitado = cursor.fetchone()
         cursor.execute("SELECT id, usuario_id, estado_del_libro FROM libros WHERE id = %s", (id_libro_ofrecido,))
         libro_ofrecido = cursor.fetchone()
+
 
         if not libro_solicitado or not libro_ofrecido:
             return jsonify({"error": "No hay un libro por libro para intercambiar, debe haber 1 como mínimo por cada usuario"}), 400
@@ -51,12 +75,12 @@ def solicitar_intercambio():
         cursor.execute("UPDATE libros SET estado_del_libro = %s WHERE id = %s", ('pausa', id_libro_ofrecido))
 
         cursor.execute(
-            "INSERT INTO intercambio_libro (id_libro_solicitado, id_libro_ofrecido, id_usuario_solicitado, id_usuario_ofrecido, estado_del_intercambio) VALUES (%s, %s, %s, %s)",
+            "INSERT INTO intercambio_libro (id_libro_solicitado, id_libro_ofrecido, id_usuario_solicitado, id_usuario_ofrecido, estado_del_intercambio) VALUES (%s, %s, %s, %s, 'espera')",
             (id_libro_solicitado, id_libro_ofrecido, libro_solicitado["usuario_id"], solicitante_id)
         )
 
         conn.commit()
-        intercambio_id = getattr(cursor, "lastrowid", None)
+        intercambio_id = cursor.lastrowid
 
         return jsonify({"message": "Solicitud creada", "codigo_intercambio": intercambio_id}), 201
     except Exception as e:
@@ -84,11 +108,17 @@ def aceptar_intercambio():
     try:
         cursor.execute("SELECT * FROM intercambio_libro WHERE codigo_intercambio = %s", (codigo,))
         intercambio = cursor.fetchone()
+        if not intercambio:
+            return jsonify({"error": "Intercambio no encontrado"}), 404
+
 
         id_libro_solicitado = intercambio["id_libro_solicitado"]
 
         # al usuario solicitado se le cambia el estado del libro, para que nadie mas pueda tradearlo.
         cursor.execute("UPDATE libros SET estado_del_libro = %s WHERE id = %s", ('pausa', id_libro_solicitado))
+        cursor.execute("UPDATE intercambio_libro SET estado_del_intercambio = 'aceptado' WHERE codigo_intercambio = %s", (codigo,)
+)
+
 
         conn.commit()
         return jsonify({"message": "Intercambio aceptado", "codigo_intercambio": codigo}), 200
@@ -115,14 +145,17 @@ def cancelar_intercambio():
     """
     data = request.get_json()
     codigo = data.get('codigo_intercambio')
-    id_libro_solicitado = data.get('id_libro_solicitado')
-    id_libro_ofrecido = data.get('id_libro_ofrecido')
-
+    id_libro_solicitado = intercambio["id_libro_solicitado"]
+    id_libro_ofrecido = intercambio["id_libro_ofrecido"]
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
     try:
         cursor.execute("SELECT * FROM intercambio_libro WHERE codigo_intercambio = %s", (codigo,))
         intercambio = cursor.fetchone()
+        
+        if not intercambio:
+            return jsonify({"error": "Intercambio no encontrado"}), 404
+
 
         if intercambio.get("estado_del_intercambio") != 'espera':
             return jsonify({"error": "Solo los intercambios en 'espera' pueden cancelarse"}), 400
@@ -165,6 +198,9 @@ def realizar_intercambio():
         # obtener el intercambio
         cursor.execute("SELECT * FROM intercambio_libro WHERE codigo_intercambio = %s", (codigo,))
         intercambio = cursor.fetchone()
+
+        if not intercambio:
+            return jsonify({"error": "Intercambio no encontrado"}), 404
 
         # validar que esté en estado 'espera' (ambos usuarios pusieron sus libros en pausa)
         # podria no estar quizas, aca se deberia llegar si paso si o si por aceptado y solicitado.

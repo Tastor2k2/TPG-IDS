@@ -1,6 +1,6 @@
 import os
 from werkzeug.utils import secure_filename
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, requests
 from db import get_connection
 
 
@@ -49,7 +49,7 @@ def subir_imagen(libro_id):
     #si existe
     cursor.execute("UPDATE libros SET imagen=%s WHERE id=%s", (filename, libro_id))
 
-    
+
 
     conn.commit()
     cursor.close()
