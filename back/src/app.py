@@ -7,6 +7,10 @@ from routes.listar_libros import listar_libros_bp
 
 app = Flask(__name__)
 
+UPLOAD_FOLDER = "static/images"
+ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg"}
+
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 app.register_blueprint(carga_libros_bp, url_prefix="/libros")
 app.register_blueprint(datos_usuarios_bp, url_prefix="/datos")

@@ -1,57 +1,58 @@
 from flask import Blueprint, jsonify, request
 from db import get_connection
+from werkzeug.utils import secure_filename
+import os
+
 
 carga_libros_bp = Blueprint("carga_libros", __name__)
+
+UPLOAD_FOLDER = "static/images"
+ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg"}
+
+def allowed_file(filename):
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 """
 carga un libro en la db del usuario
 """
 @carga_libros_bp.route('/cargar', methods=['POST'])
 def cargar_libro():
-    if check: return check
-    """
-    JSON de entrada esperado:
-    {
-        "titulo": "El Quijote",
-        "autor": "Cervantes",
-        "codigo_isbn": "1234567890",
-        "usuario_id": 1,
-        "editorial": "Planeta",
-        "tematica": "Novela",
-        "es_favorito": false
-    }
 
-    JSON de salida (respuesta exitosa):
-    {
-        "message": "Libro cargado correctamente",
-        "libro_id": 1,
-        "libro": {
-            "id": 1,
-            "titulo": "El Quijote",
-            "autor": "Cervantes",
-            "codigo_isbn": "1234567890",
-            "editorial": "Planeta",
-            "tematica": "Novela",
-            "estado": "disponible",
-            "es_favorito": false
-        }
-    }
-    """
+    
     data = request.get_json()
     titulo = data.get('titulo')
     autor = data.get('autor')
     codigo_isbn = data.get('codigo_isbn') or data.get('isbn')
-    usuario_id = session.get("usuario_id")
+    usuario_id = data.get("usuario_id")
     editorial = data.get('editorial')
     tematica = data.get('tematica')
-    es_favorito = data.get('es_favorito', False)
+    imagen = request.files.get("imagen")
 
-    
+    # Nombre seguro
+    filename = secure_filename(imagen.filename)
 
-    if not titulo or not autor or not codigo_isbn or not usuario_id or not editorial or not tematica or es_favorito is None:
+    # Asegura la carpeta
+    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+    # Ruta final
+    ruta = os.path.join(UPLOAD_FOLDER, filename)
+
+    # Guardar el archivo
+    imagen.save(ruta)
+
+    if not titulo or not autor or not codigo_isbn or not usuario_id or not editorial or not tematica or not imagen:
         return jsonify({
-            "error": "Faltan campos obligatorios: titulo, autor, codigo_isbn, usuario_id, editorial, tematica, es_favorito"
+            "error": "Faltan campos obligatorios: titulo, autor, codigo_isbn, usuario_id, editorial, tematica, imagen"
         }), 400
+    
+    # Validar imagen
+    if not allowed_file(imagen.filename):
+        return jsonify({"error": "Formato de imagen no permitido"}), 400
+
+    filename = secure_filename(imagen.filename)
+    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+    ruta = os.path.join(UPLOAD_FOLDER, filename)
+    imagen.save(ruta)
     
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
@@ -73,16 +74,16 @@ def cargar_libro():
 
         cursor.execute(
             """INSERT INTO libros 
-            (titulo, autor, codigo_isbn, usuario_id, editorial, tematica, estado_del_libro, es_favorito) 
+            (titulo, autor, codigo_isbn, usuario_id, editorial, tematica, estado_del_libro, imagen) 
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s)""",
-            (titulo, autor, codigo_isbn, usuario_id, editorial, tematica, 'disponible', es_favorito)
+            (titulo, autor, codigo_isbn, usuario_id, editorial, tematica, 'disponible', filename)
         )
 
         conn.commit()
         libro_id = cursor.lastrowid
 
         return jsonify({
-            "message": "Libro cargado correctamente",
+            "me ssage": "Libro cargado correctamente",
             "libro_id": libro_id,
             "libro": {
                 "id": libro_id,
@@ -92,7 +93,6 @@ def cargar_libro():
                 "editorial": editorial,
                 "tematica": tematica,
                 "estado": "disponible",
-                "es_favorito": es_favorito
             }
         }), 201
 
@@ -110,51 +110,11 @@ y los retorna en orden descendente segun su fecha de carga a la pagina
 """
 @carga_libros_bp.route('/mis-libros/<int:usuario_id>', methods=['GET'])
 def obtener_libros(usuario_id):
-    """
-    JSON de entrada: No requiere body (usa parámetro de URL)
-    URL: /mis-libros/1
-    
-    JSON de salida (respuesta exitosa):
-    {
-        "usuario_id": 1,
-        "total_libros": 5,
-        "libros": [
-            {
-                "id": 1,
-                "titulo": "El Quijote",
-                "autor": "Cervantes",
-                "codigo_isbn": "1234567890",
-                "editorial": "Planeta",
-                "tematica": "Novela",
-                "estado_del_libro": "disponible",
-                "es_favorito": false,
-                "fecha_carga": "2025-11-13 10:30:00"
-            },
-            {
-                "id": 2,
-                "titulo": "Cien años de soledad",
-                "autor": "García Márquez",
-                "codigo_isbn": "0987654321",
-                "editorial": "Sudamericana",
-                "tematica": "Realismo mágico",
-                "estado_del_libro": "disponible",
-                "es_favorito": true,
-                "fecha_carga": "2025-11-12 15:20:00"
-            }
-        ]
-    }
-    """
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
     
     try:
-        cursor.execute(
-            """SELECT id, titulo, autor, codigo_isbn, editorial, tematica, 
-            estado_del_libro, es_favorito, fecha_carga 
-            FROM libros WHERE usuario_id = %s 
-            ORDER BY fecha_carga DESC""",
-            (usuario_id,)
-        )
+        cursor.execute("SELECT * FROM libros WHERE usuario_id = %s ORDER BY fecha_carga DESC ", (usuario_id,))
 
         libros = cursor.fetchall()
         
@@ -171,156 +131,14 @@ def obtener_libros(usuario_id):
         cursor.close()
         conn.close()
 
-"""
-Obtiene solo los libros marcados como favoritos de un usuario
-y los retorna en orden descendente segun su fecha de carga a la pagina
-"""
-@carga_libros_bp.route('/favoritos/<int:usuario_id>', methods=['GET'])
-def obtener_favoritos(usuario_id):
-    """
-    JSON de entrada: No requiere body (usa parámetro de URL)
-    URL: /favoritos/1
-    
-    JSON de salida (respuesta exitosa):
-    {
-        "usuario_id": 1,
-        "total_favoritos": 2,
-        "favoritos": [
-            {
-                "id": 2,
-                "titulo": "Cien años de soledad",
-                "autor": "García Márquez",
-                "codigo_isbn": "0987654321",
-                "editorial": "Sudamericana",
-                "tematica": "Realismo mágico",
-                "estado_del_libro": "disponible",
-                "es_favorito": true,
-                "fecha_carga": "2025-11-12 15:20:00"
-            },
-            {
-                "id": 5,
-                "titulo": "1984",
-                "autor": "George Orwell",
-                "codigo_isbn": "1122334455",
-                "editorial": "Debolsillo",
-                "tematica": "Distopía",
-                "estado_del_libro": "disponible",
-                "es_favorito": true,
-                "fecha_carga": "2025-11-10 09:15:00"
-            }
-        ]
-    }
-    """
-    conn = get_connection()
-    cursor = conn.cursor(dictionary=True)
-    
-    try:
-        cursor.execute(
-            """SELECT id, titulo, autor, codigo_isbn, editorial, tematica, 
-            estado_del_libro, es_favorito, fecha_carga 
-            FROM libros WHERE usuario_id = %s AND es_favorito = TRUE
-            ORDER BY fecha_carga DESC""",
-            (usuario_id,)
-        )
-        favoritos = cursor.fetchall()
-        
-        return jsonify({
-            "usuario_id": usuario_id,
-            "total_favoritos": len(favoritos),
-            "favoritos": favoritos
-        }), 200
-        
-    except Exception as e:
-        return jsonify({"error": f"Error al obtener favoritos: {str(e)}"}), 500
-    
-    finally:
-        cursor.close()
-        conn.close()
 
-"""
-Marca o desmarca unn libro como favorito
-"""
-@carga_libros_bp.route('/marcar-favorito/<int:libro_id>', methods=['PUT'])
-def marcar_favorito(libro_id):
-    """
-    JSON de entrada esperado:
-    {
-        "usuario_id": 1,
-        "es_favorito": true o false
-    }
-    
-    JSON de salida (respuesta exitosa):
-    {
-        "message": "Libro agregado a favoritos",
-        "libro_id": 5,
-        "es_favorito": true
-    }
-    
-    O si se desmarca:
-    {
-        "message": "Libro quitado de favoritos",
-        "libro_id": 5,
-        "es_favorito": false
-    }
-    """
-    data = request.get_json()
-    usuario_id = data.get('usuario_id')
-    es_favorito = data.get('es_favorito')
-    
-    if not usuario_id or es_favorito is None:
-        return jsonify({"error": "Se requiere usuario_id y es_favorito (true/false)"}), 400
-    
-    conn = get_connection()
-    cursor = conn.cursor(dictionary=True)
-    
-    try:
-        cursor.execute(
-            "SELECT id FROM libros WHERE id = %s AND usuario_id = %s",
-            (libro_id, usuario_id)
-        )
-        
-        if not cursor.fetchone():
-            return jsonify({"error": "Libro no encontrado o no te pertenece"}), 404
-        
-        cursor.execute(
-            "UPDATE libros SET es_favorito = %s WHERE id = %s",
-            (es_favorito, libro_id)
-        )
-        conn.commit()
-        
-        mensaje = "agregado a" if es_favorito else "quitado de"
-        return jsonify({
-            "message": f"Libro {mensaje} favoritos",
-            "libro_id": libro_id,
-            "es_favorito": es_favorito
-        }), 200
-        
-    except Exception as e:
-        conn.rollback()
-        return jsonify({"error": f"Error al actualizar favorito: {str(e)}"}), 500
-    
-    finally:
-        cursor.close()
-        conn.close()
 
 """
 Elimina un libro (solo si está en estado 'disponible')
 """
 @carga_libros_bp.route('/eliminar/<int:libro_id>', methods=['DELETE'])
 def eliminar_libro(libro_id):
-    """
-    JSON de entrada esperado:
-    {
-        "usuario_id": 1
-    }
-    JSON de salida (respuesta exitosa):
-    {
-        "message": "Libro eliminado correctamente",
-        "libro_id": 1,
-        "usuario_id": 1,
-        "titulo": "El Quijote"
-    }
-    """
+
     data = request.get_json()
     usuario_id = data.get('usuario_id')
     

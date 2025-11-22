@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS libros (
     editorial VARCHAR(255),
     codigo_isbn VARCHAR (100),
     tematica VARCHAR (100),
+    imagen VARCHAR(255) NOT NULL,
     
     fecha_carga DATETIME DEFAULT CURRENT_TIMESTAMP,
 
