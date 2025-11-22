@@ -46,9 +46,9 @@ def cargar_libro():
 
         cursor.execute(
             """INSERT INTO libros 
-            (titulo, autor, codigo_isbn, usuario_id, editorial, tematica, estado_del_libro, imagen) 
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)""",
-            (titulo, autor, codigo_isbn, usuario_id, editorial, tematica, 'disponible', filename)
+            (titulo, autor, codigo_isbn, usuario_id, editorial, tematica, estado_del_libro) 
+            VALUES (%s, %s, %s, %s, %s, %s, %s)""",
+            (titulo, autor, codigo_isbn, usuario_id, editorial, tematica, 'disponible')
         )
 
         conn.commit()

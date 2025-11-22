@@ -10,7 +10,6 @@ DOTENV_PATH = os.path.join(BASE_DIR, ".env")
 
 # Carga las variables de entorno definidas en el .env
 load_dotenv(DOTENV_PATH)
-print(">>> DB_NAME cargado:", os.getenv("DB_NAME"))
 def get_connection():
     try: 
         connection = mysql.connector.connect(

@@ -5,6 +5,8 @@ from blueprints.iniciar_sesion.iniciar_sesion import iniciar_sesion_bp
 from blueprints.perfil.perfil import perfil_bp
 from blueprints.registrarse.registrarse import registrarse_bp
 from blueprints.cerrar_sesion.cerrar_sesion import logout_bp
+from blueprints.cargar_libro.cargar_libro import cargar_libro_bp
+
 import requests
 app = Flask(__name__)
 BACK_URL = "http://127.0.0.1:5002"
@@ -17,6 +19,7 @@ app.register_blueprint(iniciar_sesion_bp, url_prefix="/iniciar_sesion")
 app.register_blueprint(perfil_bp)
 app.register_blueprint(registrarse_bp, url_prefix="/registrarse")
 app.register_blueprint(logout_bp)
+app.register_blueprint(cargar_libro_bp, url_prefix="/cargar_libro")
 
 @app.context_processor
 def inject_globals():
@@ -90,13 +93,6 @@ def enviar_intercambio():
     #else:
     #    return f"Error al enviar solicitud: {response.text}", 400
     
-
-@app.route("/cargar_libro")
-def cargar_libro():
-    if "user_id" not in session:
-        return redirect(url_for("iniciar_sesion"))
-    return render_template("cargar_libro.html")
-
 
 @app.route("/enviar_carga_libro", methods=["POST"])
 def enviar_carga_libro():

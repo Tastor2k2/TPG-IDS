@@ -1,7 +1,5 @@
 {% extends 'base.html' %}
 
-{% block titulo %}Cargar Libro{% endblock %}
-
 {% block body %}
 
 <div class="col-12 col-md-8 mx-auto mt-4">
@@ -9,38 +7,31 @@
 
         <h3 class="text-center mb-4">Cargar un nuevo libro</h3>
 
-        <form action="{{ url_for('enviar_carga_libro') }}" method="post">
+        <form action="{{ url_for('cargar_libro_bp.cargar_libro') }}" method="post" enctype="multipart/form-data">
             <div class="mb-3">
-                <label class="form-label">Titulo</label>
-                <input type="text" name="titulo" class="form-control" required>
+                <label class="form-label" for="titulo">Titulo</label>
+                <input type="text" id="titulo" name="titulo" class="form-control" required>
             </div>
             <div class="mb-3">
-                <label class="form-label">Autor</label>
-                <input type="text" name="autor" class="form-control" required>
+                <label class="form-label" for="autor">Autor</label>
+                <input type="text" id="autor" name="autor" class="form-control" required>
             </div>
             <div class="mb-3">
-                <label class="form-label">Codigo ISBN</label>
-                <input type="text" name="codigo_isbn" class="form-control" required>
+                <label for="isbn" class="form-label">Codigo ISBN</label>
+                <input type="text" id="isbn" name="codigo_isbn" class="form-control" required>
             <div class="mb-3">
-                <label class="form-label">Editorial</label>
-                <input type="text" name="editorial" class="form-control" required>
+                <label for="editorial" class="form-label">Editorial</label>
+                <input type="text" id="editorial" name="editorial" class="form-control" required>
             </div>
             <div class="mb-3">
-                <label class="form-label">Tematica</label>
-                <select name="tematica" class="form-select" required>
-                    <option value="">Seleccione una tematica</option>
-                    <option value="Analisis matematico">Analisis Matematico</option>
-                    <option value="Fisica">Fisica</option>
-                    <option value="Quimica">Quimica</option>
-                    <option value="IDS">IDS</option>
-                    <option value="Funda">Fundamentos de programacion</option>
-                    <option value="Mecanica">Mecanica</option>
-                    <option value="Otra">Otra</option>
-                </select>
+                <label for="tematica" class="form-label">Temática</label>
+                <input type="text" id="tematica" name="tematica" class="form-control" required>
             </div>
-
+            <div class="mb-3">
+                <label for="imagen">Imagen</label>
+                <input type="file" name="imagen" placeholder="Imagen" class="form-control" accept="image/*" required>
+            </div>
             <!-- Por defecto el libro no es favorito -->
-            <input type="hidden" name="es_favorito" value="false">
             <div class="text-center mt-4">
                 <button type="submit" class="btn btn-dark px-4">Cargar libro</button>
             </div>

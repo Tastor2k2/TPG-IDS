@@ -7,9 +7,9 @@ from db import get_connection
 carga_libros_imagenes_bp = Blueprint("carga_libros_imagenes", __name__)
 
 UPLOAD_FOLDER = "static/images"
-ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg"}
 
 def allowed_file(filename):
+    ALLOWED_EXTENSIONS = ["png", "jpg", "jpeg"]
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @carga_libros_imagenes_bp.route("/<int:libro_id>/subir_imagen", methods=["POST"])
@@ -57,5 +57,5 @@ def subir_imagen(libro_id):
 
     return jsonify({
         "mensaje": "Imagen subida",
-        "imagen_url": f"/static/images/{filename}"
+        "imagen_url": f"static/images/{filename}"
 }), 200
