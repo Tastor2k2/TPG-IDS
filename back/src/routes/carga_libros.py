@@ -37,14 +37,6 @@ def cargar_libro():
             return jsonify({"error": "Usuario no encontrado"}), 404
 
         cursor.execute(
-            "SELECT id FROM libros WHERE codigo_isbn = %s AND usuario_id = %s",
-            (codigo_isbn, usuario_id)
-        )
-
-        if cursor.fetchone():
-            return jsonify({"error": "Ya tienes este libro registrado (mismo ISBN)"}), 409
-
-        cursor.execute(
             """INSERT INTO libros 
             (titulo, autor, codigo_isbn, usuario_id, editorial, tematica, estado_del_libro) 
             VALUES (%s, %s, %s, %s, %s, %s, %s)""",

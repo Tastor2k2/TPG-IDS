@@ -27,9 +27,9 @@
                             Editorial: {{ libro.editorial }} <br>
                             ISBN: {{ libro.codigo_isbn }}
                         </p>
-                      <a href="{{ url_for('intercambio_bp.intercambio') }}">
-                        <button type="submit" class="btn btn-success">Intercambiar</button>
-                      </a>
+                        <a href="{{ url_for('intercambio_bp.intercambio', libro_solicitado=libro.id) }}">
+                            <button type="button" class="btn btn-success">Intercambiar</button>
+                        </a>
                     </div>
                 </div>
             </div>

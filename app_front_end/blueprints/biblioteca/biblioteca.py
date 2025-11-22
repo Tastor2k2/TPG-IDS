@@ -8,13 +8,25 @@ def biblioteca():
     title = "Biblioteca"
     BACK_URL = current_app.config["BACK_URL"]
     URL_BACK_IMAGEN = BACK_URL + "/static/images/"
-    # Llamar al BACK
-    respuesta_back = requests.get(f"{BACK_URL}/libros/libros")
+
+    # OBTENER ID DEL USUARIO LOGUEADO
+    id_usuario = session.get("user_id")
+
+    # LLAMADA AL BACK: FILTRA LIBROS DEL USUARIO
+    respuesta_back = requests.get(
+        f"{BACK_URL}/libros/libros",
+        params={"usuario_id": id_usuario}
+    )
 
     if respuesta_back.status_code != 200:
-        return render_template("biblioteca.html", libros=[],titulo=title)
+        return render_template("biblioteca.html", libros=[], titulo=title)
 
     data = respuesta_back.json()
     libros = data.get("libros", [])
 
-    return render_template("biblioteca.html", libros=libros, URL_BACK_IMAGEN=URL_BACK_IMAGEN,titulo=title)
+    return render_template(
+        "biblioteca.html",
+        libros=libros,
+        URL_BACK_IMAGEN=URL_BACK_IMAGEN,
+        titulo=title
+    )

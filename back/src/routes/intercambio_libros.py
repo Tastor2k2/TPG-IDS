@@ -66,16 +66,14 @@ def solicitar_intercambio():
         id_libro_ofrecido = libro_ofrecido["id"]
 
         cursor.execute("UPDATE libros SET estado_del_libro = 'pausa' WHERE id = %s", (id_libro_ofrecido,))
-
         cursor.execute(
-            """
-            INSERT INTO intercambio_libro 
-            (id_libro_solicitado, id_libro_ofrecido, solicitado_id, solicitante_id, estado_del_intercambio)
-            VALUES (%s, %s, %s, %s, 'espera')
-            """,
-            (id_libro_solicitado, id_libro_ofrecido, solicitado_id, solicitante_id)
-        )
-
+                    """
+                    INSERT INTO intercambio_libro 
+                    (id_libro_solicitado, id_libro_ofrecido, id_usuario_solicitado, id_usuario_ofrecido, estado_del_intercambio)
+                    VALUES (%s, %s, %s, %s, 'espera')
+                    """,
+                    (id_libro_solicitado, id_libro_ofrecido, solicitado_id, solicitante_id)
+                )
         conn.commit()
         intercambio_id = cursor.lastrowid
 

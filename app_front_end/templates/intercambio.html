@@ -5,26 +5,33 @@
 {% block body %}
 <h1>SOLICITAR UN INTERCAMBIO</h1>
 
-<form id="form-intercambio" action="{{ url_for('enviar_intercambio') }}" method="post">
+<form id="form-intercambio" action="{{ url_for('intercambio_bp.intercambio', libro_solicitado=libro_solicitado) }}" method="post">
 
   <h2>Libro que ofrezco:</h2>
-{% for libro in libros %}
-  {% if libro.estado_del_libro == "disponible" %}
-    <div class="form-check mb-2">
-      <input class="form-check-input" 
-             type="checkbox" 
-             name="libros_seleccionados" 
-             value="{{ libro.id }}" 
-             id="libro_{{ libro.id }}">
+  <select name="libro_ofrecido" class="form-control" required>
+    {% for libro in libros_usuario %}
+      {% if libro.estado_del_libro == "disponible" %}
+        <option value="{{ libro.id }}">
+          {{ libro.titulo }} - {{ libro.autor }}
+        </option>
+      {% endif %}
+    {% endfor %}
+  </select>
 
-      <label class="form-check-label" for="libro_{{ libro.id }}">
-        {{ libro.titulo }} - {{ libro.autor }}
-      </label>
-    </div>
-  {% endif %}
-{% endfor %}
+  <br>
 
-  <button type="submit" class="btn btn-success">Intercambiar</button>
+  <h3>Libro solicitado:</h3>
+
+  {% for libro in biblioteca %}
+    {% if libro.id == libro_solicitado %}
+      <p>
+        <strong>{{ libro.titulo }}</strong> – {{ libro.autor }}  
+        (ISBN: {{ libro.codigo_isbn }})
+      </p>
+    {% endif %}
+  {% endfor %}
+
+  <button type="submit" class="btn btn-success mt-3">Intercambiar</button>
 
 </form>
 {% endblock %}

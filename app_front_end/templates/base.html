@@ -88,17 +88,23 @@
                 </li>
               </ul>
               <div class="user-items d-flex">
-                <ul class="d-flex justify-content-end list-unstyled mb-0">
-                  <li class="pe-3">
-                    <a class="user-link d-inline-flex align-items-center" href="{{ url_for('iniciar_sesion_bp.iniciar_sesion') }}">
+                {% if session.get("user_id") %}
+                    <a class="user-link d-inline-flex align-items-center"
+                      href="{{ url_for('perfil_bp.perfil', id_usuario=session['user_id']) }}">
                         <svg class="user" width="24" height="24" aria-hidden="true" focusable="false">
                           <use xlink:href="#user"></use>
                         </svg>
-                        <span class="visually-hidden">Iniciar sesión</span>
-                      </a>
-                    </div>
-                  </li>
-                </ul>
+                        <span class="visually-hidden">Mi Perfil</span>
+                    </a>
+                {% else %}
+                    <a class="user-link d-inline-flex align-items-center"
+                      href="{{ url_for('iniciar_sesion_bp.iniciar_sesion') }}">
+                        <svg class="user" width="24" height="24" aria-hidden="true" focusable="false">
+                          <use xlink:href="#user"></use>
+                        </svg>
+                        <span class="visually-hidden">Iniciar Sesión</span>
+                    </a>
+                {% endif %}
               </div>
             </div>
           </div>

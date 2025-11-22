@@ -23,7 +23,7 @@ app.register_blueprint(registrarse_bp, url_prefix="/registrarse")
 app.register_blueprint(logout_bp)
 app.register_blueprint(cargar_libro_bp, url_prefix="/cargar_libro")
 app.register_blueprint(biblioteca_bp, url_prefix="/biblioteca")
-app.register_blueprint(intercambio_bp, prefix="/intercambio")
+app.register_blueprint(intercambio_bp, url_prefix="/intercambio")
 
 @app.context_processor
 def inject_globals():
@@ -53,23 +53,6 @@ def mis_libros():
     response = requests.get(f"{BACK_URL}/mis-libros/{usuario_id}")
     libros = response.json().get("libros", [])
     return render_template("mis_libros.html", libros=libros)
-
-
-@app.route("/enviar_intercambio", methods=["POST"])
-def enviar_intercambio():
-    usuario_id = session.get("user_id")
-    data = {
-        "id_libro_solicitado": request.form["id_libro_solicitado"],
-        "id_libro_ofrecido": request.form["id_libro_ofrecido"],
-        "id_usuario_ofrecido": usuario_id,
-        "id_usuario_solicitado": request.form["id_usuario_solicitado"],
-    }
-    response = requests.post(f"{BACK_URL}/solicitar_intercambio", json=data)
-    #if response.status_code == 201:
-    #    return render_template("formulario_enviado.html")
-    #else:
-    #    return f"Error al enviar solicitud: {response.text}", 400
-    
 
 @app.route("/enviar_carga_libro", methods=["POST"])
 def enviar_carga_libro():
