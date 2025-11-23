@@ -155,8 +155,10 @@ instalarRequests() {
 }
 
 ejecutar() {
-    cd ..
-    python3 -m app_front_end.app
+    echo ""
+    echo "---------------------------Ejecutando el entorno---------------------------"
+    echo ""
+    python3 app.py
 }
 
 instalarPython3
