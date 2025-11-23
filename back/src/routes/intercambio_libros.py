@@ -223,7 +223,15 @@ def mostrar_intercambio(usuario_id):
                 intercambio_libro.codigo_intercambio,
 
                 datos_usuario_ofrecido.nombre_usuario AS solicitante_nombre,
+                datos_usuario_ofrecido.email_usuario AS solicitante_email,
+                datos_usuario_ofrecido.telefono_usuario AS solicitante_telefono,
+                usuario_ofrecido.direccion_usuario AS direccion_usuario_ofrecido,
+                usuario_solicitado.direccion_usuario AS direccion_usuario_solicitado,
+
+
                 datos_usuario_solicitado.nombre_usuario AS solicitado_nombre,
+                datos_usuario_solicitado.email_usuario AS solicitado_email,
+                datos_usuario_solicitado.telefono_usuario AS solicitado_telefono,
 
                 libro_solicitado.titulo AS libro_solicitado,
                 libro_ofrecido.titulo AS libro_ofrecido,
@@ -232,8 +240,8 @@ def mostrar_intercambio(usuario_id):
                 intercambio_libro.estado_del_intercambio,
 
                 intercambio_libro.id_usuario_solicitado,
-                intercambio_libro.id_usuario_ofrecido
-
+                intercambio_libro.
+                
             FROM intercambio_libro
 
             JOIN datos_usuario AS datos_usuario_ofrecido
