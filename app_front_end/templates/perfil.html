@@ -8,10 +8,72 @@
 <p>Acá iría el nombre del usuario</p>
 <h2>Correo Electrónico</h2>
 <p>Acá iría el mail del usuario</p>
-<h2>Historial de Libros Dados</h2>
-<p>Acá iría una tabla HTML con los libros que el usuario dio</p>
-<h2>Historial de Libros Recibidos</h2>
-<p>Acá iría una tabla HTML con los libros que el usuario recibió</p>
+<h2>Historial</h2>
+<h2>Intercambios pendientes</h2>
+{% if historial.pendientes %}
+    {% for item in historial.pendientes %}
+        <p>
+            Código: {{ item.codigo_intercambio }} <br>
+            Solicitante: {{ item.solicitante_nombre }} <br>
+            Libro ofrecido: {{ item.libro_ofrecido }} <br>
+            Libro solicitado: {{ item.libro_solicitado }} <br>
+            Fecha: {{ item.fecha_inicio }}
+        </p>
+
+        {% if item.id_usuario_solicitado == id %}
+        <form action="{{ url_for('perfil_bp.perfil', id_usuario=id) }}" method="post">
+            <input type="hidden" name="accion" value="aceptar">
+            <input type="hidden" name="codigo_intercambio" value="{{ item.codigo_intercambio }}">
+            <button class="btn btn-success">Aceptar</button>
+        </form>
+
+        <form action="{{ url_for('perfil_bp.perfil', id_usuario=id) }}" method="post" class="mt-2">
+            <input type="hidden" name="accion" value="cancelar">
+            <input type="hidden" name="codigo_intercambio" value="{{ item.codigo_intercambio }}">
+            <button class="btn btn-danger">Rechazar</button>
+        </form>
+        {% elif item.id_usuario_ofrecido == id %}
+            <span class="badge bg-warning text-dark">Esperando respuesta…</span>
+        {% endif %}
+
+        <hr>
+    {% endfor %}
+{% else %}
+    <p>No tenés intercambios pendientes.</p>
+{% endif %}
+
+<h2>Intercambios completados</h2>
+{% if historial.completados %}
+    {% for item in historial.completados %}
+        <p>
+            Código: {{ item.codigo_intercambio }} <br>
+            Solicitante: {{ item.solicitante_nombre }} <br>
+            Libro ofrecido: {{ item.libro_ofrecido }} <br>
+            Libro solicitado: {{ item.libro_solicitado }} <br>
+            Fecha: {{ item.fecha_inicio }}
+        </p>
+        <hr>
+    {% endfor %}
+{% else %}
+    <p>No tenés intercambios completados.</p>
+{% endif %}
+
+<h2>Intercambios cancelados</h2>
+{% if historial.cancelados %}
+    {% for item in historial.cancelados %}
+        <p>
+            Código: {{ item.codigo_intercambio }} <br>
+            Solicitante: {{ item.solicitante_nombre }} <br>
+            Libro ofrecido: {{ item.libro_ofrecido }} <br>
+            Libro solicitado: {{ item.libro_solicitado }} <br>
+            Fecha: {{ item.fecha_inicio }}
+        </p>
+        <hr>
+    {% endfor %}
+{% else %}
+    <p>No tenés intercambios cancelados.</p>
+{% endif %}
+
 <a href="{{ url_for('logout_bp.cerrar_sesion') }}" class="btn btn-danger">
     Cerrar sesión
 </a>

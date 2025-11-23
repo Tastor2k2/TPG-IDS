@@ -61,7 +61,7 @@
           </button>
           <div class="offcanvas offcanvas-end" tabindex="-1" id="bdNavbar" aria-labelledby="bdNavbarOffcanvasLabel">
             <div class="offcanvas-header px-4 pb-0">
-              <a class="navbar-brand" href="{{ url_for('index') }}">
+              <a class="navbar-brand" href="{{ url_for('index_bp.index') }}">
                 <img src="{{ url_for('static',filename='images/logo.webp',_external=True) }}" class="logo" width="75px">
               </a>
               <button type="button" class="btn-close btn-close-black" data-bs-dismiss="offcanvas" aria-label="Close"
@@ -72,16 +72,16 @@
               <ul id="navbar"
                 class="navbar-nav text-uppercase justify-content-start justify-content-lg-center align-items-start align-items-lg-center flex-grow-1">
                 <li class="nav-item">
-                  <a class="nav-link me-4 active" href="{{ url_for('index') }}">Inicio</a>
+                  <a class="nav-link me-4 active" href="{{ url_for('index_bp.index') }}">Inicio</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link me-4" href="{{ url_for('sobre_nosotros') }}">Sobre Nosotros</a>
+                  <a class="nav-link me-4" href="{{ url_for('sobre_nosotros_bp.sobre_nosotros') }}">Sobre Nosotros</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link me-4" href="{{ url_for('biblioteca_bp.biblioteca') }}">Biblioteca</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link me-4" href="{{ url_for('funcionamiento') }}">Funcionamiento</a>
+                  <a class="nav-link me-4" href="{{ url_for('funcionamiento_bp.funcionamiento') }}">Funcionamiento</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link me-4" href="{{ url_for('contacto_bp.contacto') }}">Contacto</a>
@@ -117,7 +117,7 @@
         <div class="row">
             <div class="row d-flex flex-wrap justify-content-between">
               <!-- Barra de Busqueda (modificar url_for y al apretar buscar debe redigirir a busqueda/<texto_buscado>) -->
-              <form action="{{ url_for('index') }}" class="form-inline my-2 my-lg-0" method="post">
+              <form action="{{ url_for('index_bp.index') }}" class="form-inline my-2 my-lg-0" method="post">
                 <input class="form-control mr-sm-2" type="search" placeholder="Buscá un Libro" aria-label="Search"><br>
                 <div class="d-grid gap-2 col-6 mx-auto">
                   <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button><br>
@@ -147,16 +147,16 @@
                   <h5 class="widget-title pb-2">Links Útiles</h5>
                   <ul class="menu-list list-unstyled text-capitalize">
                     <li class="menu-item mb-1">
-                      <a href="{{ url_for('index') }}">Inicio</a>
+                      <a href="{{ url_for('index_bp.index') }}">Inicio</a>
                     </li>
                     <li class="menu-item mb-1">
-                      <a href="{{ url_for('sobre_nosotros') }}">Sobre Nosotros</a>
+                      <a href="{{ url_for('sobre_nosotros_bp.sobre_nosotros') }}">Sobre Nosotros</a>
                     </li>
                     <li class="menu-item mb-1">
                       <a href="{{ url_for('biblioteca_bp.biblioteca') }}">Biblioteca</a>
                     </li>
                     <li class="menu-item mb-1">
-                      <a href="{{ url_for('funcionamiento') }}">¿Cómo funciona el serivicio?</a>
+                      <a href="{{ url_for('funcionamiento_bp.funcionamiento') }}">¿Cómo funciona el serivicio?</a>
                     </li>
                     <li class="menu-item mb-1">
                       <a href="{{ url_for('contacto_bp.contacto') }}">Contacto</a>

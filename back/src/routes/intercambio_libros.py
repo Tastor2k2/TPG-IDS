@@ -177,8 +177,6 @@ def cancelar_intercambio():
     
     data = request.get_json()
     codigo = data.get('codigo_intercambio')
-    id_libro_solicitado = intercambio["id_libro_solicitado"]
-    id_libro_ofrecido = intercambio["id_libro_ofrecido"]
 
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
@@ -189,6 +187,8 @@ def cancelar_intercambio():
         if not intercambio:
             return jsonify({"error": "Intercambio no encontrado"}), 404
 
+        id_libro_solicitado = intercambio["id_libro_solicitado"]
+        id_libro_ofrecido = intercambio["id_libro_ofrecido"]
 
         if intercambio.get("estado_del_intercambio") != 'espera':
             return jsonify({"error": "Solo los intercambios en 'espera' pueden cancelarse"}), 400
@@ -211,7 +211,7 @@ def cancelar_intercambio():
 
         cursor.close()
         conn.close()
-
+        
 @intercambio_libros_bp.route('/intercambios/historial/<int:usuario_id>', methods=['POST'])
 def mostrar_intercambio(usuario_id):
     conn = get_connection()
@@ -219,7 +219,7 @@ def mostrar_intercambio(usuario_id):
 
     try:
         query = """
-              SELECT 
+            SELECT 
                 intercambio_libro.codigo_intercambio,
 
                 datos_usuario_ofrecido.nombre_usuario AS solicitante_nombre,
@@ -229,7 +229,10 @@ def mostrar_intercambio(usuario_id):
                 libro_ofrecido.titulo AS libro_ofrecido,
 
                 intercambio_libro.fecha_inicio,
-                intercambio_libro.estado_del_intercambio
+                intercambio_libro.estado_del_intercambio,
+
+                intercambio_libro.id_usuario_solicitado,
+                intercambio_libro.id_usuario_ofrecido
 
             FROM intercambio_libro
 
