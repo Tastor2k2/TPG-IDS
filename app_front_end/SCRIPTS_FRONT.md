@@ -21,10 +21,10 @@ source .venv/bin/activate
 
 ```
 
-Y luego lo ejecuta desde la carpeta `tpg` con:
+Y luego lo ejecuta desde la carpeta `app_front_end` con:
 
 ```shell
-python3 -m app_front_end.app
+python3 app.py
 ```
 
 Si no hay nada preparado para activar el entorno, se realizan estos pasos en el siguiente orden, de arriba hacia abajo:
