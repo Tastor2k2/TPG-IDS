@@ -5,10 +5,5 @@
 {% block body %}
 <h1>Formulario Enviado Correctamente</h1>
 <p>¡Muchas gracias por tu mensaje! Lo vamos a tener muy en cuenta.</p>
-<p>Nosotros recibimos: </p>
-{% for info in informacion_usuario %}
-<p style="font-weight: bold;">{{ info }}</p>
-{% endfor %}
-<p>En caso de que los datos no se condigan a los enviados por vos, mandanmos un <a href="mailto:libroxlibro@gmail.com">mail</a>.</p>
 <p>Si querés seguir navegando por nuestra web, <u>te sugerimos leer</u> cómo <a href="{{ url_for('sobre_nosotros_bp.sobre_nosotros') }}">nació este proyecto</a> o <a href="{{ url_for('biblioteca_bp.biblioteca') }}">qué libros tenemos disponibles</a>.</p>
 {% endblock %}

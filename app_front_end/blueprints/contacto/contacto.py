@@ -1,10 +1,7 @@
 from flask import Blueprint,render_template,request, current_app
 from flask_mail import Message
-import os
 
 contacto_bp = Blueprint("contacto_bp", __name__)
-
-
 
 @contacto_bp.route('/',methods=['GET','POST'])
 def contacto():
@@ -18,6 +15,7 @@ def contacto():
         "Sábado":"Cerrado",
         "Domingo":"Cerrado"
     }
+    
     if request.method == 'POST':
         nombre = request.form.get('nombre_usuario')
         apellido = request.form.get('apellido_usuario')
@@ -25,52 +23,52 @@ def contacto():
         telefono = request.form.get('telefono_usuario')
         mensaje = request.form.get('mensaje_usuario')
 
-        mail_instance = current_app.extensions['mail']
+        try:
+            mail_instance = current_app.extensions['mail']
 
-        msg_admin = Message(
-            subject=f"Nuevo mensaje de LibroxLibro de {nombre} {apellido}",
-            recipients=["libroxlibro@gmail.com"],
-            body=f"""
-            Nueva consulta desde LibroxLibro:
-
-            Nombre: {nombre} {apellido}
-            Email: {email_usuario}
-            Teléfono: {telefono}
-
-            Mensaje:
-            {mensaje}
-            """
-        )
-        mail_instance.send(msg_admin)
-
-        # Mail para el usuario
-        msg_usuario = Message(
-            subject="Recibimos tu mensaje - LibroxLibro",
-            recipients=[email_usuario],
-            body=f"""
-            Hola {nombre},
-
-            Gracias por contactarte con LibroxLibro.
-            Recibimos tu mensaje y te responderemos a la brevedad.
-
-            Tu mensaje:
-            {mensaje}
-
-            Saludos,
-            El equipo de LibroxLibro
-            """
+            # Mail para el administrador
+            msg_admin = Message(
+                subject=f"Nuevo mensaje de LibroxLibro de {nombre} {apellido}",
+                recipients=["libroxlibrooficial@gmail.com"],
+                body=f"""Nueva consulta desde LibroxLibro:
+Nombre: {nombre} {apellido}
+Email: {email_usuario}
+Teléfono: {telefono}
+Mensaje:
+{mensaje}
+"""
             )
-        mail_instance.send(msg_usuario)
+            mail_instance.send(msg_admin)
 
-        return render_template(
-            'formulario_enviado.html',
-            titulo="Formulario Enviado Correctamente",
-            name=nombre,
-            surname=apellido,
-            email=email_usuario,
-            tel=telefono,
-            mensj=mensaje
-        )
+            # Mail para el usuario
+            msg_usuario = Message(
+                subject="Recibimos tu mensaje - LibroxLibro",
+                recipients=[email_usuario],
+                body=f"""Hola {nombre},
+Gracias por contactarte con LibroxLibro.
+Recibimos tu mensaje y te responderemos a la brevedad.
+Tu mensaje: {mensaje}
+Saludos,
+El equipo de LibroxLibro
+"""
+            )
+            mail_instance.send(msg_usuario)
+
+            return render_template(
+                'formulario_enviado.html',
+                titulo="Formulario Enviado Correctamente",
+                name=nombre,
+                surname=apellido,
+                email=email_usuario,
+                tel=telefono,
+                mensj=mensaje
+            )
+        
+        except Exception as e:
+            print(f"Error al enviar email: {str(e)}")
+            import traceback
+            traceback.print_exc()
+            return render_template('500.html', error=str(e)), 500
 
     return render_template(
         'contacto.html',

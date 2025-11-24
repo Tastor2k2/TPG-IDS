@@ -5,7 +5,7 @@
 {% block body %}
 <h1 class="titulo-pag">Contacto</h1>
     <p>Nos encotramos totalmente abiertos a recibir sugerencias y posibles mejoras para facilitar y agilizar el servicio que ofrecemos.</p>
-    <form action="{{ url_for('formulario_enviado_bp.formulario_enviado') }}" method="POST">
+    <form action="{{ url_for('contacto_bp.contacto') }}" method="POST">
         <label for="nombre" class="tit-form">Nombre</label><br>
         <input type="text" id="nombre" name="nombre_usuario" class="form-control" placeholder="Nombre"><br>
         <label for="apellido" class="tit-form">Apellido</label><br>

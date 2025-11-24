@@ -17,12 +17,13 @@ from blueprints.funcionamiento.funcionamiento import funcionamiento_bp
 from blueprints.busqueda.busqueda import busqueda_bp
 from blueprints.mis_libros.mis_libros import mis_libros_bp
 
+load_dotenv()
+
 app = Flask(__name__)
+
 BACK_URL = "http://127.0.0.1:5002"
 app.config['BACK_URL'] = BACK_URL
-app.secret_key = "super_secret" 
-
-load_dotenv()
+app.secret_key = "super_secret"
 
 app.config['MAIL_SERVER'] = os.getenv('MAIL_SERVER')
 app.config['MAIL_PORT'] = int(os.getenv('MAIL_PORT'))
@@ -33,8 +34,6 @@ app.config['MAIL_USE_SSL'] = os.getenv('MAIL_USE_SSL') == "True"
 app.config['MAIL_DEFAULT_SENDER'] = os.getenv('MAIL_DEFAULT_SENDER')
 
 mail = Mail(app)
-
-
 
 app.register_blueprint(formulario_enviado_bp, url_prefix="/formulario_enviado")
 app.register_blueprint(contacto_bp, url_prefix="/contacto")
@@ -58,10 +57,8 @@ def inject_globals():
         'BACK_URL': app.config['BACK_URL']
     }
 
-# Manejador de errores:
 @app.errorhandler(400)
 def page_not_found(error):
-    # Renderiza la plantilla 400.html, pasando el error a la plantilla
     return render_template('400.html', error=error), 400
 
 @app.errorhandler(401)
