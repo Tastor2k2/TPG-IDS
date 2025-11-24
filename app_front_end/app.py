@@ -1,4 +1,7 @@
 from flask import Flask,render_template
+from flask_mail import Mail, Message
+from dotenv import load_dotenv
+import os
 from blueprints.formulario_enviado.formulario_enviado import formulario_enviado_bp
 from blueprints.contacto.contacto import contacto_bp
 from blueprints.iniciar_sesion.iniciar_sesion import iniciar_sesion_bp
@@ -19,6 +22,20 @@ BACK_URL = "http://127.0.0.1:5002"
 app.config['BACK_URL'] = BACK_URL
 app.secret_key = "super_secret" 
 
+load_dotenv()
+
+app.config['MAIL_SERVER'] = os.getenv('MAIL_SERVER')
+app.config['MAIL_PORT'] = int(os.getenv('MAIL_PORT'))
+app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
+app.config['MAIL_USE_TLS'] = os.getenv('MAIL_USE_TLS') == "True"
+app.config['MAIL_USE_SSL'] = os.getenv('MAIL_USE_SSL') == "True"
+app.config['MAIL_DEFAULT_SENDER'] = os.getenv('MAIL_DEFAULT_SENDER')
+
+mail = Mail(app)
+
+
+
 app.register_blueprint(formulario_enviado_bp, url_prefix="/formulario_enviado")
 app.register_blueprint(contacto_bp, url_prefix="/contacto")
 app.register_blueprint(iniciar_sesion_bp, url_prefix="/iniciar_sesion")
@@ -33,6 +50,7 @@ app.register_blueprint(sobre_nosotros_bp, url_prefix="/sobre_nosotros")
 app.register_blueprint(funcionamiento_bp, url_prefix="/funcionamiento")
 app.register_blueprint(busqueda_bp, url_prefix="/busqueda")
 app.register_blueprint(mis_libros_bp, url_prefix="/mis_libros")
+
 
 @app.context_processor
 def inject_globals():
