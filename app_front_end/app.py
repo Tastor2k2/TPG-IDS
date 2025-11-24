@@ -1,5 +1,5 @@
 from flask import Flask,render_template
-from flask_mail import Mail, Message
+from flask_mail import Mail
 from dotenv import load_dotenv
 import os
 """
@@ -84,18 +84,6 @@ def inject_globals():
 Manejador de errores:
 Según el error, se renderiza alguno de estos templates.
 """
-@app.errorhandler(400)
-def page_not_found(error):
-    return render_template('400.html', error=error), 400
-
-@app.errorhandler(401)
-def page_not_found(error):
-    return render_template('401.html', error=error), 401
-
-@app.errorhandler(403)
-def page_not_found(error):
-    return render_template('403.html', error=error), 403
-
 @app.errorhandler(404)
 def handle_404(error):
     return render_template('404.html', error=error), 404
