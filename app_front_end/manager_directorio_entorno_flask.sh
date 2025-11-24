@@ -6,7 +6,7 @@ crearSubCarpetas() {
     mkdir images
     mkdir css
     cd css
-    touch styles.css
+    touch style.css
     cd ..
     mkdir js
     cd js
