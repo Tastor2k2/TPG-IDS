@@ -1,7 +1,6 @@
 from flask import Blueprint, jsonify, request
 from db import get_connection
 
-
 carga_libros_bp = Blueprint("carga_libros", __name__)
 
 """
@@ -10,7 +9,6 @@ carga un libro en la db del usuario
 @carga_libros_bp.route('/cargar', methods=['POST'])
 def cargar_libro():
 
-    
     data = request.get_json()
     titulo = data.get('titulo')
     autor = data.get('autor')
@@ -18,8 +16,6 @@ def cargar_libro():
     usuario_id = data.get("usuario_id")
     editorial = data.get('editorial')
     tematica = data.get('tematica')
-
-
    
     if not titulo or not autor or not codigo_isbn or not usuario_id or not editorial or not tematica:
         return jsonify({
@@ -69,8 +65,6 @@ def cargar_libro():
         cursor.close()
         conn.close()
 
-
-
 """
 Obtiene todos los libros de un usuario específico
 y los retorna en orden descendente segun su fecha de carga a la pagina
@@ -90,7 +84,6 @@ def obtener_libros(usuario_id):
 
         libros = cursor.fetchall()
 
-        # Agregar url pública para cada imagen
         for libro in libros:
             libro["imagen_url"] = f"/static/images/{libro['imagen']}" if libro["imagen"] else None
 
@@ -107,52 +100,3 @@ def obtener_libros(usuario_id):
         cursor.close()
         conn.close()
 
-
-"""
-Elimina un libro (solo si está en estado 'disponible')
-"""
-@carga_libros_bp.route('/eliminar/<int:libro_id>', methods=['DELETE'])
-def eliminar_libro(libro_id):
-
-    data = request.get_json()
-    usuario_id = data.get('usuario_id')
-    
-    if not usuario_id:
-        return jsonify({"error": "Se requiere usuario_id"}), 400
-    
-    conn = get_connection()
-    cursor = conn.cursor(dictionary=True)
-    
-    try:
-        cursor.execute(
-            "SELECT * FROM libros WHERE id = %s AND usuario_id = %s",
-            (libro_id, usuario_id)
-        )
-
-        libro = cursor.fetchone()
-        
-        if not libro:
-            return jsonify({"error": "Libro no encontrado o no te pertenece"}), 404
-        
-        if libro['estado_del_libro'] != 'disponible':
-            return jsonify({
-                "error": f"No se puede eliminar. El libro está en estado: {libro['estado_del_libro']}"
-            }), 400
-        
-        cursor.execute("DELETE FROM libros WHERE id = %s", (libro_id,))
-        conn.commit()
-        
-        return jsonify({
-            "message": "Libro eliminado correctamente",
-            "libro_id": libro_id,
-            "usuario_id": usuario_id,
-            "titulo": libro['titulo']
-        }), 200
-        
-    except Exception as e:
-        conn.rollback()
-        return jsonify({"error": f"Error al eliminar: {str(e)}"}), 500
-    
-    finally:
-        cursor.close()
-        conn.close()

@@ -5,31 +5,6 @@ intercambio_libros_bp  = Blueprint("intercambio_libros", __name__)
 
 
 """
-Muestra la cantidad total de libros que tiene el usuario
-"""
-@intercambio_libros_bp.route("/usuarios/<int:usuario_id>/tiene_libros", methods=["GET"])
-def tiene_libros(usuario_id):
-    conn = get_connection()
-    cursor = conn.cursor(dictionary=True)
-
-    try:
-        cursor.execute(
-            "SELECT COUNT(*) AS total FROM libros WHERE usuario_id = %s",
-            (usuario_id,)
-        )
-        total = cursor.fetchone()["total"]
-        return jsonify({"usuario_id": usuario_id, "total": total, "tiene_libros": total > 0}), 200
-    
-    except Exception as e:
-        conn.rollback()
-        return jsonify({"error": str(e)}), 500  
-
-    finally:
-        cursor.close()
-        conn.close() 
-
-
-"""
 Crea una solicitud de intercambio
 """
 @intercambio_libros_bp.route('/solicitar_intercambio', methods=['POST'])
@@ -101,7 +76,6 @@ def aceptar_intercambio():
     cursor = conn.cursor(dictionary=True)
     
     try:
-        # Obtener intercambio principal
         cursor.execute("SELECT * FROM intercambio_libro WHERE codigo_intercambio = %s", (codigo,))
         intercambio = cursor.fetchone()
         

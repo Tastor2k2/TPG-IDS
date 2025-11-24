@@ -1,5 +1,4 @@
 from flask import Flask
-from flask_cors import CORS
 from routes.carga_libros import carga_libros_bp
 from routes.datos_usuarios import datos_usuarios_bp
 from routes.intercambio_libros import intercambio_libros_bp
