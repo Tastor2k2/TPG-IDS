@@ -4,16 +4,17 @@
 
 <h1>Biblioteca general</h1>
 
+<!-- Si no hay libros, se muestra un mensaje -->
 {% if libros|length == 0 %}
     <p>No hay libros cargados.</p>
 {% else %}
     <div class="container">
         <div class="row">
-
+        <!-- Se recorre la colección y se muestra cada libro como una card Bootstrap -->
         {% for libro in libros %}
             <div class="col-md-3 mb-4">
                 <div class="card">
-
+                    <!-- Portada del libro: si hay imagen se usa la del libro, si no una por defecto -->
                     {% if libro.imagen %}
                         <img src="{{ URL_BACK_IMAGEN }}{{ libro.imagen }}" class="card-img-top">
                     {% else %}
@@ -27,6 +28,7 @@
                             Editorial: {{ libro.editorial }} <br>
                             ISBN: {{ libro.codigo_isbn }}
                         </p>
+                        <!-- Link al intercambio pasando el id del libro solicitado como query param (parametro de consulta) -->
                         <a href="{{ url_for('intercambio_bp.intercambio', libro_solicitado=libro.id) }}">
                             <button type="button" class="btn btn-success">Intercambiar</button>
                         </a>

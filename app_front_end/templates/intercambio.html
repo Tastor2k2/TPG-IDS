@@ -5,11 +5,14 @@
 {% block body %}
 <h1>SOLICITAR UN INTERCAMBIO</h1>
 
+<!-- El action incluye libro_solicitado como parametro de consulta -->
 <form id="form-intercambio" action="{{ url_for('intercambio_bp.intercambio', libro_solicitado=libro_solicitado) }}" method="post">
 
   <h2>Libro que ofrezco:</h2>
   <select name="libro_ofrecido" class="form-control" required>
+  <!-- Lista los libros del usuario -->
     {% for libro in libros_usuario %}
+    <!-- Se listan solo libros del usuario cuyo estado es "disponible" -->
       {% if libro.estado_del_libro == "disponible" %}
         <option value="{{ libro.id }}">
           {{ libro.titulo }} - {{ libro.autor }}
@@ -21,7 +24,7 @@
   <br>
 
   <h3>Libro solicitado:</h3>
-
+  <!-- Muestra el libro de la biblioteca que coincide con el id solicitado -->
   {% for libro in biblioteca %}
     {% if libro.id == libro_solicitado %}
       <p>

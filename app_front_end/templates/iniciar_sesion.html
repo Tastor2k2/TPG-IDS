@@ -4,6 +4,7 @@
 
 {% block body %}
 <h1>Iniciar Sesión</h1>
+    <!-- Formulario de Inicio de Sesión -->
     <form action="{{ url_for('iniciar_sesion_bp.iniciar_sesion') }}" method="post">
         <label for="usuario_o_mail">E-Mail o Usuario</label><br>
         <input type="text" id="usuario_o_mail" name="usuario_o_mail" class="form-control" placeholder="📧 E-Mail o Usuario" required><br>
