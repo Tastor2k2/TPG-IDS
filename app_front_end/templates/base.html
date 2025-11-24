@@ -116,12 +116,17 @@
     <div class="container">
         <div class="row">
             <div class="row d-flex flex-wrap justify-content-between">
-              <!-- Barra de Busqueda (modificar url_for y al apretar buscar debe redigirir a busqueda/<texto_buscado>) -->
-              <form action="{{ url_for('index_bp.index') }}" class="form-inline my-2 my-lg-0" method="post">
-                <input class="form-control mr-sm-2" type="search" placeholder="Buscá un Libro" aria-label="Search"><br>
-                <div class="d-grid gap-2 col-6 mx-auto">
-                  <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button><br>
-                </div>
+              <form action="{{ url_for('busqueda_bp.busqueda') }}" method="get" class="form-inline my-2 my-lg-0">
+                  <input class="form-control"
+                        type="search"
+                        name="search"
+                        placeholder="Buscá un Libro"
+                        aria-label="Buscar"><br>
+                  <div class="text-center">
+                  <button class="btn btn-outline-success" type="submit">
+                      Buscar
+                  </button>
+                  </div><br>
               </form>
               {% block body %}
               {% endblock %}
@@ -198,30 +203,5 @@
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
-{% if tematicas %}
-    <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const sliders = {{ tematicas|tojson }};
-      sliders.forEach(tematica => {
-        new Swiper(`.${tematica.id}-swiper`, {
-          slidesPerView: 4,
-          spaceBetween: 20,
-          loop: true,
-          navigation: {
-            nextEl: `.${tematica.id}-next`,
-            prevEl: `.${tematica.id}-prev`,
-          },
-          breakpoints: {
-            320: { slidesPerView: 1 },
-            768: { slidesPerView: 2 },
-            992: { slidesPerView: 3 },
-            1200: { slidesPerView: 4 },
-          },
-        });
-      });
-    });
-    </script>
-{% endif %}
-
   </body>
 </html>

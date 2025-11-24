@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Resultados de búsqueda{% endblock %}
+
+{% block body %}
+<h1>Resultados para "{{ search }}"</h1>
+
+{% if libros %}
+    <div class="row">
+        {% for libro in libros %}
+            <div class="col-md-3 mb-4">
+                <div class="card">
+                    <img src="{{ url_back }}/{{ libro.imagen_url }}" class="card-img-top">
+                    <div class="card-body">
+                        <h5>{{ libro.titulo }}</h5>
+                        <p>Autor: {{ libro.autor }}</p>
+                        <a href="{{ url_for('intercambio_bp.intercambio', libro_solicitado=libro.id) }}"
+                           class="btn btn-success">Intercambiar</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% else %}
+    <p>No se encontraron resultados.</p>
+{% endif %}
+
+{% endblock %}

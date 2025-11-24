@@ -79,25 +79,33 @@ y los retorna en orden descendente segun su fecha de carga a la pagina
 def obtener_libros(usuario_id):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
-    
+
     try:
-        cursor.execute("SELECT * FROM libros WHERE usuario_id = %s ORDER BY fecha_carga DESC ", (usuario_id,))
+        cursor.execute("""
+            SELECT id, titulo, autor, editorial, codigo_isbn, tematica, imagen, fecha_carga, estado_del_libro
+            FROM libros
+            WHERE usuario_id = %s
+            ORDER BY fecha_carga DESC
+        """, (usuario_id,))
 
         libros = cursor.fetchall()
-        
+
+        # Agregar url pública para cada imagen
+        for libro in libros:
+            libro["imagen_url"] = f"/static/images/{libro['imagen']}" if libro["imagen"] else None
+
         return jsonify({
             "usuario_id": usuario_id,
             "total_libros": len(libros),
             "libros": libros
         }), 200
-        
+
     except Exception as e:
-        return jsonify({"error": f"Error al obtener libros: {str(e)}"}), 500
-    
+        return jsonify({"error": str(e)}), 500
+
     finally:
         cursor.close()
         conn.close()
-
 
 
 """

@@ -101,6 +101,7 @@ def aceptar_intercambio():
     cursor = conn.cursor(dictionary=True)
     
     try:
+        # Obtener intercambio principal
         cursor.execute("SELECT * FROM intercambio_libro WHERE codigo_intercambio = %s", (codigo,))
         intercambio = cursor.fetchone()
         
@@ -113,52 +114,49 @@ def aceptar_intercambio():
             }), 400
 
         id_libro_solicitado = intercambio["id_libro_solicitado"]
-        id_libro_ofrecido = intercambio["id_libro_ofrecido"]
+        id_libro_ofrecido   = intercambio["id_libro_ofrecido"]
         id_usuario_solicitado = intercambio["id_usuario_solicitado"]
-        id_usuario_ofrecido = intercambio["id_usuario_ofrecido"]
+        id_usuario_ofrecido   = intercambio["id_usuario_ofrecido"]
 
-        cursor.execute("SELECT id, usuario_id, estado_del_libro FROM libros WHERE id = %s", (id_libro_solicitado,))
-        libro_solicitado = cursor.fetchone()
-        
-        cursor.execute("SELECT id, usuario_id, estado_del_libro FROM libros WHERE id = %s", (id_libro_ofrecido,))
-        libro_ofrecido = cursor.fetchone()
-
-        if not libro_solicitado or not libro_ofrecido:
-            return jsonify({"error": "Uno de los libros no existe"}), 404
-        
-        if libro_ofrecido.get("estado_del_libro") != 'pausa':
-            return jsonify({
-                "error": f"El libro ofrecido debe estar en 'pausa'. Estado actual: {libro_ofrecido.get('estado_del_libro')}"
-            }), 400
-
-        # REALIZAR EL INTERCAMBIO:
-        
+        # COMPLETAR EL INTERCAMBIO PRINCIPAL
         cursor.execute(
             "UPDATE libros SET usuario_id = %s, estado_del_libro = 'intercambiado' WHERE id = %s", 
             (id_usuario_ofrecido, id_libro_solicitado)
         )
-
         cursor.execute(
             "UPDATE libros SET usuario_id = %s, estado_del_libro = 'intercambiado' WHERE id = %s", 
             (id_usuario_solicitado, id_libro_ofrecido)
         )
-
         cursor.execute(
-            "UPDATE intercambio_libro SET estado_del_intercambio = %s, fecha_final = NOW() WHERE codigo_intercambio = %s",
-            ('completado', codigo)
+            "UPDATE intercambio_libro SET estado_del_intercambio = 'completado', fecha_final = NOW() WHERE codigo_intercambio = %s",
+            (codigo,)
         )
+
+        # CANCELAR AUTOMÁTICAMENTE TODOS LOS OTROS INTERCAMBIOS
+        cursor.execute("""
+            UPDATE intercambio_libro
+            SET estado_del_intercambio = 'cancelado', fecha_final = NOW()
+            WHERE estado_del_intercambio = 'espera'
+            AND codigo_intercambio != %s
+            AND (
+                id_libro_solicitado = %s
+                OR id_libro_ofrecido = %s
+                OR id_libro_solicitado = %s
+                OR id_libro_ofrecido = %s
+            )
+        """, (
+            codigo,
+            id_libro_solicitado,
+            id_libro_solicitado,
+            id_libro_ofrecido,
+            id_libro_ofrecido
+        ))
 
         conn.commit()
         
         return jsonify({
-            "message": "Intercambio completado exitosamente",
-            "codigo_intercambio": codigo,
-            "detalles": {
-                "libro_solicitado_id": id_libro_solicitado,
-                "libro_ofrecido_id": id_libro_ofrecido,
-                "nuevo_propietario_libro_solicitado": id_usuario_ofrecido,
-                "nuevo_propietario_libro_ofrecido": id_usuario_solicitado
-            }
+            "message": "Intercambio completado exitosamente — otros intercambios fueron cancelados",
+            "codigo_intercambio": codigo
         }), 200
         
     except Exception as e:
@@ -168,7 +166,6 @@ def aceptar_intercambio():
     finally:
         cursor.close()
         conn.close()
-
 """
 Cancela una solicitud de intercambio. Puede solicitarlo el solicitante o el propietario.
 """
@@ -225,13 +222,12 @@ def mostrar_intercambio(usuario_id):
                 datos_usuario_ofrecido.nombre_usuario AS solicitante_nombre,
                 datos_usuario_ofrecido.email_usuario AS solicitante_email,
                 datos_usuario_ofrecido.telefono_usuario AS solicitante_telefono,
-                usuario_ofrecido.direccion_usuario AS direccion_usuario_ofrecido,
-                usuario_solicitado.direccion_usuario AS direccion_usuario_solicitado,
-
+                datos_usuario_ofrecido.direccion_usuario AS solicitante_direccion,
 
                 datos_usuario_solicitado.nombre_usuario AS solicitado_nombre,
                 datos_usuario_solicitado.email_usuario AS solicitado_email,
                 datos_usuario_solicitado.telefono_usuario AS solicitado_telefono,
+                datos_usuario_solicitado.direccion_usuario AS solicitado_direccion,
 
                 libro_solicitado.titulo AS libro_solicitado,
                 libro_ofrecido.titulo AS libro_ofrecido,
@@ -240,8 +236,7 @@ def mostrar_intercambio(usuario_id):
                 intercambio_libro.estado_del_intercambio,
 
                 intercambio_libro.id_usuario_solicitado,
-                intercambio_libro.
-                
+                intercambio_libro.id_usuario_ofrecido
             FROM intercambio_libro
 
             JOIN datos_usuario AS datos_usuario_ofrecido
@@ -257,7 +252,7 @@ def mostrar_intercambio(usuario_id):
                 ON intercambio_libro.id_libro_ofrecido = libro_ofrecido.id
 
             WHERE intercambio_libro.id_usuario_ofrecido = %s
-               OR intercambio_libro.id_usuario_solicitado = %s
+            OR intercambio_libro.id_usuario_solicitado = %s
 
             ORDER BY intercambio_libro.fecha_inicio DESC;
         """

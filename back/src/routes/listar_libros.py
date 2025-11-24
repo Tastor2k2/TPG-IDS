@@ -45,6 +45,53 @@ def listar_libros():
 """
 Devuelve detalles de un libro específico
 """
+@listar_libros_bp.route('/buscar', methods=['GET'])
+def buscar_libros():
+    search = request.args.get("search", "").strip()
+    usuario_id = request.args.get("usuario_id", type=int)
+
+    if usuario_id is None:
+        return jsonify({"error": "usuario_id requerido"}), 400
+
+    wildcard = f"%{search}%"
+
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    try:
+        query = """
+            SELECT *
+            FROM libros
+            WHERE estado_del_libro = 'disponible'
+              AND usuario_id != %s
+              AND (
+                    titulo LIKE %s
+                 OR autor LIKE %s
+                 OR codigo_isbn LIKE %s
+                 OR editorial LIKE %s
+                 OR tematica LIKE %s
+              )
+        """
+
+        cursor.execute(query, (usuario_id, wildcard, wildcard, wildcard, wildcard, wildcard))
+
+        libros = cursor.fetchall()
+
+        for libro in libros:
+            libro["imagen_url"] = f"/static/images/{libro['imagen']}"
+
+        return jsonify({
+            "total_libros": len(libros),
+            "libros": libros
+        }), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+    finally:
+        cursor.close()
+        conn.close()
+
 @listar_libros_bp.route('/libros/<int:libro_id>', methods=['GET'])
 def obtener_libro(libro_id):
     conn = get_connection()

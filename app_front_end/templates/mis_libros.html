@@ -3,80 +3,26 @@
 {% block titulo %}Mis libros{% endblock %}
 
 {% block body %}
+<h1>Mis libros</h1>
 
-<div class="col-12 mt-4">
-
-    <h2 class="text-center mb-4">Mis libros cargados</h2>
-
-    <!-- Botón para cargar un nuevo libro -->
-    <div class="text-end mb-3">
-        <a href="{{ url_for('cargar_libro') }}" class="btn btn-dark">Cargar nuevo libro</a>
-    </div>
-
-    {% if not libros %}
-        <div class="alert alert-warning text-center">
-            No tenes libros cargados todavia
-        </div>
-    {% endif %}
-
-    <div class="row g-4">
+{% if libros %}
+    <div class="row">
         {% for libro in libros %}
-        <div class="col-12 col-md-6 col-lg-4">
-            <div class="card shadow-sm p-3 position-relative">
-
-                <!-- Imagen, si no encuentra la imagen pongo una por defecto -->
-                {% if libro.imagen %}
-                    <img src="{{ libro.imagen }}">
-                {% else %}
-                    <img src="{{ url_for('static', filename='images/ids1.png') }}">
-                {% endif %}
-
-                <h5 class="fw-bold">{{ libro.titulo }}</h5>
-                <p class="text-muted small mb-0">{{ libro.autor }}</p>
-                <p class="small text-secondary mb-1">{{ libro.editorial }}</p>
-
-                <span class="badge bg-dark mb-2">{{ libro.tematica }}</span>
-
-                <!-- estado del libro -->
-                {% if libro.estado_del_libro == "disponible" %}
-                    <span class="badge bg-success">Disponible</span>
-                {% elif libro.estado_del_libro == "pausa" %}
-                    <span class="badge bg-warning text-dark">En espera</span>
-                {% elif libro.estado_del_libro == "intercambiado" %}
-                    <span class="badge bg-secondary">Intercambiado</span>
-                {% endif %}
-
-                <div class="d-flex justify-content-between mt-3">
-                    <!-- boton favorito -->
-                    <form action="{{ url_for('añadir_favorito', libro_id=libro.id) }}"
-                          method="POST">
-                        <button type="submit" class="btn btn-outline-danger btn-sm">
-                            {% if libro.es_favorito %}
-                                ❤️ Quitar
-                            {% else %}
-                                🤍 Agregar
-                            {% endif %}
-                        </button>
-                    </form>
-                    <!-- boton eliminar -->
-                    {% if libro.estado_del_libro == "disponible" %}
-                    <form action="{{ url_for('eliminar_libro', libro_id=libro.id) }}"
-                          method="post"
-                          onsubmit="return confirm('¿Seguro que queres eliminar este libro?');">
-                        <button type="submit" class="btn btn-outline-dark btn-sm">🗑 Eliminar</button>
-                    </form>
-                    {% else %}
-                        <button class="btn btn-outline-secondary btn-sm" disabled title="No se puede eliminar por su estado">
-                            🗑 No disponible
-                        </button>
-                    {% endif %}
+            <div class="col-md-3 mb-4">
+                <div class="card">
+                    <img src="{{ URL_BACK_IMAGEN }}{{ libro.imagen_url }}" class="card-img-top">
+                    <div class="card-body">
+                        <h5>{{ libro.titulo }}</h5>
+                        <p>{{ libro.autor }}</p>
+                        <p>Estado: {{ libro.estado_del_libro }}</p>
+                    </div>
 
                 </div>
             </div>
-        </div>
         {% endfor %}
     </div>
-
-</div>
+{% else %}
+    <p>No tenés libros cargados.</p>
+{% endif %}
 
 {% endblock %}

@@ -23,4 +23,4 @@ def registrarse():
         data = {"nombre":usuario,"email":mail,"contraseña":contrasena,"telefono_usuario":telefono,
                 "direccion_usuario":direccion,"dni_usuario":dni}
         requests.post(f"{BACK_URL}/datos/registrar", json=data)
-    return redirect(url_for('index',user=usuario,email=mail,mail_conf=mail_confirmacion,password=contrasena))
+    return redirect(url_for('index_bp.index'))

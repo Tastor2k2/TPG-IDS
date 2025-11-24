@@ -36,26 +36,24 @@ def cargar_libro():
     }
 
     # Enviar JSON
-    r = requests.post(
+    envio_info_back = requests.post(
         f"{BACK_URL}/libros/cargar",
         json=data_json
     )
 
-    #if r.status_code != 201:
-    #    return {"error": "No se pudo crear el libro"}, 400
-    libro_id = r.json()["libro_id"]
+    libro_id = envio_info_back.json()["libro_id"]
 
     files = {
         "imagen": (imagen.filename, imagen.stream, imagen.mimetype)
     }
 
-    r2 = requests.post(
+    envio_imagen_back = requests.post(
         f"{BACK_URL}/libros/{libro_id}/subir_imagen",
         files=files
     )
-    print("STATUS IMAGEN:", r2.status_code)
-    print("RESPUESTA IMAGEN:", r2.text)
-    if r2.status_code != 200:
+    print("STATUS IMAGEN:", envio_imagen_back.status_code)
+    print("RESPUESTA IMAGEN:", envio_imagen_back.text)
+    if envio_imagen_back.status_code != 200:
         return {"error": "Libro creado pero error al subir imagen"}, 500
 
     return redirect(url_for("perfil_bp.perfil", id_usuario=session["user_id"]))

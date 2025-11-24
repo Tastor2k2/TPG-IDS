@@ -19,8 +19,8 @@ def intercambio():
 
         r = requests.get(f"{BACK_URL}/libros/mis-libros/{id_usuario}")
         mis_libros = r.json().get("libros", [])
-
-        if not mis_libros:
+        libros_disponibles = [libro for libro in mis_libros if libro.get("estado_del_libro") == "disponible"]
+        if len(libros_disponibles) == 0:
             return redirect(url_for("cargar_libro_bp.cargar_libro"))
 
         r_biblio = requests.get(
