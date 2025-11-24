@@ -140,7 +140,6 @@ desinstalarWerkzeug
 desinstalarPythonDotenv
 desinstalarMysqlConnector
 desinstalarFlaskSession
-desinstalarFlaskCors
 desinstalarFlaskMail
 desinstalarFlask
 
