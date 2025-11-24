@@ -1,18 +1,5 @@
 #!/bin/bash
 
-eliminarCache() {
-    if [[ -d "__pycache__" ]]; then
-        echo ""
-        echo "---------------------------Eliminando __pycache__---------------------------"
-        echo ""
-        rm -rf __pycache__
-    else
-        echo ""
-        echo "---------------------------No existe __pycache__---------------------------"
-        echo ""
-    fi
-}
-
 desactivarEntorno() {
     if [[ -z "$VIRTUAL_ENV" ]]; then # True si da cero, queriendo decir que no hay entorno virtual activo.
         echo ""
@@ -117,14 +104,6 @@ desinstalarRequests() {
     fi
 }
 
-eliminarSubCarpetas() {
-    rm -r "static"
-    rm -r "templates"
-    rm -r "app.py"
-    rm -r "__init__.py"
-    # Seguir añadiendo carpetas a eliminar en caso de ser deseado...
-}
-
 desinstalarRequests
 
 desinstalarMysqlConnector
@@ -140,7 +119,3 @@ desactivarEntorno
 eliminarEnv
 
 eliminarVenv
-
-eliminarCache
-
-eliminarSubCarpetas

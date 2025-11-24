@@ -158,6 +158,7 @@ Dentro de `routes` se encuentran todos los blueprints referenciados por `app.py`
 - __listar_libros.py__ Maneja la lógica del muestreo de libros para la biblioteca y la barra de búsqueda.
     - __listar_libros()__ Devuelve todos los libros disponibles para intercambio (de todos los usuarios) excluyendo los libros del propio usuario solicitante.
     - __buscar_libros()__ Busca el libro en la base de datos (mediante cualquier campo del libro presente en la tabla) y permite que se puedan poner palabras similares a la buscada.
+    - __obtener_libro(libro_id)__ Conecta con la base de datos y busca el libro con el id especificado por parámetro en la tabla libros.
 
 #### [scripts](back/SCRIPTS_BACK.md)
 
@@ -173,12 +174,11 @@ Dentro de `routes` se encuentran todos los blueprints referenciados por `app.py`
 
 - Base de datos: MYSQL
 
-- Dependencias varias: Flask Mail, Flask Cors, Flask Session, Dotenv, Mysql Connector, Request y Werkzeug
+- Dependencias varias: Flask Mail, Flask Session, Dotenv, Mysql Connector, Request y Werkzeug
 
 ### Casos de uso de dependencias
 
 - __Flask mail:__ Se utiliza para el template `contacto.html` donde se envían consultas hacia la página, suferencias, y demás mensajes.
-- __Flask Cors:__ ?? quizas quitarlo
 - __Flask Session:__ Se utiliza para las validaciones de sesion iniciada de usuarios, para utilizar las funcionalidades principales de la página.
 - __Dotenv:__ Se utiliza para el manejo de archivos .env.
 - __Mysql Connector:__ Se utiliza para la comunicación entre la base de datos y el front.
