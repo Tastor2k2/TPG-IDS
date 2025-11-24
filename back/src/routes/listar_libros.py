@@ -92,3 +92,25 @@ def buscar_libros():
         cursor.close()
         conn.close()
   
+@listar_libros_bp.route('/libros/<int:libro_id>', methods=['GET'])
+def obtener_libro(libro_id):
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    try:
+        cursor.execute("SELECT * FROM libros WHERE id = %s", (libro_id,))
+        libro = cursor.fetchone()
+
+        if not libro:
+            return jsonify({"error": "Libro no encontrado"}), 404
+        
+        libro["imagen_url"] = f"/static/images/{libro['imagen']}"
+
+        return jsonify(libro), 200
+    
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+    finally:
+        cursor.close()
+        conn.close()  
