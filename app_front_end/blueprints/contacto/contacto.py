@@ -3,6 +3,14 @@ from flask_mail import Message
 
 contacto_bp = Blueprint("contacto_bp", __name__)
 
+"""
+Esta función envía al mail rellenado en el formularo,
+un mail donde se le muestra que su mensaje de consulta
+fué enviado exitosamente junto con sus datos ingresados.
+Envía un mail a la direccion libroxlibrooficial@gmail.com
+donde el emisor es el mail rellenado en el formulario y
+recibe el mensaje insertado.
+"""
 @contacto_bp.route('/',methods=['GET','POST'])
 def contacto():
     title="¡Contactate con Nosotros!"
@@ -25,7 +33,6 @@ def contacto():
 
         try:
             mail_instance = current_app.extensions['mail']
-
             # Mail para el administrador
             msg_admin = Message(
                 subject=f"Nuevo mensaje de LibroxLibro de {nombre} {apellido}",
@@ -39,7 +46,6 @@ Mensaje:
 """
             )
             mail_instance.send(msg_admin)
-
             # Mail para el usuario
             msg_usuario = Message(
                 subject="Recibimos tu mensaje - LibroxLibro",
