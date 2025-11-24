@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# TODOS LOS CHEQUEOS DE INSTALACION SE OCULTAN DE LA SALIDA DE LA TERMINAL, PARA QUE NO MUEVA LOS MENSAJES DE CONFIRMACION.
-
 # Ejecutar Para Crear y activar el backend:
 # source activacion_backend.sh
 
@@ -132,19 +130,6 @@ instalarPython312Venv() {
     fi
 }
 
-instalarFlaskCors() {
-    if pip list | grep flask-cors > /dev/null 2>&1 ; then
-        echo ""
-        echo "---------------------------Flask-Cors ya estaba instalado---------------------------"
-        echo ""
-    else
-        echo ""
-        echo "---------------------------Instalando Flask-Cors---------------------------"
-        echo ""
-        pip install flask-cors
-    fi
-}
-
 instalarMysqlConnector() {
     if pip list | grep mysql > /dev/null 2>&1 ; then
         echo ""
@@ -171,6 +156,19 @@ instalarFlaskSession() {
     fi
 }
 
+instalarWerkzeug() {
+    if pip list | grep Werkzeug > /dev/null 2>&1 ; then
+        echo ""
+        echo "---------------------------Werkzeug ya estaba instalado---------------------------"
+        echo ""
+    else
+        echo ""
+        echo "---------------------------Instalando Werkzeug---------------------------"
+        echo ""
+        pip install Werkzeug
+    fi
+}
+
 crearEnv
 
 cd src
@@ -188,3 +186,4 @@ instalarFlaskCors
 instalarFlaskSession
 instalarMysqlConnector
 instalarDotenv
+instalarWerkzeug

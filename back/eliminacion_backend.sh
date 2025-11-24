@@ -1,23 +1,5 @@
 #!/bin/bash
 
-# TODOS LOS CHEQUEOS DE INSTALACION SE OCULTAN DE LA SALIDA DE LA TERMINAL, PARA QUE NO MUEVA LOS MENSAJES DE CONFIRMACION.
-
-# Ejecutar Para eliminar todo lo relacionado al backend:
-# source eliminacion_backend.sh
-
-eliminarCache() {
-    if [[ -d "__pycache__" ]]; then
-        echo ""
-        echo "---------------------------Eliminando __pycache__---------------------------"
-        echo ""
-        rm -rf __pycache__
-    else
-        echo ""
-        echo "---------------------------No existe __pycache__---------------------------"
-        echo ""
-    fi
-}
-
 desactivarEntorno() {
     if [[ -z "$VIRTUAL_ENV" ]]; then # True si da cero, queriendo decir que no hay entorno virtual activo.
         echo ""
@@ -66,19 +48,6 @@ desinstalarPythonDotenv() {
     else
         echo ""
         echo "---------------------------Python-dotenv no estaba instalado---------------------------"
-        echo ""
-    fi
-}
-
-desinstalarFlaskCors() {
-    if pip list | grep flask-cors > /dev/null 2>&1 ; then
-        echo ""
-        echo "---------------------------Desinstalando Flask-Cors---------------------------"
-        echo ""
-        pip uninstall -y flask-cors
-    else
-        echo ""
-        echo "---------------------------Flask-Cors no estaba instalado---------------------------"
         echo ""
     fi
 }
@@ -135,6 +104,19 @@ desinstalarFlaskSession() {
     fi
 }
 
+desinstalarWerkzeug() {
+    if pip list | grep Werkzeug > /dev/null 2>&1 ; then
+        echo ""
+        echo "---------------------------Desinstalando Werkzeug---------------------------"
+        echo ""
+        pip uninstall -y Werkzeug
+    else
+        echo ""
+        echo "---------------------------Werkzeug no estaba instalado---------------------------"
+        echo ""
+    fi
+}
+
 existeSrc() {
     if [[ -d "src" ]]; then
         return 0
@@ -148,37 +130,20 @@ mensajeSrc() {
     echo ""
 }
 
-eliminarCarpetas() {
-    if [[ "$(basename "$PWD")" = "src" ]]; then
-        cd ..
-    fi
-    if existeSrc; then
-        echo ""
-        echo "---------------------------Eliminando src y sub-carpetas---------------------------"
-        echo ""
-        rm -r src
-    else
-        mensajeSrc
-    fi
-    rm -r "__init__.py"
-}
-
 eliminarEnv
 
 if existeSrc; then
     cd src
 fi
 
+desinstalarWerkzeug
 desinstalarPythonDotenv
 desinstalarMysqlConnector
 desinstalarFlaskSession
-desinstalarFlaskCors
 desinstalarFlaskMail
 desinstalarFlask
 
 desactivarEntorno
 
 eliminarVenv
-eliminarCache
-eliminarCarpetas
 

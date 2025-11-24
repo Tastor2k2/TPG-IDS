@@ -1,19 +1,5 @@
 #!/bin/bash
 
-# SE ASUME QUE EL DIRECTORIO EXISTE, ESTE SCRIPT CREA LO NECESARIO PARA FUNCIONAR CON FLASK.
-# TODOS LOS CHEQUEOS DE INSTALACION SE OCULTAN DE LA SALIDA DE LA TERMINAL, PARA QUE NO MUEVA LOS MENSAJES DE CONFIRMACION.
-
-# Ejecutar Para Crear (y quedar dentro del directorio):
-# source activacion_entorno_flask.sh nombre_carpeta
-
-# Ejecutar Para Crear (y quedar fuera del directorio):
-# bash activacion_entorno_flask.sh nombre_carpeta
-# si se ejecuta este comando, habrá que entrar manualmente y activar el entorno.
-
-# PROJECT_FOLDER_NAME=$1
-
-# cd $PROJECT_FOLDER_NAME
-
 instalarPython3() {
     if python3 --version > /dev/null 2>&1 ; then
     echo ""
@@ -169,8 +155,10 @@ instalarRequests() {
 }
 
 ejecutar() {
-    cd ..
-    python3 -m app_front_end.app
+    echo ""
+    echo "---------------------------Ejecutando el entorno---------------------------"
+    echo ""
+    python3 app.py
 }
 
 instalarPython3
