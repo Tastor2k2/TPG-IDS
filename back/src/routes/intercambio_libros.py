@@ -207,6 +207,7 @@ def mostrar_intercambio(usuario_id):
                 libro_ofrecido.titulo AS libro_ofrecido,
 
                 intercambio_libro.fecha_inicio,
+                intercambio_libro.fecha_final,
                 intercambio_libro.estado_del_intercambio,
 
                 intercambio_libro.id_usuario_solicitado,

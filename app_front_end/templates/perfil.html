@@ -16,14 +16,25 @@
 {% if historial.pendientes %}
     {% for item in historial.pendientes %}
         <p>
-            Código: {{ item.codigo_intercambio }} <br>
-            Solicitante: {{ item.solicitante_nombre }} <br>
-            Libro ofrecido: {{ item.libro_ofrecido }} <br>
-            Libro solicitado: {{ item.libro_solicitado }} <br>
-            Fecha: {{ item.fecha_inicio }}<br>
-            Teléfono: {{ item.solicitante_telefono }} <br>
-            Dirección: {{ item.solicitante_direccion }} <br>
-            Mail: {{ item.solicitante_email }} <br>
+            {% if item.id_usuario_solicitado == id %}
+                Código: {{ item.codigo_intercambio }} <br>
+                Solicitante: {{ item.solicitante_nombre }} <br>
+                Libro ofrecido: {{ item.libro_ofrecido }} <br>
+                Libro solicitado: {{ item.libro_solicitado }} <br>
+                Fecha de inicio: {{ item.fecha_inicio }}<br>
+                Teléfono: {{ item.solicitante_telefono }} <br>
+                Dirección: {{ item.solicitante_direccion }} <br>
+                Mail: {{ item.solicitante_email }} <br>
+            {% else %}
+                Código: {{ item.codigo_intercambio }} <br>
+                Solicitante: {{ item.solicitado_nombre }} <br>
+                Libro ofrecido: {{ item.libro_ofrecido }} <br>
+                Libro solicitado: {{ item.libro_solicitado }} <br>
+                Fecha de inicio: {{ item.fecha_inicio }}<br>
+                Teléfono: {{ item.solicitado_telefono }} <br>
+                Dirección: {{ item.solicitado_direccion }} <br>
+                Mail: {{ item.solicitado_email }} <br>
+            {% endif %}
         </p>
         <!-- Si el usuario actual es el "solicitado", puede ACEPTAR o RECHAZAR -->
         {% if item.id_usuario_solicitado == id %}
@@ -59,14 +70,27 @@
 {% if historial.completados %}
     {% for item in historial.completados %}
         <p>
-            Código: {{ item.codigo_intercambio }} <br>
-            Solicitante: {{ item.solicitante_nombre }} <br>
-            Libro ofrecido: {{ item.libro_ofrecido }} <br>
-            Libro solicitado: {{ item.libro_solicitado }} <br>
-            Fecha: {{ item.fecha_inicio }} <br> 
-            Teléfono: {{ item.solicitante_telefono }} <br>
-            Dirección: {{ item.solicitante_direccion }} <br>
-            Mail: {{ item.solicitante_email }} <br>
+            {% if item.id_usuario_solicitado == id %}
+                Código: {{ item.codigo_intercambio }} <br>
+                Solicitante: {{ item.solicitante_nombre }} <br>
+                Libro ofrecido: {{ item.libro_ofrecido }} <br>
+                Libro solicitado: {{ item.libro_solicitado }} <br>
+                Fecha de inicio: {{ item.fecha_inicio }}<br>
+                Fecha final: {{ item.fecha_final }}<br>
+                Teléfono: {{ item.solicitante_telefono }} <br>
+                Dirección: {{ item.solicitante_direccion }} <br>
+                Mail: {{ item.solicitante_email }} <br>
+            {% else %}
+                Código: {{ item.codigo_intercambio }} <br>
+                Solicitante: {{ item.solicitado_nombre }} <br>
+                Libro ofrecido: {{ item.libro_ofrecido }} <br>
+                Libro solicitado: {{ item.libro_solicitado }} <br>
+                Fecha de inicio: {{ item.fecha_inicio }}<br>
+                Fecha final: {{ item.fecha_final }}<br>
+                Teléfono: {{ item.solicitado_telefono }} <br>
+                Dirección: {{ item.solicitado_direccion }} <br>
+                Mail: {{ item.solicitado_email }} <br>
+            {% endif %}
         </p>
         <hr>
     {% endfor %}
@@ -79,14 +103,27 @@
 {% if historial.cancelados %}
     {% for item in historial.cancelados %}
         <p>
-            Código: {{ item.codigo_intercambio }} <br>
-            Solicitante: {{ item.solicitante_nombre }} <br>
-            Libro ofrecido: {{ item.libro_ofrecido }} <br>
-            Libro solicitado: {{ item.libro_solicitado }} <br>
-            Fecha: {{ item.fecha_inicio }} <br>
-            Teléfono: {{ item.solicitante_telefono }} <br>
-            Dirección: {{ item.solicitante_direccion }} <br>
-            Mail: {{ item.solicitante_email }} <br>
+         {% if item.id_usuario_solicitado == id %}
+                Código: {{ item.codigo_intercambio }} <br>
+                Solicitante: {{ item.solicitante_nombre }} <br>
+                Libro ofrecido: {{ item.libro_ofrecido }} <br>
+                Libro solicitado: {{ item.libro_solicitado }} <br>
+                Fecha de inicio: {{ item.fecha_inicio }}<br>
+                Fecha final: {{ item.fecha_final }}<br>
+                Teléfono: {{ item.solicitante_telefono }} <br>
+                Dirección: {{ item.solicitante_direccion }} <br>
+                Mail: {{ item.solicitante_email }} <br>
+            {% else %}
+                Código: {{ item.codigo_intercambio }} <br>
+                Solicitante: {{ item.solicitado_nombre }} <br>
+                Libro ofrecido: {{ item.libro_ofrecido }} <br>
+                Libro solicitado: {{ item.libro_solicitado }} <br>
+                Fecha de inicio: {{ item.fecha_inicio }}<br>
+                Fecha final: {{ item.fecha_final }}<br>
+                Teléfono: {{ item.solicitado_telefono }} <br>
+                Dirección: {{ item.solicitado_direccion }} <br>
+                Mail: {{ item.solicitado_email }} <br>
+            {% endif %}
         </p>
         <hr>
     {% endfor %}
