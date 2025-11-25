@@ -17,8 +17,8 @@ def registrarse():
                 * nombre_usuario, email_registro, email_confirmacion, contrasena_registro,
                     telefono_usuario, direccion_usuario, dni_usuario.
             - Se validan los campo:
-                * Si faltan: usuario, mail, mail_confirmacion o contrasena, va a haber un error 400 (no se pudo procesar solicitud).
-                * Si mail != mail_confirmacion, va a haber un error 400.
+                * Si faltan: usuario, mail, mail_confirmacion o contrasena, se vuelve a renderizar el templete de registrarse.
+                * Si mail != mail_confirmacion, se vuelve a renderizar el templete de registrarse.
             - Arma el payload JSON (info en formato JSON que le llega a la DB) con las claves que espera el backend:
             - Envía POST a {BACK_URL}/datos/registrar con ese JSON.
             - Redirige a la home (index_bp.index) tras el intento de registro.
@@ -46,9 +46,9 @@ def registrarse():
         direccion = request.form.get('direccion_usuario')
         dni = request.form.get('dni_usuario')
         if (not usuario) or (not mail) or (not mail_confirmacion) or (not contrasena):
-            return jsonify({"error": "Faltan campos por rellenar"}),400
+            return render_template('registrarse.html', titulo=title)
         if  (mail != mail_confirmacion):
-            return jsonify({"error": "Los mails no coinciden"}),400
+            return render_template('registrarse.html', titulo=title)
         data = {"nombre":usuario,"email":mail,"contraseña":contrasena,"telefono_usuario":telefono,
                 "direccion_usuario":direccion,"dni_usuario":dni}
         requests.post(f"{BACK_URL}/datos/registrar", json=data)

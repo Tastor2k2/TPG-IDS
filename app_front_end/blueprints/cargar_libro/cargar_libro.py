@@ -52,7 +52,7 @@ def cargar_libro():
     imagen = request.files.get("imagen")
 
     # Validación básica
-    if not titulo or not editorial or not isbn or not tematica:
+    if not titulo or not autor or not editorial or not isbn or not tematica or not imagen:
         return jsonify({"error": "Faltan datos"}), 400
 
     BACK_URL = current_app.config["BACK_URL"]
