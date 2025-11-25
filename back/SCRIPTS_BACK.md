@@ -45,6 +45,18 @@ Si no hay nada preparado para activar el entorno, se realizan estos pasos en el 
 
 - Instala `Werkzeuf`
 
+Despues de tener todas las dependencias y el entorno activado, se inicializa la base de datos con el siguiente comando dentro de la carpeta `src`:
+
+```shell
+python3 init_db.py
+```
+
+Finalmente se ejecuta `app.py` dentro de la carpeta `src` con esta linea:
+
+```shell
+python3 app.py
+```
+
 ## ⚠️ eliminacion_backend.sh ⚠️
 
 Este script se ejecuta de esta forma:
@@ -59,3 +71,5 @@ de activar el entorno hasta la eliminacioń de la carpeta `.venv`.
 ### Detalles extra
 
 Todos los scripts de bash del backend, de querer ser ejecutados, requieren que el usuario esté ubicado en este caso la carpeta __back__.
+
+Se asume que las carpetas del proyecto necesarias para hacerlo funcionar ya existen.

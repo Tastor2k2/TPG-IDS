@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Ejecutar Para Crear y activar el backend:
-# source activacion_backend.sh
-
 instalarPython3() {
     if python3 --version > /dev/null 2>&1 ; then
         echo ""
@@ -169,6 +166,20 @@ instalarWerkzeug() {
     fi
 }
 
+iniciarDb() {
+    echo ""
+    echo "---------------------------Inicializando la Base de Datos---------------------------"
+    echo ""
+    python3 init_db.py
+}
+
+ejecutar() {
+    echo ""
+    echo "---------------------------Ejecutando el entorno del back---------------------------"
+    echo ""
+    python3 app.py
+}
+
 crearEnv
 
 cd src
@@ -187,3 +198,6 @@ instalarFlaskSession
 instalarMysqlConnector
 instalarDotenv
 instalarWerkzeug
+
+iniciarDb
+ejecutar

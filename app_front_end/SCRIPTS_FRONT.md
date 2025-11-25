@@ -61,3 +61,5 @@ de activar el entorno hasta la eliminacioń de la carpeta `.venv`.
 ### Detalles extra
 
 Todos los scripts de bash del frontend, de querer ser ejecutados, requieren que el usuario esté ubicado en este caso la carpeta __app_front_end__.
+
+Se asume que las carpetas del proyecto necesarias para hacerlo funcionar ya existen.

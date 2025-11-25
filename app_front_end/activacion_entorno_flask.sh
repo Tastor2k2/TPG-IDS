@@ -156,7 +156,7 @@ instalarRequests() {
 
 ejecutar() {
     echo ""
-    echo "---------------------------Ejecutando el entorno---------------------------"
+    echo "---------------------------Ejecutando el entorno del front---------------------------"
     echo ""
     python3 app.py
 }
