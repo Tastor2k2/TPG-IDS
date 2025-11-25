@@ -4,23 +4,25 @@
 
 {% block body %}
 <h1>Mis libros</h1>
-
+<!-- Si la variable 'libros' posee elementos, se listan en tarjetas. Si no, se muestra un mensaje -->
 {% if libros %}
     <div class="row">
+        <!-- Se recorre la lista de libros del usuario -->
         {% for libro in libros %}
             <div class="col-md-3 mb-4">
                 <div class="card">
+                    <!-- Datos principales del libro -->
                     <img src="{{ URL_BACK_IMAGEN }}{{ libro.imagen_url }}" class="card-img-top">
                     <div class="card-body">
                         <h5>{{ libro.titulo }}</h5>
                         <p>{{ libro.autor }}</p>
                         <p>Estado: {{ libro.estado_del_libro }}</p>
                     </div>
-
                 </div>
             </div>
         {% endfor %}
     </div>
+<!-- Caso sin resultados: el usuario no tiene libros cargados -->
 {% else %}
     <p>No tenés libros cargados.</p>
 {% endif %}

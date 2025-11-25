@@ -5,20 +5,28 @@
 {% block body %}
 <h1 class="titulo-pag">Contacto</h1>
     <p>Nos encotramos totalmente abiertos a recibir sugerencias y posibles mejoras para facilitar y agilizar el servicio que ofrecemos.</p>
+    <!-- Formulario de Contacto -->
     <form action="{{ url_for('contacto_bp.contacto') }}" method="POST">
+        <!-- Nombre -->
         <label for="nombre" class="tit-form">Nombre</label><br>
         <input type="text" id="nombre" name="nombre_usuario" class="form-control" placeholder="Nombre"><br>
+        <!-- Apellido -->
         <label for="apellido" class="tit-form">Apellido</label><br>
         <input type="text" id="apellido" name="apellido_usuario" class="form-control" placeholder="Apellido"><br>
+        <!-- Mail -->
         <label for="e-mail" class="tit-form">E-Mail</label><br>
         <input type="email" id="e-mail" name="email_usuario" class="form-control" placeholder="E-Mail"><br>
+        <!-- Teléfono -->
         <label for="telefono" class="tit-form">Teléfono</label><br>
         <input type="tel" id="telefono" name="telefono_usuario" class="form-control" placeholder="Teléfono"><br>
+        <!-- Mensaje -->
         <label for="mensaje" class="tit-form">Mensaje</label><br>
         <textarea id="mensaje" name="mensaje_usuario" placeholder="Mensaje" class="form-control" rows="4" cols="50"></textarea><br>
+        <!-- Botón de Envío -->
         <button type="submit" id="envio" class="btn-formulario">Enviar</button>
     </form>
     <p>También podés contactarte con nosotros en los siguientes horarios.</p>
+    <!-- Tabla con horarios -->
     <table id="tabla">
         <tr>
             <td><b>Día</b></td>

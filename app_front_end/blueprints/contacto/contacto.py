@@ -1,5 +1,7 @@
 from flask import Blueprint,render_template,request, current_app
 from flask_mail import Message
+import traceback
+
 
 contacto_bp = Blueprint("contacto_bp", __name__)
 
@@ -72,7 +74,6 @@ El equipo de LibroxLibro
         
         except Exception as e:
             print(f"Error al enviar email: {str(e)}")
-            import traceback
             traceback.print_exc()
             return render_template('500.html', error=str(e)), 500
 
@@ -81,4 +82,3 @@ El equipo de LibroxLibro
         titulo=title,
         horarios=diccionario_horarios
     )
-

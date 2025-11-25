@@ -40,6 +40,9 @@ BACK_URL = "http://127.0.0.1:5002"
 app.config['BACK_URL'] = BACK_URL
 app.secret_key = "super_secret"
 
+"""
+Obtiene del archivo '.env' información para hacer el envío de mails
+"""
 app.config['MAIL_SERVER'] = os.getenv('MAIL_SERVER')
 app.config['MAIL_PORT'] = int(os.getenv('MAIL_PORT'))
 app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
