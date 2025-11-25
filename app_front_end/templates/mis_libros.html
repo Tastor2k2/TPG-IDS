@@ -10,9 +10,9 @@
         <!-- Se recorre la lista de libros del usuario -->
         {% for libro in libros %}
             <div class="col-md-3 mb-4">
-                <div class="card">
+                <div class="card h-100">
                     <!-- Datos principales del libro -->
-                    <img src="{{ URL_BACK_IMAGEN }}{{ libro.imagen_url }}" class="card-img-top">
+                    <img src="{{ URL_BACK_IMAGEN }}{{ libro.imagen_url }}" class="card-img-top img-carta-libro">
                     <div class="card-body">
                         <h5>{{ libro.titulo }}</h5>
                         <p>{{ libro.autor }}</p>

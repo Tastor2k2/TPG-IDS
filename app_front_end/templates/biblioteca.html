@@ -13,12 +13,12 @@
         <!-- Se recorre la colección y se muestra cada libro como una card Bootstrap -->
         {% for libro in libros %}
             <div class="col-md-3 mb-4">
-                <div class="card">
+                <div class="card h-100">
                     <!-- Portada del libro: si hay imagen se usa la del libro, si no una por defecto -->
                     {% if libro.imagen %}
-                        <img src="{{ URL_BACK_IMAGEN }}{{ libro.imagen }}" class="card-img-top">
+                        <img src="{{ URL_BACK_IMAGEN }}{{ libro.imagen }}" class="card-img-top img-carta-libro">
                     {% else %}
-                        <img src="{{ URL_BACK_IMAGEN }}/default.png" class="card-img-top">
+                        <img src="{{ URL_BACK_IMAGEN }}/default.png" class="card-img-top img-carta-libro">
                     {% endif %}
 
                     <div class="card-body">
