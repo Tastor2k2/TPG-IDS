@@ -9,19 +9,19 @@
     <form action="{{ url_for('contacto_bp.contacto') }}" method="POST">
         <!-- Nombre -->
         <label for="nombre" class="tit-form">Nombre</label><br>
-        <input type="text" id="nombre" name="nombre_usuario" class="form-control" placeholder="Nombre"><br>
+        <input type="text" id="nombre" name="nombre_usuario" class="form-control" placeholder="Nombre" required><br>
         <!-- Apellido -->
         <label for="apellido" class="tit-form">Apellido</label><br>
-        <input type="text" id="apellido" name="apellido_usuario" class="form-control" placeholder="Apellido"><br>
+        <input type="text" id="apellido" name="apellido_usuario" class="form-control" placeholder="Apellido" required><br>
         <!-- Mail -->
         <label for="e-mail" class="tit-form">E-Mail</label><br>
-        <input type="email" id="e-mail" name="email_usuario" class="form-control" placeholder="E-Mail"><br>
+        <input type="email" id="e-mail" name="email_usuario" class="form-control" placeholder="E-Mail" required><br>
         <!-- Teléfono -->
         <label for="telefono" class="tit-form">Teléfono</label><br>
-        <input type="tel" id="telefono" name="telefono_usuario" class="form-control" placeholder="Teléfono"><br>
+        <input type="tel" id="telefono" name="telefono_usuario" class="form-control" placeholder="Teléfono" required><br>
         <!-- Mensaje -->
         <label for="mensaje" class="tit-form">Mensaje</label><br>
-        <textarea id="mensaje" name="mensaje_usuario" placeholder="Mensaje" class="form-control" rows="4" cols="50"></textarea><br>
+        <textarea id="mensaje" name="mensaje_usuario" placeholder="Mensaje" class="form-control" rows="4" cols="50" required></textarea><br>
         <!-- Botón de Envío -->
         <button type="submit" id="envio" class="btn-formulario">Enviar</button>
     </form>
@@ -39,6 +39,6 @@
         </tr>
         {% endfor %}
     </table><br>
-    <p><b>Correo Electrónico:</b> <a href="mailto:libroxlibro@gmail.com">libroxlibro@gmail.com</a></p>
+    <p><b>Correo Electrónico:</b> <a href="mailto:libroxlibro@gmail.com">libroxlibrooficial@gmail.com</a></p>
     <p><b>Número de Teléfono:</b> <a href="tel:+54 9 2323-336578">+54 9 2323-336578</a></p>
 {% endblock %}
