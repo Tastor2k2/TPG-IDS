@@ -100,7 +100,11 @@ def obtener_libros(usuario_id):
         cursor.close()
         conn.close()
 
-#USAMOS PATCH YA QUE NO ESTAMOS ELIMINANDO EL LIBRO SINO CAMBIANDOLO A UN ESTADO DE ELIMINADO
+"""
+Elimina el libro seleccionado por el usuario siempre que sea uno disponible.
+Eventualmente si ese libro fue solicitado en un intercambio, se cancelaran todos los intercambios hacia
+ese libro y esos quedarán disponibles de nuevo para usarse.
+"""
 @carga_libros_bp.route('/eliminar', methods=['PATCH'])
 def eliminar_libro():
     data = request.get_json()
@@ -112,23 +116,51 @@ def eliminar_libro():
     try:
         cursor.execute("SELECT id, usuario_id, estado_del_libro FROM libros WHERE id = %s", (id_libro,))
         libro = cursor.fetchone()
-        
-      
 
         if libro['estado_del_libro'] != 'disponible':
             return jsonify({"error": "Solo se pueden eliminar libros en estado disponible"}), 400
         
+        cursor.execute("""
+            UPDATE libros 
+            SET estado_del_libro = 'disponible' 
+            WHERE id IN (
+                SELECT id_libro_ofrecido 
+                FROM intercambio_libro 
+                WHERE id_libro_solicitado = %s 
+                AND estado_del_intercambio = 'espera'
+            )
+            AND estado_del_libro = 'pausa'
+        """, (id_libro,))
+        
+        cursor.execute("""
+            UPDATE libros 
+            SET estado_del_libro = 'disponible' 
+            WHERE id IN (
+                SELECT id_libro_solicitado 
+                FROM intercambio_libro 
+                WHERE id_libro_ofrecido = %s 
+                AND estado_del_intercambio = 'espera'
+            )
+            AND estado_del_libro = 'pausa'
+        """, (id_libro,))
+        
+        cursor.execute("""
+            UPDATE intercambio_libro 
+            SET estado_del_intercambio = 'cancelado', fecha_final = NOW() 
+            WHERE (id_libro_ofrecido = %s OR id_libro_solicitado = %s)
+            AND estado_del_intercambio = 'espera'
+        """, (id_libro, id_libro))
+        
         cursor.execute("UPDATE libros SET estado_del_libro = 'eliminado' WHERE id = %s", (id_libro,))
-        cursor.execute("UPDATE intercambio_libro SET estado_del_intercambio = 'cancelado', fecha_final = NOW() WHERE id_libro_ofrecido = %s OR id_libro_solicitado = %s", (id_libro, id_libro))
         
         conn.commit()
-        return jsonify({"message": "Libro Eliminado"}), 200
+        return jsonify({"message": "Libro eliminado y todos los intercambios relacionados han sido cancelados"}), 200
+        
     except Exception as e:
-
         conn.rollback()
         return jsonify({"error": str(e)}), 500
+        
     finally:
-
         cursor.close()
         conn.close()
 

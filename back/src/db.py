@@ -3,13 +3,12 @@ from dotenv import load_dotenv
 import mysql.connector
 from mysql.connector import Error
 
-# Determina la ruta del directorio base del proyecto
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-# Construye la ruta absoluta al archivo .env dentro de BASE_DIR
+
 DOTENV_PATH = os.path.join(BASE_DIR, ".env")
 
-# Carga las variables de entorno definidas en el .env
 load_dotenv(DOTENV_PATH)
+
 def get_connection():
     try: 
         connection = mysql.connector.connect(

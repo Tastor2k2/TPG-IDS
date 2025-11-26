@@ -95,6 +95,8 @@ El intercambio figura en la página como `finalizado` pero luego cada usuario de
 
 Para volver a intercambiar, el usuario debe tener mínimo un libro en estado `disponible`, es decir, el libro que recibió como queda en estado `intercambiado` no puede volver a ofrecerse, a menos de que se vuelva a cargar a la página. __Siempre que se carga un libro aparece disponible.__
 
+Adicionalmente se añadió una funcionalidad donde cada usuario puede eliminar los libros en estado `disponible`, y si el libro a eliminar está siendo solicitado por otros usuarios, se cancelan los intercambios realizando los mismos pasos que cuando se cancela un intercambio. Es decir, el libro ofrecido en `pausa` vuelve a pasar a `disponible`, lo unico que cambia es que el libro solicitado se cambia de estado a `eliminado` y el usuario que lo borró no puede verlo mas en su perfil.
+
 Como forma de contacto directo entre una persona y los administradores de la página, se provee la pestaña de `contacto`, donde la persona (sin necesidad de ser usuario) puede rellenar un formulario donde se piden sus datos, entre ellos su mail y su mensaje ó consulta hacia los administradores. Posterior a eso se le envía al usuario un mail comprobante de que su consulta fué enviada y al mail de la página le llega el mail con la consulta que realizó la persona. Luego pueden comunicarse via durecta por mail si así lo desean.
 
 ## Composición del front-end y back-end
@@ -134,18 +136,19 @@ Se compone de una carpeta `src` donde se encuentra la base de datos (`init_db.sq
 
 Dentro de `routes` se encuentran todos los blueprints referenciados por `app.py` y sus endpoints correspondientes.
 
-#### Explicación y ejemplos de uso de cada archivo y endpoint
+#### Explicación de cada archivo y endpoint
 
 - __carga_libros.py:__ Maneja la carga de todos los datos de los libros (menos la imagen) a la base de datos de cada usuario.
     - __carga_libro()__ Carga un libro en la base de datos en la tabla de libros, referenciando al usuario que lo cargó.
     - __obtener_libros(usuario_id)__ Obtiene todos los libros de un usuario específico y los retorna en orden descendente segun su fecha de carga a la pagina.
+    - __eliminar_libro()__ Elimina un libro del perfil del usuario, pasandolo al estado `eliminado` y si el libro está solicitado en un intercambio o más, sigue la misma lógica de cancelaciones de intercambios de la función __cancelar_intercambio()__. Como realmente no se elimina el libro de la base de datos (sino que solo se le cambia el estado), se utiliza el método `PATCH`.
 
 - __carga_libros_imagenes.py__ Maneja la subida de imagenes asociadas a los libros cargados mediante el archivo mencionado anteriormente.
     - __allowed_file(filename)__ Valida si la extensión de la imagen es válida (`png, jpg ó jpeg`).
     - __subir_imagen(libro_id)__ Llama a `allowed_file` para validar la imagen y de ser válida, la guarda en `static/images` del back y carga la ruta en la base de datos.
 
 - __datos_usuarios.py__ Maneja el registro y el inicio de sesión de cada usuario.
-    - __registrar_usuario()__ Guarda los datos de registro del usuario en la base de datos verificando que no se repitan campos como el mail, el nombre de usuario, etc.
+    - __registrar_usuario()__ Guarda los datos de registro del usuario en la base de datos verificando que no se repitan en la base de datos los campos como el mail, el nombre de usuario, etc.
     - __login_usuario()__ Verifica que el mail y contraseña del usuario existan en la base de datos, luego envia al front las respuestas a las consultas a la base de datos.
 
 - __intercambio_libros.py__ Maneja la lógica y validaciones necesarias para el correcto funcionamiento del intercambio de libros entre usuarios.
@@ -157,7 +160,7 @@ Dentro de `routes` se encuentran todos los blueprints referenciados por `app.py`
 
 - __listar_libros.py__ Maneja la lógica del muestreo de libros para la biblioteca y la barra de búsqueda.
     - __listar_libros()__ Devuelve todos los libros disponibles para intercambio (de todos los usuarios) excluyendo los libros del propio usuario solicitante.
-    - __buscar_libros()__ Busca el libro en la base de datos (mediante cualquier campo del libro presente en la tabla) y permite que se puedan poner palabras similares a la buscada.
+    - __buscar_libros()__ Busca el libro en la base de datos (mediante cualquier campo del libro presente en la tabla) y permite que se puedan poner palabras similares a la buscada (esto último se logra con la variable `wildcard`, una herramienta que ofrece sql que se usa con `LIKE`).
     - __obtener_libro(libro_id)__ Conecta con la base de datos y busca el libro con el id especificado por parámetro en la tabla libros.
 
 #### [scripts](back/SCRIPTS_BACK.md)
