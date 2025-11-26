@@ -4,27 +4,42 @@
 
 {% block body %}
 <h1>Mis libros</h1>
-<!-- Si la variable 'libros' posee elementos, se listan en tarjetas. Si no, se muestra un mensaje -->
+
 {% if libros %}
     <div class="row">
-        <!-- Se recorre la lista de libros del usuario -->
+
         {% for libro in libros %}
+            {% if libro.estado_del_libro != 'eliminado' %}
             <div class="col-md-3 mb-4">
                 <div class="card h-100">
-                    <!-- Datos principales del libro -->
+
                     <img src="{{ URL_BACK_IMAGEN }}{{ libro.imagen_url }}" class="card-img-top img-carta-libro">
+
                     <div class="card-body">
                         <h5>{{ libro.titulo }}</h5>
                         <p>{{ libro.autor }}</p>
                         <p>Estado: {{ libro.estado_del_libro }}</p>
+
+                        {% if libro.estado_del_libro == 'disponible' %}
+                        <form action="{{ url_for('mis_libros_bp.mis_libros') }}" method="POST">
+                            <input type="hidden" name="accion" value="eliminar">
+                            <input type="hidden" name="id_libro" value="{{ libro.id }}">
+                            <button class="btn btn-danger w-100 mt-2">Eliminar</button>
+                        </form>
+                        {% endif %}
                     </div>
+
                 </div>
             </div>
+            {% endif %}
         {% endfor %}
+
     </div>
-<!-- Caso sin resultados: el usuario no tiene libros cargados -->
+
 {% else %}
+
     <p>No tenés libros cargados.</p>
+
 {% endif %}
 
 {% endblock %}

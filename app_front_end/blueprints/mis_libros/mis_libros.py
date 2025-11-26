@@ -1,9 +1,13 @@
-from flask import Blueprint, render_template, current_app, session, redirect, url_for
+from flask import Blueprint, render_template, current_app, session, redirect, url_for, request
 import requests
+
+
+
+
 
 mis_libros_bp = Blueprint("mis_libros_bp", __name__)
 
-@mis_libros_bp.route("/", methods=["GET"])
+@mis_libros_bp.route("/", methods=["GET", "POST"])
 def mis_libros():
     """
     Propósito:
@@ -37,6 +41,16 @@ def mis_libros():
 
     # Llamada al back
     peticion_back = requests.get(f"{BACK_URL}/libros/mis-libros/{id_usuario}")
+    if request.method == "POST":
+        accion = request.form.get("accion")
+        if accion == "eliminar":
+            id_libro = request.form.get("id_libro")
+
+            # Llamamos al backend para eliminar el libro
+            requests.patch(f"{BACK_URL}/libros/eliminar", json={"id": id_libro})
+
+            # Volver a refrescar la página  
+            return redirect(url_for("mis_libros_bp.mis_libros"))
 
     libros = []
     # Se almacena en la variable 'libros' lo que se encuentra en la clave json llamada 'libros'
