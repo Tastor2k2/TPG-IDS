@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block titulo %}{{ titulo }}{% endblock %}
+
+{% block body %}
+<body>
+
+    </header>
+    <section>
+        <div class="bienvenida">
+            <h1 class="inicio">¡Bienvenido!</h1>
+            <div>
+                <p>
+                    Encontrá el libro que necesitás, publicá el libro que no usas.
+                </p>
+                <p>
+                    Iniciá sesión o creá tu cuenta para empezar a intercambiar libros.
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+
+    <section id="beneficios" class="pag">
+        <h2 class="titulo-pag">Por qué usar este sistema?</h2>
+
+        <div class="pasos">
+
+            <div class="paso-box">
+                <h3>💰 Ahorro</h3>
+                <p>Intercambiá libros sin gastar de mas.</p>
+            </div>
+
+            <div class="paso-box">
+                <h3>🤝 Comunidad</h3>
+                <p>Conectá con otras personas interesadas por tu lectura.</p>
+            </div>
+
+            <div class="paso-box">
+                <h3>🌱 Ecológico</h3>
+                <p>Dale una segunda vida a tus libros.</p>
+            </div>
+
+        </div>
+    </section>
+
+
+    <section>
+        <div class="pag">
+            <h2 class="titulo-pag">¿Querés saber más?</h2>
+            <p>
+                <a href="{{ url_for('sobre_nosotros_bp.sobre_nosotros') }}">Conocé quiénes somos</a> o  
+                <a href="{{ url_for('funcionamiento_bp.funcionamiento') }}">descubrí cómo funciona el sistema</a>.
+            </p>
+        </div>
+    </section>
+{% endblock %}

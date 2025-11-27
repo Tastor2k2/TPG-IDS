@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block titulo %}{{ titulo }}{% endblock %}
+
+{% block body %}
+<section>
+    <div class="pag">
+        <h1 class="titulo-pag">Funcionamiento</h1>
+        <p>
+            Nuestra plataforma permite a los usuarios intercambiar libros de manera simple y justa. 
+            Para utilizarla, primero es necesario registrarse y crear una cuenta. Sin iniciar sesión, 
+            no se puede acceder a ninguna función del sitio.
+        </p>
+        <p>
+            Una vez que el usuario inicia sesión, puede acceder a la biblioteca virtual, donde se muestran 
+            todos los libros disponibles para intercambio. Para poder pedir uno, primero debe publicar un libro propio. 
+            Al hacerlo, completa un formulario con los datos del ejemplar: título, autor, editorial, temática, código ISBN e
+            imagen de portada.
+        </p>
+        <p>
+            Después de subir su libro, el usuario puede explorar los títulos disponibles y elegir aquel que le interese. 
+            Al presionar la opción <strong>“Intercambiar”</strong>, se le mostrará la lista de libros que él mismo publicó, 
+            y podrá seleccionar cuál quiere ofrecer a cambio.
+        </p>
+    </div>
+
+    <div class="pag">
+        <h2 class="titulo-pag">¿Qué pasa después?</h2>
+        <p>
+            Una vez enviada la solicitud, al usuario que posee el libro de interés le llega la notificación en su
+            perfil. Ese usuario tiene dos opciones: aceptar o rechazar el intercambio. Si lo acepta, ambos libros
+            se retiran temporalmente de la biblioteca y las dos personas deben ponerse en contacto 
+            para coordinar el intercambio. Si lo rechaza, los libros vuelven a estar disponibles.
+        </p>    
+    </div>
+
+    <div class="pag">
+        <h2 class="titulo-pag">¿Para qué sirve?</h2>
+        <p>
+            Este sistema promueve el intercambio responsable y solidario de materiales, buscando que todos los estudiantes puedan acceder a los recursos que necesitan sin costo y de manera equitativa.
+        </p>
+    </div>
+
+<section id="items">
+    <h2 class="titulo-pag">Pasos a seguir:</h2>
+
+    <div class="pasos">
+
+        <div class="paso-box">
+            <h3>📗 Paso 1:</h3>
+            <p>Registrate e iniciá sesión para acceder a tu perfil y comenzar a usar la plataforma.</p>
+        </div>
+
+        <div class="paso-box">
+            <h3>🏷️ Paso 2:</h3>
+            <p>Publicá tu libro desde el formulario correspondiente. Así quedará disponible para futuros intercambios.</p>
+        </div>
+
+        <div class="paso-box">
+            <h3>🔍 Paso 3:</h3>
+            <p>Buscá el libro que querés y enviá la solicitud de intercambio eligiendo cuál de los tuyos ofrecer.</p>
+        </div>
+
+        <div class="paso-box">
+            <h3>📬 Paso 4:</h3>
+            <p>Si el intercambio es aceptado, ponete en contacto con la otra persona interesada para concretar el intercambio.</p>
+        </div>
+
+    </div>
+</section>
+
+
+    <div class="pag">
+        <p>
+            Cuando termines una materia, podés volver a publicar tus libros y seguir intercambiando.¡Dale nueva vida a tus apuntes y ayudá a otros a estudiar!
+        </p>
+    </div>
+</section>
+{% endblock %}
