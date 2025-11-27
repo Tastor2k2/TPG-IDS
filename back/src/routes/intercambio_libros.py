@@ -187,7 +187,7 @@ def cancelar_intercambio():
 Se encarga de guardar el historial de los datos en un intercambio en espera, cancelado ó finalizado.
 Los registros de historial de los intercambios se guardan en los perfiles de los usuarios involucrados.
 """
-@intercambio_libros_bp.route('/intercambios/historial/<int:usuario_id>', methods=['POST'])
+@intercambio_libros_bp.route('/intercambios/historial/<int:usuario_id>', methods=['GET'])
 def mostrar_intercambio(usuario_id):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)

@@ -1,10 +1,6 @@
 from flask import Blueprint, render_template, current_app, session, redirect, url_for, request
 import requests
 
-
-
-
-
 mis_libros_bp = Blueprint("mis_libros_bp", __name__)
 
 @mis_libros_bp.route("/", methods=["GET", "POST"])
@@ -60,5 +56,5 @@ def mis_libros():
     return render_template(
         "mis_libros.html",
         libros=libros,
-        URL_BACK_IMAGEN = BACK_URL
+        URL_BACK_IMAGEN = BACK_URL + "/static/images/"
     )

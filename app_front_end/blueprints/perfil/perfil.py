@@ -78,7 +78,7 @@ def perfil(id_usuario):
         # Volver al perfil para ver cambios
         return redirect(url_for("perfil_bp.perfil", id_usuario=id_usuario))
 
-    respuesta_back = requests.post(
+    respuesta_back = requests.get(
         f"{BACK_URL}/libros/intercambios/historial/{id_usuario}"
     )
 
