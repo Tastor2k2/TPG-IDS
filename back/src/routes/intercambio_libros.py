@@ -124,6 +124,19 @@ def aceptar_intercambio():
             id_libro_ofrecido
         ))
 
+        # DEVOLVER A DISPONIBLE LOS LIBROS OFRECIDOS EN LOS INTERCAMBIOS CANCELADOS
+        cursor.execute("""
+            UPDATE libros 
+            SET estado_del_libro = 'disponible' 
+            WHERE estado_del_libro = 'pausa'
+            AND id IN (
+                SELECT id_libro_ofrecido 
+                FROM intercambio_libro 
+                WHERE estado_del_intercambio = 'cancelado'
+                AND codigo_intercambio != %s
+            )
+        """, (codigo,))
+        
         conn.commit()
         
         return jsonify({
