@@ -1679,3 +1679,12 @@ html, body {
     border-radius: 40px;
     margin-bottom: 100px;
 }
+
+/* modificaciones nuestras */
+
+.img-carta-libro {
+    width: 100%;
+    height: 300px; /* Puedes ajustar este valor (200px, 300px, etc.) */
+    object-fit: cover; /* Esto recorta la imagen para llenar el espacio sin deformar */
+    /* Opcional: object-position: center top; Para que recorte priorizando la parte de arriba */
+}

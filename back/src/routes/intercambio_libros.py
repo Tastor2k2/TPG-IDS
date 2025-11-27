@@ -3,7 +3,6 @@ from db import get_connection
 
 intercambio_libros_bp  = Blueprint("intercambio_libros", __name__)
 
-
 """
 Crea una solicitud de intercambio
 """
@@ -27,7 +26,6 @@ def solicitar_intercambio():
         libro_solicitado = cursor.fetchone()
         cursor.execute("SELECT id, usuario_id, estado_del_libro FROM libros WHERE id = %s", (id_libro_ofrecido,))
         libro_ofrecido = cursor.fetchone()
-
 
         if not libro_solicitado or not libro_ofrecido:
             return jsonify({"error": "No hay un libro por libro para intercambiar, debe haber 1 como mínimo por cada usuario"}), 400
@@ -126,6 +124,19 @@ def aceptar_intercambio():
             id_libro_ofrecido
         ))
 
+        # DEVOLVER A DISPONIBLE LOS LIBROS OFRECIDOS EN LOS INTERCAMBIOS CANCELADOS
+        cursor.execute("""
+            UPDATE libros 
+            SET estado_del_libro = 'disponible' 
+            WHERE estado_del_libro = 'pausa'
+            AND id IN (
+                SELECT id_libro_ofrecido 
+                FROM intercambio_libro 
+                WHERE estado_del_intercambio = 'cancelado'
+                AND codigo_intercambio != %s
+            )
+        """, (codigo,))
+        
         conn.commit()
         
         return jsonify({
@@ -140,8 +151,9 @@ def aceptar_intercambio():
     finally:
         cursor.close()
         conn.close()
+
 """
-Cancela una solicitud de intercambio. Puede solicitarlo el solicitante o el propietario.
+Cancela una solicitud de intercambio. Puede calcelarlo el solicitante o el propietario.
 """
 @intercambio_libros_bp.route('/cancelar_intercambio', methods=['POST'])
 def cancelar_intercambio():
@@ -151,6 +163,7 @@ def cancelar_intercambio():
 
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
+    
     try:
         cursor.execute("SELECT * FROM intercambio_libro WHERE codigo_intercambio = %s", (codigo,))
         intercambio = cursor.fetchone()
@@ -182,8 +195,12 @@ def cancelar_intercambio():
 
         cursor.close()
         conn.close()
-        
-@intercambio_libros_bp.route('/intercambios/historial/<int:usuario_id>', methods=['POST'])
+
+"""
+Se encarga de guardar el historial de los datos en un intercambio en espera, cancelado ó finalizado.
+Los registros de historial de los intercambios se guardan en los perfiles de los usuarios involucrados.
+"""
+@intercambio_libros_bp.route('/intercambios/historial/<int:usuario_id>', methods=['GET'])
 def mostrar_intercambio(usuario_id):
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
@@ -207,6 +224,7 @@ def mostrar_intercambio(usuario_id):
                 libro_ofrecido.titulo AS libro_ofrecido,
 
                 intercambio_libro.fecha_inicio,
+                intercambio_libro.fecha_final,
                 intercambio_libro.estado_del_intercambio,
 
                 intercambio_libro.id_usuario_solicitado,

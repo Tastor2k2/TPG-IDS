@@ -1,4 +1,4 @@
-from flask import Blueprint,render_template,request, current_app
+from flask import Blueprint,render_template,request, current_app,jsonify
 from flask_mail import Message
 
 contacto_bp = Blueprint("contacto_bp", __name__)
@@ -62,23 +62,14 @@ El equipo de LibroxLibro
 
             return render_template(
                 'formulario_enviado.html',
-                titulo="Formulario Enviado Correctamente",
-                name=nombre,
-                surname=apellido,
-                email=email_usuario,
-                tel=telefono,
-                mensj=mensaje
+                titulo="Formulario Enviado Correctamente"
             )
         
-        except Exception as e:
-            print(f"Error al enviar email: {str(e)}")
-            import traceback
-            traceback.print_exc()
-            return render_template('500.html', error=str(e)), 500
+        except Exception:
+            return jsonify({"error":"no se pudo enviar el mail"}),500
 
     return render_template(
         'contacto.html',
         titulo=title,
         horarios=diccionario_horarios
     )
-

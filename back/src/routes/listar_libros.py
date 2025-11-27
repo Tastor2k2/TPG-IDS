@@ -1,7 +1,6 @@
 from flask import Blueprint, jsonify, request
 from db import get_connection
 
-
 listar_libros_bp = Blueprint("listar_libros", __name__)
 
 """
@@ -10,23 +9,21 @@ Excluye los libros del propio usuario solicitante
 """
 @listar_libros_bp.route('/libros', methods=['GET'])
 def listar_libros():
-    #Obtener usuario_id opcional para excluir sus propios libros
+
     usuario_id = request.args.get('usuario_id', type=int)
 
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
 
     try:
+
         if usuario_id:
-            #Excluir libros del propio usuario
             cursor.execute("SELECT * FROM libros WHERE estado_del_libro = 'disponible' AND usuario_id != %s", (usuario_id,))
         else:
-            #Mostrar todos los disponibles
             cursor.execute("SELECT * FROM libros WHERE estado_del_libro = 'disponible'")
 
         libros = cursor.fetchall()
 
-        #muestra todas las imagenes del los libros
         for libro in libros:
             libro["imagen_url"] = f"/static/images/{libro['imagen']}"
 
@@ -43,7 +40,9 @@ def listar_libros():
         conn.close()
 
 """
-Devuelve detalles de un libro específico
+Devuelve al front los resultados de la búsqueda de uno o más libros realizada en la barra de búsqueda.
+Se puede buscar a través de cualquier parámetro o variable presente en la tabla de los libros dentro de
+la base de datos.
 """
 @listar_libros_bp.route('/buscar', methods=['GET'])
 def buscar_libros():
@@ -91,7 +90,10 @@ def buscar_libros():
     finally:
         cursor.close()
         conn.close()
-  
+
+"""
+Devuelve la información detallada de un libro específico por su ID
+"""
 @listar_libros_bp.route('/libros/<int:libro_id>', methods=['GET'])
 def obtener_libro(libro_id):
     conn = get_connection()

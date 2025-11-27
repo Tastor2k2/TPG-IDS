@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Ejecutar Para Crear y activar el backend:
-# source activacion_backend.sh
-
 instalarPython3() {
     if python3 --version > /dev/null 2>&1 ; then
         echo ""
@@ -84,10 +81,11 @@ crearEnv() {
         echo "---------------------------Llenando .env---------------------------"
         echo ""
 
-        echo "DB_HOST=localhost" >> .env
+        echo "DB_HOST=127.0.0.1" >> .env
+        echo "DB_PORT=3306" >> .env
         echo "DB_USER=root" >> .env
-        echo "DB_PASSWORD=password" >> .env # completar manualmente en .env
-        echo "DB_NAME=datos_usuario" >> .env
+        echo "DB_PASSWORD=" >> .env # completar manualmente en .env con la clave de mysql personal
+        echo "DB_NAME=libroxlibro_db" >> .env
     fi
 }
 
@@ -169,6 +167,20 @@ instalarWerkzeug() {
     fi
 }
 
+iniciarDb() {
+    echo ""
+    echo "---------------------------Inicializando la Base de Datos---------------------------"
+    echo ""
+    python3 init_db.py
+}
+
+ejecutar() {
+    echo ""
+    echo "---------------------------Ejecutando el entorno del back---------------------------"
+    echo ""
+    python3 app.py
+}
+
 crearEnv
 
 cd src
@@ -187,3 +199,6 @@ instalarFlaskSession
 instalarMysqlConnector
 instalarDotenv
 instalarWerkzeug
+
+iniciarDb
+ejecutar

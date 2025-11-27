@@ -4,26 +4,39 @@
 
 {% block body %}
 <h1>Mi Perfil</h1>
-<h2>Nombre de Usuario</h2>
-<p>Acá iría el nombre del usuario</p>
-<h2>Correo Electrónico</h2>
-<p>Acá iría el mail del usuario</p>
+    <p><b>Nombre:</b> {{ nombre }}</p>
+    <p><b>E-Mail:</b> {{ email }}</p>
+    <p><b>ID:</b> {{ id }}</p>
+<!-- Accesos rápidos a otras secciones personales -->
 <a href="{{ url_for('mis_libros_bp.mis_libros') }}"><h2>Mis Libros</h2></a>
 <a href="{{ url_for('cargar_libro_bp.cargar_libro') }}"><h2>Cargar Libro</h2></a>
 <h2>Historial</h2>
 <h2>Intercambios pendientes</h2>
+<!-- Si hay intercambios pendientes, se muestran. Si no, se muestra un mensaje -->
 {% if historial.pendientes %}
     {% for item in historial.pendientes %}
         <p>
-            Código: {{ item.codigo_intercambio }} <br>
-            Solicitante: {{ item.solicitante_nombre }} <br>
-            Libro ofrecido: {{ item.libro_ofrecido }} <br>
-            Libro solicitado: {{ item.libro_solicitado }} <br>
-            Fecha: {{ item.fecha_inicio }}<br>
-            Teléfono: {{ item.solicitante_telefono }} <br>
-            Dirección: {{ item.solicitante_direccion }} <br>
-            Mail: {{ item.solicitante_email }} <br>
+            {% if item.id_usuario_solicitado == id %}
+                Código: {{ item.codigo_intercambio }} <br>
+                Solicitante: {{ item.solicitante_nombre }} <br>
+                Libro ofrecido: {{ item.libro_ofrecido }} <br>
+                Libro solicitado: {{ item.libro_solicitado }} <br>
+                Fecha de inicio: {{ item.fecha_inicio }}<br>
+                Teléfono: {{ item.solicitante_telefono }} <br>
+                Dirección: {{ item.solicitante_direccion }} <br>
+                Mail: {{ item.solicitante_email }} <br>
+            {% else %}
+                Código: {{ item.codigo_intercambio }} <br>
+                Solicitante: {{ item.solicitado_nombre }} <br>
+                Libro ofrecido: {{ item.libro_ofrecido }} <br>
+                Libro solicitado: {{ item.libro_solicitado }} <br>
+                Fecha de inicio: {{ item.fecha_inicio }}<br>
+                Teléfono: {{ item.solicitado_telefono }} <br>
+                Dirección: {{ item.solicitado_direccion }} <br>
+                Mail: {{ item.solicitado_email }} <br>
+            {% endif %}
         </p>
+        <!-- Si el usuario actual es el "solicitado", puede ACEPTAR o RECHAZAR -->
         {% if item.id_usuario_solicitado == id %}
             <form action="{{ url_for('perfil_bp.perfil', id_usuario=id) }}" method="post">
                 <input type="hidden" name="accion" value="aceptar">
@@ -36,7 +49,7 @@
                 <input type="hidden" name="codigo_intercambio" value="{{ item.codigo_intercambio }}">
                 <button class="btn btn-danger">Rechazar</button>
             </form>
-
+        <!-- Si el usuario actual es el "ofrecido" (quien pidió), solo puede CANCELAR y queda esperando respuesta -->
         {% elif item.id_usuario_ofrecido == id %}
             <form action="{{ url_for('perfil_bp.perfil', id_usuario=id) }}" method="post" class="mt-2">
                 <input type="hidden" name="accion" value="cancelar">
@@ -53,17 +66,31 @@
 {% endif %}
 
 <h2>Intercambios completados</h2>
+<!-- Si hay intercambios completados, se muestran. Si no, se muestra un mensaje -->
 {% if historial.completados %}
     {% for item in historial.completados %}
         <p>
-            Código: {{ item.codigo_intercambio }} <br>
-            Solicitante: {{ item.solicitante_nombre }} <br>
-            Libro ofrecido: {{ item.libro_ofrecido }} <br>
-            Libro solicitado: {{ item.libro_solicitado }} <br>
-            Fecha: {{ item.fecha_inicio }} <br> 
-            Teléfono: {{ item.solicitante_telefono }} <br>
-            Dirección: {{ item.solicitante_direccion }} <br>
-            Mail: {{ item.solicitante_email }} <br>
+            {% if item.id_usuario_solicitado == id %}
+                Código: {{ item.codigo_intercambio }} <br>
+                Solicitante: {{ item.solicitante_nombre }} <br>
+                Libro ofrecido: {{ item.libro_ofrecido }} <br>
+                Libro solicitado: {{ item.libro_solicitado }} <br>
+                Fecha de inicio: {{ item.fecha_inicio }}<br>
+                Fecha final: {{ item.fecha_final }}<br>
+                Teléfono: {{ item.solicitante_telefono }} <br>
+                Dirección: {{ item.solicitante_direccion }} <br>
+                Mail: {{ item.solicitante_email }} <br>
+            {% else %}
+                Código: {{ item.codigo_intercambio }} <br>
+                Solicitante: {{ item.solicitado_nombre }} <br>
+                Libro ofrecido: {{ item.libro_ofrecido }} <br>
+                Libro solicitado: {{ item.libro_solicitado }} <br>
+                Fecha de inicio: {{ item.fecha_inicio }}<br>
+                Fecha final: {{ item.fecha_final }}<br>
+                Teléfono: {{ item.solicitado_telefono }} <br>
+                Dirección: {{ item.solicitado_direccion }} <br>
+                Mail: {{ item.solicitado_email }} <br>
+            {% endif %}
         </p>
         <hr>
     {% endfor %}
@@ -72,24 +99,38 @@
 {% endif %}
 
 <h2>Intercambios cancelados</h2>
+<!-- Si hay intercambios cancelados, se muestran. Si no, se muestra un mensaje -->
 {% if historial.cancelados %}
     {% for item in historial.cancelados %}
         <p>
-            Código: {{ item.codigo_intercambio }} <br>
-            Solicitante: {{ item.solicitante_nombre }} <br>
-            Libro ofrecido: {{ item.libro_ofrecido }} <br>
-            Libro solicitado: {{ item.libro_solicitado }} <br>
-            Fecha: {{ item.fecha_inicio }} <br>
-            Teléfono: {{ item.solicitante_telefono }} <br>
-            Dirección: {{ item.solicitante_direccion }} <br>
-            Mail: {{ item.solicitante_email }} <br>
+         {% if item.id_usuario_solicitado == id %}
+                Código: {{ item.codigo_intercambio }} <br>
+                Solicitante: {{ item.solicitante_nombre }} <br>
+                Libro ofrecido: {{ item.libro_ofrecido }} <br>
+                Libro solicitado: {{ item.libro_solicitado }} <br>
+                Fecha de inicio: {{ item.fecha_inicio }}<br>
+                Fecha final: {{ item.fecha_final }}<br>
+                Teléfono: {{ item.solicitante_telefono }} <br>
+                Dirección: {{ item.solicitante_direccion }} <br>
+                Mail: {{ item.solicitante_email }} <br>
+            {% else %}
+                Código: {{ item.codigo_intercambio }} <br>
+                Solicitante: {{ item.solicitado_nombre }} <br>
+                Libro ofrecido: {{ item.libro_ofrecido }} <br>
+                Libro solicitado: {{ item.libro_solicitado }} <br>
+                Fecha de inicio: {{ item.fecha_inicio }}<br>
+                Fecha final: {{ item.fecha_final }}<br>
+                Teléfono: {{ item.solicitado_telefono }} <br>
+                Dirección: {{ item.solicitado_direccion }} <br>
+                Mail: {{ item.solicitado_email }} <br>
+            {% endif %}
         </p>
         <hr>
     {% endfor %}
 {% else %}
     <p>No tenés intercambios cancelados.</p>
 {% endif %}
-
+<!-- Botón para terminar sesión -->
 <a href="{{ url_for('logout_bp.cerrar_sesion') }}" class="btn btn-danger">
     Cerrar sesión
 </a>

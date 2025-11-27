@@ -40,6 +40,9 @@ BACK_URL = "http://127.0.0.1:5002"
 app.config['BACK_URL'] = BACK_URL
 app.secret_key = "super_secret"
 
+"""
+Obtiene del archivo '.env' información para hacer el envío de mails
+"""
 app.config['MAIL_SERVER'] = os.getenv('MAIL_SERVER')
 app.config['MAIL_PORT'] = int(os.getenv('MAIL_PORT'))
 app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
@@ -84,9 +87,17 @@ def inject_globals():
 Manejador de errores:
 Según el error, se renderiza alguno de estos templates.
 """
+@app.errorhandler(400)
+def handle_400(error):
+    return render_template('400.html', error=error), 400
+
 @app.errorhandler(404)
 def handle_404(error):
     return render_template('404.html', error=error), 404
+
+@app.errorhandler(422)
+def handle_422(error):
+    return render_template('422.html', error=error), 422
 
 @app.errorhandler(500)
 def handle_500(error):

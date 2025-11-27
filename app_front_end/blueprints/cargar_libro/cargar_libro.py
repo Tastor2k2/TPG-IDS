@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, session, redirect, url_for, current_app,jsonify
+from flask import Blueprint, render_template, request, session, redirect, url_for, current_app,jsonify,abort
 import requests
 
 cargar_libro_bp = Blueprint("cargar_libro_bp", __name__)
@@ -21,7 +21,7 @@ def cargar_libro():
              incluyendo usuario_id de la sesión. Espera JSON con {"libro_id": ...}.
           4) Con el libro_id, sube la imagen al backend (POST multipart a
              {BACK_URL}/libros/<libro_id>/subir_imagen).
-          5) Si la subida de imagen falla (status != 200), retorna 500 indicando
+          5) Si la subida de imagen falla (status != 200), retorna 422 indicando
              que el libro se creó pero la imagen no se guardó.
           6) Si todo OK, redirige al perfil del usuario (perfil_bp.perfil).
 
@@ -52,8 +52,8 @@ def cargar_libro():
     imagen = request.files.get("imagen")
 
     # Validación básica
-    if not titulo or not editorial or not isbn or not tematica:
-        return jsonify({"error": "Faltan datos"}), 400
+    if not titulo or not autor or not editorial or not isbn or not tematica or not imagen:
+        abort(400)
 
     BACK_URL = current_app.config["BACK_URL"]
 
@@ -84,6 +84,6 @@ def cargar_libro():
         files=files
     )
     if envio_imagen_back.status_code != 200:
-        return jsonify({"error": "Libro creado pero error al subir imagen"}), 500
+        abort(422)
 
     return redirect(url_for("perfil_bp.perfil", id_usuario=session["user_id"]))
